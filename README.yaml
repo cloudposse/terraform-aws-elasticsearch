@@ -1,0 +1,97 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: terraform-aws-elasticsearch
+
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: "APACHE2"
+
+# Canonical GitHub repo
+github_repo: cloudposse/terraform-aws-elasticsearch
+
+# Badges to display
+badges:
+  - name: "Build Status"
+    image: "https://travis-ci.org/cloudposse/terraform-aws-elasticsearch.svg?branch=master"
+    url: "https://travis-ci.org/cloudposse/terraform-aws-elasticsearch"
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/cloudposse/terraform-aws-elasticsearch.svg"
+    url: "https://github.com/cloudposse/terraform-aws-elasticsearch/releases/latest"
+  - name: "Slack Community"
+    image: "https://slack.cloudposse.com/badge.svg"
+    url: "https://slack.cloudposse.com"
+
+# Short description of this project
+description: |-
+  Terraform module to provision an [`Elasticsearch`](https://aws.amazon.com/elasticsearch-service/) cluster with built-in integrations with [Kibana](https://aws.amazon.com/elasticsearch-service/kibana/) and [Logstash](https://aws.amazon.com/elasticsearch-service/logstash/).
+
+  This module will create:
+  - Elasticsearch cluster with the specified node count in the provided subnets in a VPC
+  - Elasticsearch domain policy that accepts a list of IAM role ARNs from which to permit management traffic to the cluster
+  - Security Group to control access to the Elasticsearch domain (inputs to the Security Group are other Security Groups or CIDRs blocks to be allowed to connect to the cluster)
+  - DNS hostname record for Elasticsearch cluster (if DNS Zone ID is provided)
+  - DNS hostname record for Kibana (if DNS Zone ID is provided)
+
+  __NOTE:__ To enable [zone awareness](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-managedomains.html#es-managedomains-zoneawareness) to deploy Elasticsearch nodes into two different Availability Zones, you need to set `zone_awareness_enabled` to `true` and provide two different subnets in `subnet_ids`.
+  If you enable zone awareness for your domain, Amazon ES places an endpoint into two subnets.
+  The subnets must be in different Availability Zones in the same region.
+  If you don't enable zone awareness, Amazon ES places an endpoint into only one subnet
+
+  Further reading:
+  - https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html
+  - https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html
+  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html
+  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html
+  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html
+  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html
+  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-kibana.html
+  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html
+
+# How to use this project
+usage: |-
+  Basic [example](examples/basic)
+
+  ```hcl
+  module "elasticsearch" {
+    source                  = "git::https://github.com/cloudposse/terraform-aws-elasticsearch.git?ref=master"
+    namespace               = "eg"
+    stage                   = "dev"
+    name                    = "es"
+    dns_zone_id             = "Z14EN2YD427LRQ"
+    security_groups         = ["sg-XXXXXXXXX", "sg-YYYYYYYY"]
+    vpc_id                  = "vpc-XXXXXXXXX"
+    subnet_ids              = ["subnet-XXXXXXXXX", "subnet-YYYYYYYY"]
+    zone_awareness_enabled  = "true"
+    elasticsearch_version   = "6.2"
+    instance_type           = "t2.small.elasticsearch"
+    instance_count          = 4
+    iam_roles               = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
+    encrypt_at_rest_enabled = "true"
+
+    advanced_options {
+      "rest.action.multi.allow_explicit_index" = "true"
+    }
+  }
+  ```
+
+include:
+  - "docs/targets.md"
+  - "docs/terraform.md"
+
+# Contributors to this project
+contributors:
+  - name: "Erik Osterman"
+    github: "osterman"
+  - name: "Andriy Knysh"
+    github: "aknysh"
+  - name: "Igor Rodionov"
+    github: "goruha"
+  - name: "Sarkis Varozian"
+    github: "sarkis"

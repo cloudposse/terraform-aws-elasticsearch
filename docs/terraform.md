@@ -1,0 +1,48 @@
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| advanced_options | Key-value string pairs to specify advanced configuration options | map | `<map>` | no |
+| allowed_cidr_blocks | List of CIDR blocks to be allowed to connect to the cluster | list | `<list>` | no |
+| attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
+| automated_snapshot_start_hour | Hour at which automated snapshots are taken, in UTC | string | `0` | no |
+| dedicated_master_count | Number of dedicated master nodes in the cluster | string | `0` | no |
+| dedicated_master_enabled | Indicates whether dedicated master nodes are enabled for the cluster | string | `false` | no |
+| dedicated_master_type | Instance type of the dedicated master nodes in the cluster | string | `t2.small.elasticsearch` | no |
+| delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
+| dns_zone_id | Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana | string | `` | no |
+| ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | string | `0` | no |
+| ebs_volume_size | Optionally use EBS volumes for data storage by specifying volume size in GB | string | `0` | no |
+| ebs_volume_type | Storage type of EBS volumes | string | `gp2` | no |
+| elasticsearch_version | Version of Elasticsearch to deploy | string | `6.2` | no |
+| enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
+| encrypt_at_rest_enabled | Whether to enable encryption at rest | string | `true` | no |
+| encrypt_at_rest_kms_key_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/ES service KMS key | string | `` | no |
+| iam_roles | List of IAM role ARNs from which to permit management traffic | list | `<list>` | no |
+| instance_count | Number of data nodes in the cluster | string | `4` | no |
+| instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
+| log_publishing_cloudwatch_log_group_arn | ARN of the Cloudwatch log group to which log needs to be published | string | `` | no |
+| log_publishing_enabled | Specifies whether log publishing option is enabled or not | string | `false` | no |
+| log_publishing_log_type | A type of Elasticsearch log. Valid values: INDEX_SLOW_LOGS, SEARCH_SLOW_LOGS | string | `SEARCH_SLOW_LOGS` | no |
+| name | Name of the application | string | - | yes |
+| namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
+| security_groups | List of security group IDs to be allowed to connect to the cluster | list | `<list>` | no |
+| stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
+| subnet_ids | Subnet ids | list | - | yes |
+| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
+| vpc_id | VPC ID | string | - | yes |
+| zone_awareness_enabled | Enable zone awareness for Elasticsearch cluster | string | `true` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| domain_arn | ARN of the Elasticsearch domain |
+| domain_endpoint | Domain-specific endpoint used to submit index, search, and data upload requests |
+| domain_hostname | Elasticsearch domain hostname to submit index, search, and data upload requests |
+| domain_id | Unique identifier for the Elasticsearch domain |
+| kibana_endpoint | Domain-specific endpoint for Kibana without https scheme |
+| kibana_hostname | Kibana hostname |
+| security_group_id | Security Group ID to control access to the Elasticsearch domain |
+
