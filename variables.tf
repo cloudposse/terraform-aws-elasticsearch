@@ -82,10 +82,16 @@ variable "instance_count" {
   default     = 4
 }
 
-variable "iam_roles" {
+variable "iam_role_arns" {
   type        = "list"
   default     = []
-  description = "List of IAM role ARNs from which to permit management traffic"
+  description = "List of IAM role ARNs to permit access to the Elasticsearch domain"
+}
+
+variable "iam_actions" {
+  type        = "list"
+  default     = []
+  description = "List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
 }
 
 variable "zone_awareness_enabled" {

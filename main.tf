@@ -50,24 +50,6 @@ resource "aws_security_group_rule" "egress" {
   security_group_id = "${aws_security_group.default.id}"
 }
 
-data "aws_iam_policy_document" "default" {
-  statement {
-    actions = [
-      "es:*",
-    ]
-
-    resources = [
-      "${aws_elasticsearch_domain.default.arn}",
-      "${aws_elasticsearch_domain.default.arn}/*",
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["${distinct(compact(var.iam_roles))}"]
-    }
-  }
-}
-
 resource "aws_elasticsearch_domain" "default" {
   count                 = "${var.enabled == "true" ? 1 : 0}"
   domain_name           = "${module.label.id}"
@@ -114,7 +96,23 @@ resource "aws_elasticsearch_domain" "default" {
   tags = "${module.label.tags}"
 }
 
-resource "aws_elasticsearch_domain_policy" "es_vpc_management_access" {
+data "aws_iam_policy_document" "default" {
+  statement {
+    actions = ["${distinct(compact(var.iam_actions))}"]
+
+    resources = [
+      "${aws_elasticsearch_domain.default.arn}",
+      "${aws_elasticsearch_domain.default.arn}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["${distinct(compact(var.iam_role_arns))}"]
+    }
+  }
+}
+
+resource "aws_elasticsearch_domain_policy" "default" {
   count           = "${var.enabled == "true" ? 1 : 0}"
   domain_name     = "${module.label.id}"
   access_policies = "${data.aws_iam_policy_document.default.json}"

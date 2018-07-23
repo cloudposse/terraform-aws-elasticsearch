@@ -96,13 +96,14 @@ Available targets:
 | ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | string | `0` | no |
 | ebs_volume_size | Optionally use EBS volumes for data storage by specifying volume size in GB | string | `0` | no |
 | ebs_volume_type | Storage type of EBS volumes | string | `gp2` | no |
+| elasticsearch_iam_roles | List of IAM role ARNs to permit access to the Elasticsearch domain | list | `<list>` | no |
 | elasticsearch_version | Version of Elasticsearch to deploy | string | `6.2` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | string | `true` | no |
 | encrypt_at_rest_kms_key_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
-| iam_roles | List of IAM role ARNs from which to permit management traffic | list | `<list>` | no |
 | instance_count | Number of data nodes in the cluster | string | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
+| kibana_iam_roles | List of IAM role ARNs to permit access to Kibana | list | `<list>` | no |
 | kibana_subdomain_name | The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`) | string | `kibana` | no |
 | log_publishing_cloudwatch_log_group_arn | ARN of the Cloudwatch log group to which log needs to be published | string | `` | no |
 | log_publishing_enabled | Specifies whether log publishing option is enabled or not | string | `false` | no |
