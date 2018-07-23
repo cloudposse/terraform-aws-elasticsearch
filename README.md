@@ -136,14 +136,14 @@ Available targets:
 
 For additional context, refer to some of these links. 
 
-- [what-is-amazon-elasticsearch-service](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html) - What is Amazon Elasticsearch Service
-- [es-ac](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html) - Amazon Elasticsearch Service Access Control
-- [es-vpc](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html) - VPC Support for Amazon Elasticsearch Service Domains
-- [es-createupdatedomains](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html) - Creating and Configuring Amazon Elasticsearch Service Domains
-- [es-kibana](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-kibana.html) - Kibana and Logstash
-- [es-cognito-auth](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html) - Amazon Cognito Authentication for Kibana
-- [elasticsearch_domain](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html) - Terraform `elasticsearch_domain`
-- [elasticsearch_domain_policy](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html) - Terraform `elasticsearch_domain_policy`
+- [What is Amazon Elasticsearch Service](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html) - Complete description of Amazon Elasticsearch Service
+- [Amazon Elasticsearch Service Access Control](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html) - Describes several ways of controlling access to Elasticsearch domains
+- [VPC Support for Amazon Elasticsearch Service Domains](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html) - Describes Elasticsearch Service VPC Support and VPC architectures with and without zone awareness
+- [Creating and Configuring Amazon Elasticsearch Service Domains](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html) - Provides a complete description on how to create and configure Amazon Elasticsearch Service (Amazon ES) domains
+- [Kibana and Logstash](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-kibana.html) - Describes some considerations for using Kibana and Logstash with Amazon Elasticsearch Service
+- [Amazon Cognito Authentication for Kibana](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html) - Amazon Elasticsearch Service uses Amazon Cognito to offer user name and password protection for Kibana
+- [elasticsearch_domain](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html) - Configuration for `elasticsearch_domain` Terraform resource
+- [elasticsearch_domain_policy](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html) - Configuration for `elasticsearch_domain_policy` Terraform resource
 
 
 ## Help
