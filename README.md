@@ -7,28 +7,6 @@
 
 Terraform module to provision an [`Elasticsearch`](https://aws.amazon.com/elasticsearch-service/) cluster with built-in integrations with [Kibana](https://aws.amazon.com/elasticsearch-service/kibana/) and [Logstash](https://aws.amazon.com/elasticsearch-service/logstash/).
 
-This module will create:
-- Elasticsearch cluster with the specified node count in the provided subnets in a VPC
-- Elasticsearch domain policy that accepts a list of IAM role ARNs from which to permit management traffic to the cluster
-- Security Group to control access to the Elasticsearch domain (inputs to the Security Group are other Security Groups or CIDRs blocks to be allowed to connect to the cluster)
-- DNS hostname record for Elasticsearch cluster (if DNS Zone ID is provided)
-- DNS hostname record for Kibana (if DNS Zone ID is provided)
-
-__NOTE:__ To enable [zone awareness](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-managedomains.html#es-managedomains-zoneawareness) to deploy Elasticsearch nodes into two different Availability Zones, you need to set `zone_awareness_enabled` to `true` and provide two different subnets in `subnet_ids`.
-If you enable zone awareness for your domain, Amazon ES places an endpoint into two subnets.
-The subnets must be in different Availability Zones in the same region.
-If you don't enable zone awareness, Amazon ES places an endpoint into only one subnet
-
-Further reading:
-- https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html
-- https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html
-- https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html
-- https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html
-- https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html
-- https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html
-- https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-kibana.html
-- https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html
-
 
 ---
 
@@ -45,6 +23,19 @@ It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
 
 
+## Introduction
+
+This module will create:
+- Elasticsearch cluster with the specified node count in the provided subnets in a VPC
+- Elasticsearch domain policy that accepts a list of IAM role ARNs from which to permit management traffic to the cluster
+- Security Group to control access to the Elasticsearch domain (inputs to the Security Group are other Security Groups or CIDRs blocks to be allowed to connect to the cluster)
+- DNS hostname record for Elasticsearch cluster (if DNS Zone ID is provided)
+- DNS hostname record for Kibana (if DNS Zone ID is provided)
+
+__NOTE:__ To enable [zone awareness](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-managedomains.html#es-managedomains-zoneawareness) to deploy Elasticsearch nodes into two different Availability Zones, you need to set `zone_awareness_enabled` to `true` and provide two different subnets in `subnet_ids`.
+If you enable zone awareness for your domain, Amazon ES places an endpoint into two subnets.
+The subnets must be in different Availability Zones in the same region.
+If you don't enable zone awareness, Amazon ES places an endpoint into only one subnet
 
 ## Usage
 
@@ -66,6 +57,7 @@ module "elasticsearch" {
   instance_count          = 4
   iam_roles               = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
   encrypt_at_rest_enabled = "true"
+  kibana_subdomain_name   = "kibana-es"
 
   advanced_options {
     "rest.action.multi.allow_explicit_index" = "true"
@@ -107,10 +99,11 @@ Available targets:
 | elasticsearch_version | Version of Elasticsearch to deploy | string | `6.2` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | string | `true` | no |
-| encrypt_at_rest_kms_key_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/ES service KMS key | string | `` | no |
+| encrypt_at_rest_kms_key_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
 | iam_roles | List of IAM role ARNs from which to permit management traffic | list | `<list>` | no |
 | instance_count | Number of data nodes in the cluster | string | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
+| kibana_subdomain_name | The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`) | string | `kibana` | no |
 | log_publishing_cloudwatch_log_group_arn | ARN of the Cloudwatch log group to which log needs to be published | string | `` | no |
 | log_publishing_enabled | Specifies whether log publishing option is enabled or not | string | `false` | no |
 | log_publishing_log_type | A type of Elasticsearch log. Valid values: INDEX_SLOW_LOGS, SEARCH_SLOW_LOGS | string | `SEARCH_SLOW_LOGS` | no |
@@ -136,6 +129,21 @@ Available targets:
 | security_group_id | Security Group ID to control access to the Elasticsearch domain |
 
 
+
+
+
+## References
+
+For additional context, refer to some of these links. 
+
+- [what-is-amazon-elasticsearch-service](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html) - What is Amazon Elasticsearch Service
+- [es-ac](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html) - Amazon Elasticsearch Service Access Control
+- [es-vpc](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html) - VPC Support for Amazon Elasticsearch Service Domains
+- [es-createupdatedomains](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html) - Creating and Configuring Amazon Elasticsearch Service Domains
+- [es-kibana](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-kibana.html) - Kibana and Logstash
+- [es-cognito-auth](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html) - Amazon Cognito Authentication for Kibana
+- [elasticsearch_domain](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html) - Terraform `elasticsearch_domain`
+- [elasticsearch_domain_policy](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html) - Terraform `elasticsearch_domain_policy`
 
 
 ## Help

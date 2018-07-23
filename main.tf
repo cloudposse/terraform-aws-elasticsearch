@@ -13,30 +13,41 @@ resource "aws_security_group" "default" {
   count       = "${var.enabled == "true" ? 1 : 0}"
   vpc_id      = "${var.vpc_id}"
   name        = "${module.label.id}"
-  description = "Allow inbound traffic from Security Groups and CIDRs"
+  description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
+  tags        = "${module.label.tags}"
+}
 
-  ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    security_groups = ["${var.security_groups}"]
-  }
+resource "aws_security_group_rule" "ingress_security_groups" {
+  count                    = "${var.enabled == "true" ? length(var.security_groups) : 0}"
+  description              = "Allow inbound traffic from Security Group"
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  source_security_group_id = "${element(var.security_groups, count.index)}"
+  security_group_id        = "${aws_security_group.default.id}"
+}
 
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["${var.allowed_cidr_blocks}"]
-  }
+resource "aws_security_group_rule" "ingress_cidr_blocks" {
+  count             = "${var.enabled == "true" ? 1 : 0}"
+  description       = "Allow inbound traffic from CIDR blocks"
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = "${var.allowed_cidr_blocks}"
+  security_group_id = "${aws_security_group.default.id}"
+}
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = "${module.label.tags}"
+resource "aws_security_group_rule" "egress" {
+  count             = "${var.enabled == "true" ? 1 : 0}"
+  description       = "Allow all egress traffic"
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.default.id}"
 }
 
 data "aws_iam_policy_document" "default" {
@@ -125,7 +136,7 @@ module "kibana_hostname" {
   enabled   = "${var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"}"
   namespace = "${var.namespace}"
   stage     = "${var.stage}"
-  name      = "${format("kibana%s%s", var.delimiter, var.name)}"
+  name      = "${var.kibana_subdomain_name}"
   ttl       = 60
   zone_id   = "${var.dns_zone_id}"
   records   = ["${aws_elasticsearch_domain.default.*.kibana_endpoint}"]

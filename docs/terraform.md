@@ -18,10 +18,11 @@
 | elasticsearch_version | Version of Elasticsearch to deploy | string | `6.2` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | string | `true` | no |
-| encrypt_at_rest_kms_key_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/ES service KMS key | string | `` | no |
+| encrypt_at_rest_kms_key_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
 | iam_roles | List of IAM role ARNs from which to permit management traffic | list | `<list>` | no |
 | instance_count | Number of data nodes in the cluster | string | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
+| kibana_subdomain_name | The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`) | string | `kibana` | no |
 | log_publishing_cloudwatch_log_group_arn | ARN of the Cloudwatch log group to which log needs to be published | string | `` | no |
 | log_publishing_enabled | Specifies whether log publishing option is enabled or not | string | `false` | no |
 | log_publishing_log_type | A type of Elasticsearch log. Valid values: INDEX_SLOW_LOGS, SEARCH_SLOW_LOGS | string | `SEARCH_SLOW_LOGS` | no |

@@ -119,7 +119,7 @@ variable "encrypt_at_rest_enabled" {
 variable "encrypt_at_rest_kms_key_id" {
   type        = "string"
   default     = ""
-  description = "The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/ES service KMS key"
+  description = "The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key"
 }
 
 variable "log_publishing_enabled" {
@@ -166,4 +166,10 @@ variable "advanced_options" {
   type        = "map"
   default     = {}
   description = "Key-value string pairs to specify advanced configuration options"
+}
+
+variable "kibana_subdomain_name" {
+  type        = "string"
+  default     = "kibana"
+  description = "The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`)"
 }

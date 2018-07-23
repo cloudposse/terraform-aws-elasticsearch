@@ -32,6 +32,7 @@ badges:
 description: |-
   Terraform module to provision an [`Elasticsearch`](https://aws.amazon.com/elasticsearch-service/) cluster with built-in integrations with [Kibana](https://aws.amazon.com/elasticsearch-service/kibana/) and [Logstash](https://aws.amazon.com/elasticsearch-service/logstash/).
 
+introduction: |-
   This module will create:
   - Elasticsearch cluster with the specified node count in the provided subnets in a VPC
   - Elasticsearch domain policy that accepts a list of IAM role ARNs from which to permit management traffic to the cluster
@@ -43,16 +44,6 @@ description: |-
   If you enable zone awareness for your domain, Amazon ES places an endpoint into two subnets.
   The subnets must be in different Availability Zones in the same region.
   If you don't enable zone awareness, Amazon ES places an endpoint into only one subnet
-
-  Further reading:
-  - https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html
-  - https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html
-  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html
-  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html
-  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html
-  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html
-  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-kibana.html
-  - https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html
 
 # How to use this project
 usage: |-
@@ -74,6 +65,7 @@ usage: |-
     instance_count          = 4
     iam_roles               = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
     encrypt_at_rest_enabled = "true"
+    kibana_subdomain_name   = "kibana-es"
 
     advanced_options {
       "rest.action.multi.allow_explicit_index" = "true"
@@ -84,6 +76,32 @@ usage: |-
 include:
   - "docs/targets.md"
   - "docs/terraform.md"
+
+references:
+  - name: "what-is-amazon-elasticsearch-service"
+    description: "What is Amazon Elasticsearch Service"
+    url: "https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html"
+  - name: "es-ac"
+    description: "Amazon Elasticsearch Service Access Control"
+    url: "https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html"
+  - name: "es-vpc"
+    description: "VPC Support for Amazon Elasticsearch Service Domains"
+    url: "https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html"
+  - name: "es-createupdatedomains"
+    description: "Creating and Configuring Amazon Elasticsearch Service Domains"
+    url: "https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html"
+  - name: "es-kibana"
+    description: "Kibana and Logstash"
+    url: "https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-kibana.html"
+  - name: "es-cognito-auth"
+    description: "Amazon Cognito Authentication for Kibana"
+    url: "https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html"
+  - name: "elasticsearch_domain"
+    description: "Terraform `elasticsearch_domain`"
+    url: "https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html"
+  - name: "elasticsearch_domain_policy"
+    description: "Terraform `elasticsearch_domain_policy`"
+    url: "https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html"
 
 # Contributors to this project
 contributors:

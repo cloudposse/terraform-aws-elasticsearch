@@ -13,6 +13,7 @@ module "elasticsearch" {
   instance_count          = 4
   iam_roles               = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
   encrypt_at_rest_enabled = "true"
+  kibana_subdomain_name   = "kibana-es"
 
   advanced_options {
     "rest.action.multi.allow_explicit_index" = "true"
