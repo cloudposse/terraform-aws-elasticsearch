@@ -11,7 +11,8 @@ module "elasticsearch" {
   elasticsearch_version   = "6.2"
   instance_type           = "t2.small.elasticsearch"
   instance_count          = 4
-  iam_roles               = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
+  iam_role_arns           = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
+  iam_actions             = ["es:ESHttpGet", "es:ESHttpPut", "es:ESHttpPost"]
   encrypt_at_rest_enabled = "true"
   kibana_subdomain_name   = "kibana-es"
 

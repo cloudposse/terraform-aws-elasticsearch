@@ -55,7 +55,8 @@ module "elasticsearch" {
   elasticsearch_version   = "6.2"
   instance_type           = "t2.small.elasticsearch"
   instance_count          = 4
-  iam_roles               = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
+  iam_role_arns           = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
+  iam_actions             = ["es:ESHttpGet", "es:ESHttpPut", "es:ESHttpPost"]
   encrypt_at_rest_enabled = "true"
   kibana_subdomain_name   = "kibana-es"
 
@@ -96,14 +97,14 @@ Available targets:
 | ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | string | `0` | no |
 | ebs_volume_size | Optionally use EBS volumes for data storage by specifying volume size in GB | string | `0` | no |
 | ebs_volume_type | Storage type of EBS volumes | string | `gp2` | no |
-| elasticsearch_iam_roles | List of IAM role ARNs to permit access to the Elasticsearch domain | list | `<list>` | no |
 | elasticsearch_version | Version of Elasticsearch to deploy | string | `6.2` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | string | `true` | no |
 | encrypt_at_rest_kms_key_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
+| iam_actions | List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost` | list | `<list>` | no |
+| iam_role_arns | List of IAM role ARNs to permit access to the Elasticsearch domain | list | `<list>` | no |
 | instance_count | Number of data nodes in the cluster | string | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
-| kibana_iam_roles | List of IAM role ARNs to permit access to Kibana | list | `<list>` | no |
 | kibana_subdomain_name | The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`) | string | `kibana` | no |
 | log_publishing_cloudwatch_log_group_arn | ARN of the Cloudwatch log group to which log needs to be published | string | `` | no |
 | log_publishing_enabled | Specifies whether log publishing option is enabled or not | string | `false` | no |
@@ -143,6 +144,7 @@ For additional context, refer to some of these links.
 - [Creating and Configuring Amazon Elasticsearch Service Domains](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html) - Provides a complete description on how to create and configure Amazon Elasticsearch Service (Amazon ES) domains
 - [Kibana and Logstash](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-kibana.html) - Describes some considerations for using Kibana and Logstash with Amazon Elasticsearch Service
 - [Amazon Cognito Authentication for Kibana](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html) - Amazon Elasticsearch Service uses Amazon Cognito to offer user name and password protection for Kibana
+- [Control Access to Amazon Elasticsearch Service Domain](https://aws.amazon.com/blogs/security/how-to-control-access-to-your-amazon-elasticsearch-service-domain/) - Describes how to Control Access to Amazon Elasticsearch Service Domain
 - [elasticsearch_domain](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html) - Configuration for `elasticsearch_domain` Terraform resource
 - [elasticsearch_domain_policy](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html) - Configuration for `elasticsearch_domain_policy` Terraform resource
 

@@ -63,7 +63,8 @@ usage: |-
     elasticsearch_version   = "6.2"
     instance_type           = "t2.small.elasticsearch"
     instance_count          = 4
-    iam_roles               = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
+    iam_role_arns           = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
+    iam_actions             = ["es:ESHttpGet", "es:ESHttpPut", "es:ESHttpPost"]
     encrypt_at_rest_enabled = "true"
     kibana_subdomain_name   = "kibana-es"
 
@@ -97,7 +98,7 @@ references:
     description: "Amazon Elasticsearch Service uses Amazon Cognito to offer user name and password protection for Kibana"
     url: "https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-cognito-auth.html"
   - name: "Control Access to Amazon Elasticsearch Service Domain"
-    description: "Describes how to Control Access to Your Amazon Elasticsearch Service Domain"
+    description: "Describes how to Control Access to Amazon Elasticsearch Service Domain"
     url: "https://aws.amazon.com/blogs/security/how-to-control-access-to-your-amazon-elasticsearch-service-domain/"
   - name: "elasticsearch_domain"
     description: "Configuration for `elasticsearch_domain` Terraform resource"
