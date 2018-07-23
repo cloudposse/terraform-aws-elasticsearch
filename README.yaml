@@ -101,10 +101,10 @@ references:
     description: "Describes how to Control Access to Amazon Elasticsearch Service Domain"
     url: "https://aws.amazon.com/blogs/security/how-to-control-access-to-your-amazon-elasticsearch-service-domain/"
   - name: "elasticsearch_domain"
-    description: "Configuration for `elasticsearch_domain` Terraform resource"
+    description: "Terraform reference documentation for the `elasticsearch_domain` resource"
     url: "https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html"
   - name: "elasticsearch_domain_policy"
-    description: "Configuration for `elasticsearch_domain_policy` Terraform resource"
+    description: "Terraform reference documentation for the `elasticsearch_domain_policy` resource"
     url: "https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html"
 
 # Contributors to this project
