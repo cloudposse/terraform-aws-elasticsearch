@@ -50,6 +50,12 @@ resource "aws_security_group_rule" "egress" {
   security_group_id = "${aws_security_group.default.id}"
 }
 
+# https://github.com/terraform-providers/terraform-provider-aws/issues/5218
+resource "aws_iam_service_linked_role" "default" {
+  aws_service_name = "es.amazonaws.com"
+  description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
+}
+
 resource "aws_elasticsearch_domain" "default" {
   count                 = "${var.enabled == "true" ? 1 : 0}"
   domain_name           = "${module.label.id}"
