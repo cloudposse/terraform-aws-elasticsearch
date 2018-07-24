@@ -29,13 +29,13 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = "${var.enabled == "true" ? 1 : 0}"
+  count             = "${var.enabled == "true" && length(var.allowed_cidr_blocks) > 0 ? 1 : 0}"
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
-  cidr_blocks       = "${var.allowed_cidr_blocks}"
+  cidr_blocks       = ["${var.allowed_cidr_blocks}"]
   security_group_id = "${aws_security_group.default.id}"
 }
 
