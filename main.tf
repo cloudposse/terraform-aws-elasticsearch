@@ -100,6 +100,8 @@ resource "aws_elasticsearch_domain" "default" {
   }
 
   tags = "${module.label.tags}"
+
+  depends_on = ["aws_iam_service_linked_role.default"]
 }
 
 data "aws_iam_policy_document" "default" {
