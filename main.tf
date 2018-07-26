@@ -29,13 +29,13 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = "${var.enabled == "true" ? 1 : 0}"
+  count             = "${var.enabled == "true" && length(var.allowed_cidr_blocks) > 0 ? 1 : 0}"
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
-  cidr_blocks       = "${var.allowed_cidr_blocks}"
+  cidr_blocks       = ["${var.allowed_cidr_blocks}"]
   security_group_id = "${aws_security_group.default.id}"
 }
 
@@ -48,6 +48,12 @@ resource "aws_security_group_rule" "egress" {
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.default.id}"
+}
+
+# https://github.com/terraform-providers/terraform-provider-aws/issues/5218
+resource "aws_iam_service_linked_role" "default" {
+  aws_service_name = "es.amazonaws.com"
+  description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
 }
 
 resource "aws_elasticsearch_domain" "default" {
@@ -94,6 +100,8 @@ resource "aws_elasticsearch_domain" "default" {
   }
 
   tags = "${module.label.tags}"
+
+  depends_on = ["aws_iam_service_linked_role.default"]
 }
 
 data "aws_iam_policy_document" "default" {
