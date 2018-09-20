@@ -1,5 +1,5 @@
 module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.7"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.5.3"
   enabled    = "${var.enabled}"
   namespace  = "${var.namespace}"
   name       = "${var.name}"
@@ -19,13 +19,13 @@ resource "aws_security_group" "default" {
 
 resource "aws_security_group_rule" "ingress_security_groups" {
   count                    = "${var.enabled == "true" ? length(var.security_groups) : 0}"
-  description              = "Allow inbound traffic from Security Group"
+  description              = "Allow inbound traffic from Security Groups"
   type                     = "ingress"
   from_port                = 0
   to_port                  = 0
   protocol                 = "-1"
   source_security_group_id = "${element(var.security_groups, count.index)}"
-  security_group_id        = "${aws_security_group.default.id}"
+  security_group_id        = "${join("", aws_security_group.default.*.id)}"
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
@@ -36,7 +36,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["${var.allowed_cidr_blocks}"]
-  security_group_id = "${aws_security_group.default.id}"
+  security_group_id = "${join("", aws_security_group.default.*.id)}"
 }
 
 resource "aws_security_group_rule" "egress" {
@@ -47,11 +47,12 @@ resource "aws_security_group_rule" "egress" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.default.id}"
+  security_group_id = "${join("", aws_security_group.default.*.id)}"
 }
 
 # https://github.com/terraform-providers/terraform-provider-aws/issues/5218
 resource "aws_iam_service_linked_role" "default" {
+  count            = "${var.enabled == "true" && var.create_iam_service_linked_role == "true" ? 1 : 0}"
   aws_service_name = "es.amazonaws.com"
   description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
 }
@@ -105,12 +106,14 @@ resource "aws_elasticsearch_domain" "default" {
 }
 
 data "aws_iam_policy_document" "default" {
+  count = "${var.enabled == "true" ? 1 : 0}"
+
   statement {
     actions = ["${distinct(compact(var.iam_actions))}"]
 
     resources = [
-      "${aws_elasticsearch_domain.default.arn}",
-      "${aws_elasticsearch_domain.default.arn}/*",
+      "${join("", aws_elasticsearch_domain.default.*.arn)}",
+      "${join("", aws_elasticsearch_domain.default.*.arn)}/*",
     ]
 
     principals {
@@ -123,7 +126,7 @@ data "aws_iam_policy_document" "default" {
 resource "aws_elasticsearch_domain_policy" "default" {
   count           = "${var.enabled == "true" ? 1 : 0}"
   domain_name     = "${module.label.id}"
-  access_policies = "${data.aws_iam_policy_document.default.json}"
+  access_policies = "${join("", data.aws_iam_policy_document.default.*.json)}"
 }
 
 module "domain_hostname" {
