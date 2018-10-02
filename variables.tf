@@ -128,22 +128,40 @@ variable "encrypt_at_rest_kms_key_id" {
   description = "The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key"
 }
 
-variable "log_publishing_enabled" {
+variable "log_publishing_index_enabled" {
   type        = "string"
   default     = "false"
-  description = "Specifies whether log publishing option is enabled or not"
+  description = "Specifies whether log publishing option for INDEX_SLOW_LOGS is enabled or not"
 }
 
-variable "log_publishing_log_type" {
+variable "log_publishing_search_enabled" {
   type        = "string"
-  default     = "SEARCH_SLOW_LOGS"
-  description = "A type of Elasticsearch log. Valid values: INDEX_SLOW_LOGS, SEARCH_SLOW_LOGS"
+  default     = "false"
+  description = "Specifies whether log publishing option for SEARCH_SLOW_LOGS is enabled or not"
 }
 
-variable "log_publishing_cloudwatch_log_group_arn" {
+variable "log_publishing_application_enabled" {
+  type        = "string"
+  default     = "false"
+  description = "Specifies whether log publishing option for ES_APPLICATION_LOGS is enabled or not"
+}
+
+variable "log_publishing_index_cloudwatch_log_group_arn" {
   type        = "string"
   default     = ""
-  description = "ARN of the Cloudwatch log group to which log needs to be published"
+  description = "ARN of the Cloudwatch log group to which log for INDEX_SLOW_LOGS needs to be published"
+}
+
+variable "log_publishing_search_cloudwatch_log_group_arn" {
+  type        = "string"
+  default     = ""
+  description = "ARN of the Cloudwatch log group to which log for SEARCH_SLOW_LOGS  needs to be published"
+}
+
+variable "log_publishing_application_cloudwatch_log_group_arn" {
+  type        = "string"
+  default     = ""
+  description = "ARN of the Cloudwatch log group to which log for ES_APPLICATION_LOGS needs to be published"
 }
 
 variable "automated_snapshot_start_hour" {
