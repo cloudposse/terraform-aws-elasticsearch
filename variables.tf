@@ -149,19 +149,19 @@ variable "log_publishing_application_enabled" {
 variable "log_publishing_index_cloudwatch_log_group_arn" {
   type        = "string"
   default     = ""
-  description = "ARN of the Cloudwatch log group to which log for INDEX_SLOW_LOGS needs to be published"
+  description = "ARN of the CloudWatch log group to which log for INDEX_SLOW_LOGS needs to be published"
 }
 
 variable "log_publishing_search_cloudwatch_log_group_arn" {
   type        = "string"
   default     = ""
-  description = "ARN of the Cloudwatch log group to which log for SEARCH_SLOW_LOGS  needs to be published"
+  description = "ARN of the CloudWatch log group to which log for SEARCH_SLOW_LOGS  needs to be published"
 }
 
 variable "log_publishing_application_cloudwatch_log_group_arn" {
   type        = "string"
   default     = ""
-  description = "ARN of the Cloudwatch log group to which log for ES_APPLICATION_LOGS needs to be published"
+  description = "ARN of the CloudWatch log group to which log for ES_APPLICATION_LOGS needs to be published"
 }
 
 variable "automated_snapshot_start_hour" {
