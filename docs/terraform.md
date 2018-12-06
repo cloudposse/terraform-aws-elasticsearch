@@ -25,14 +25,15 @@
 | instance_count | Number of data nodes in the cluster | string | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
 | kibana_subdomain_name | The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`) | string | `kibana` | no |
-| log_publishing_index_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log needs to be published for INDEX_SLOW_LOGS | string | `` | no |
-| log_publishing_search_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log needs to be published for SEARCH_SLOW_LOGS | string | `` | no |
-| log_publishing_application_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log needs to be published for ES_APPLICATION_LOGS | string | `` | no |
-| log_publishing_index_enabled | Specifies whether log publishing option for index slow logs is enabled or not | string | `false` | no |
-| log_publishing_search_enabled | Specifies whether log publishing option for search slow logs is enabled or not | string | `false` | no |
-| log_publishing_application_enabled | Specifies whether log publishing option for application logs is enabled or not | string | `false` | no |
+| log_publishing_application_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log for ES_APPLICATION_LOGS needs to be published | string | `` | no |
+| log_publishing_application_enabled | Specifies whether log publishing option for ES_APPLICATION_LOGS is enabled or not | string | `false` | no |
+| log_publishing_index_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log for INDEX_SLOW_LOGS needs to be published | string | `` | no |
+| log_publishing_index_enabled | Specifies whether log publishing option for INDEX_SLOW_LOGS is enabled or not | string | `false` | no |
+| log_publishing_search_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log for SEARCH_SLOW_LOGS  needs to be published | string | `` | no |
+| log_publishing_search_enabled | Specifies whether log publishing option for SEARCH_SLOW_LOGS is enabled or not | string | `false` | no |
 | name | Name of the application | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
+| node_to_node_encryption_enabled | Whether to enable node-to-node encryption | string | `false` | no |
 | security_groups | List of security group IDs to be allowed to connect to the cluster | list | `<list>` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
 | subnet_ids | Subnet ids | list | - | yes |
