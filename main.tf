@@ -85,6 +85,10 @@ resource "aws_elasticsearch_domain" "default" {
     zone_awareness_enabled   = "${var.zone_awareness_enabled}"
   }
 
+  node_to_node_encryption {
+    enabled = "${var.node_to_node_encryption_enabled}"
+  }
+
   vpc_options {
     security_group_ids = ["${aws_security_group.default.id}"]
     subnet_ids         = ["${var.subnet_ids}"]
