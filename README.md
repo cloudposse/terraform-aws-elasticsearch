@@ -116,6 +116,7 @@ Available targets:
 | log_publishing_application_enabled | Specifies whether log publishing option for application logs is enabled or not | string | `false` | no |
 | name | Name of the application | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
+| node_to_node_encryption_enabled | Whether to enable node-to-node encryption | string | `false` | no |
 | security_groups | List of security group IDs to be allowed to connect to the cluster | list | `<list>` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
 | subnet_ids | Subnet ids | list | - | yes |
