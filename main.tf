@@ -166,3 +166,10 @@ module "kibana_hostname" {
   zone_id   = "${var.dns_zone_id}"
   records   = ["${aws_elasticsearch_domain.default.*.kibana_endpoint}"]
 }
+
+
+
+resource "aws_cognito_user_pool" "cognito_user_pool" {
+  count            = "${var.enabled == "true" && var.create_iam_service_linked_role == "true" ? 1 : 0}"
+  name = "kibana_cognito_pool"
+}

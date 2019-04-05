@@ -209,3 +209,9 @@ variable "node_to_node_encryption_enabled" {
   default     = "false"
   description = "Whether to enable node-to-node encryption"
 }
+
+variable "create_cognito_user_pool" {
+  type        = "string"
+  default     = "false"
+  description = "Whether to create a Cognito user pool. Set it to `false` if you already have an ElasticSearch cluster created in the AWS account and AWSServiceRoleForAmazonElasticsearchService already exists. See https://github.com/terraform-providers/terraform-provider-aws/issues/5218 for more info"
+}
