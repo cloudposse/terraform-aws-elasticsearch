@@ -32,3 +32,13 @@ output "kibana_hostname" {
   value       = "${module.kibana_hostname.hostname}"
   description = "Kibana hostname"
 }
+
+output "elasticsearch_user_iam_role_name" {
+  value       = "${join(",", aws_iam_role.elasticsearch_user.*.name)}"
+  description = "IAM name of role for Elasticsearch users"
+}
+
+output "elasticsearch_user_iam_role_arn" {
+  value       = "${join(",",aws_iam_role.elasticsearch_user.*.arn)}"
+  description = "IAM ARN of role for Elasticsearch users"
+}
