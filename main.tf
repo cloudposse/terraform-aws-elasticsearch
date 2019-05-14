@@ -9,6 +9,17 @@ module "label" {
   tags       = "${var.tags}"
 }
 
+module "user_label" {
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.5.3"
+  enabled    = "${var.enabled}"
+  namespace  = "${var.namespace}"
+  name       = "${var.name}"
+  stage      = "${var.stage}"
+  delimiter  = "${var.delimiter}"
+  attributes = "${concat(var.attributes, list("user"))}"
+  tags       = "${var.tags}"
+}
+
 resource "aws_security_group" "default" {
   count       = "${var.enabled == "true" ? 1 : 0}"
   vpc_id      = "${var.vpc_id}"
@@ -55,6 +66,37 @@ resource "aws_iam_service_linked_role" "default" {
   count            = "${var.enabled == "true" && var.create_iam_service_linked_role == "true" ? 1 : 0}"
   aws_service_name = "es.amazonaws.com"
   description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
+}
+
+# Role that pods can assume for access to elasticsearch and kibana
+resource "aws_iam_role" "elasticsearch_user" {
+  count              = "${var.enabled == "true" ? 1 : 0}"
+  name               = "${module.user_label.id}"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role.json}"
+  description        = "IAM Role to assume to access the Elasticsearch ${module.label.id} cluster"
+  tags               = "${module.user_label.tags}"
+}
+
+data "aws_iam_policy_document" "assume_role" {
+  count = "${var.enabled == "true" ? 1 : 0}"
+
+  statement {
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+
+    principals {
+      type        = "AWS"
+      identifiers = ["${compact(concat(var.iam_authorizing_role_arns, var.iam_role_arns))}"]
+    }
+
+    effect = "Allow"
+  }
 }
 
 resource "aws_elasticsearch_domain" "default" {
@@ -134,7 +176,7 @@ data "aws_iam_policy_document" "default" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${distinct(compact(var.iam_role_arns))}"]
+      identifiers = ["${distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user.*.arn)))}"]
     }
   }
 }

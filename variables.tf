@@ -67,7 +67,7 @@ variable "dns_zone_id" {
 
 variable "elasticsearch_version" {
   type        = "string"
-  default     = "6.2"
+  default     = "6.5"
   description = "Version of Elasticsearch to deploy"
 }
 
@@ -86,6 +86,12 @@ variable "iam_role_arns" {
   type        = "list"
   default     = []
   description = "List of IAM role ARNs to permit access to the Elasticsearch domain"
+}
+
+variable "iam_authorizing_role_arns" {
+  type        = "list"
+  default     = []
+  description = "List of IAM role ARNs to permit to assume the Elasticsearch user role"
 }
 
 variable "iam_actions" {
