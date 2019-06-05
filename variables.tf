@@ -198,9 +198,15 @@ variable "advanced_options" {
   description = "Key-value string pairs to specify advanced configuration options"
 }
 
+variable "elasticsearch_subdomain_name" {
+  type        = "string"
+  default     = ""
+  description = "The name of the subdomain for Elasticsearch in the DNS zone (_e.g._ `elasticsearch`, `es`)"
+}
+
 variable "kibana_subdomain_name" {
   type        = "string"
-  default     = "kibana"
+  default     = ""
   description = "The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`)"
 }
 
