@@ -29,6 +29,7 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
+  count                    = var.enabled == "true" ? length(var.security_groups) : 0
   description              = "Allow inbound traffic from Security Groups"
   type                     = "ingress"
   from_port                = 0
@@ -198,7 +199,7 @@ module "domain_hostname" {
   name      = length(var.elasticsearch_subdomain_name) > 0 ? var.elasticsearch_subdomain_name : module.label.id
   ttl       = 60
   zone_id   = var.dns_zone_id
-  records   = [aws_elasticsearch_domain.default.*.endpoint]
+  records   = aws_elasticsearch_domain.default.*.endpoint
 }
 
 module "kibana_hostname" {
@@ -209,6 +210,6 @@ module "kibana_hostname" {
   name      = length(var.kibana_subdomain_name) > 0 ? var.kibana_subdomain_name : format("%s-kibana", module.label.id)
   ttl       = 60
   zone_id   = var.dns_zone_id
-  records   = [aws_elasticsearch_domain.default.*.kibana_endpoint]
+  records   = aws_elasticsearch_domain.default.*.kibana_endpoint
 }
 
