@@ -1,4 +1,3 @@
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -16,11 +15,12 @@
 | ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | string | `0` | no |
 | ebs_volume_size | Optionally use EBS volumes for data storage by specifying volume size in GB | string | `0` | no |
 | ebs_volume_type | Storage type of EBS volumes | string | `gp2` | no |
-| elasticsearch_version | Version of Elasticsearch to deploy | string | `6.2` | no |
+| elasticsearch_version | Version of Elasticsearch to deploy | string | `6.5` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | string | `true` | no |
 | encrypt_at_rest_kms_key_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
 | iam_actions | List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost` | list | `<list>` | no |
+| iam_authorizing_role_arns | List of IAM role ARNs to permit to assume the Elasticsearch user role | list | `<list>` | no |
 | iam_role_arns | List of IAM role ARNs to permit access to the Elasticsearch domain | list | `<list>` | no |
 | instance_count | Number of data nodes in the cluster | string | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
@@ -49,6 +49,8 @@
 | domain_endpoint | Domain-specific endpoint used to submit index, search, and data upload requests |
 | domain_hostname | Elasticsearch domain hostname to submit index, search, and data upload requests |
 | domain_id | Unique identifier for the Elasticsearch domain |
+| elasticsearch_user_iam_role_arn | The ARN of the IAM role to allow access to Elasticsearch cluster |
+| elasticsearch_user_iam_role_name | The name of the IAM role to allow access to Elasticsearch cluster |
 | kibana_endpoint | Domain-specific endpoint for Kibana without https scheme |
 | kibana_hostname | Kibana hostname |
 | security_group_id | Security Group ID to control access to the Elasticsearch domain |
