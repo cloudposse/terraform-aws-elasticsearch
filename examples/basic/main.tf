@@ -1,5 +1,5 @@
 module "elasticsearch" {
-  source                  = "git::https://github.com/cloudposse/terraform-aws-elasticsearch.git?ref=master"
+  source                  = "git::https://github.com/rverma-nikiai/terraform-aws-elasticsearch.git?ref=master"
   namespace               = "eg"
   stage                   = "dev"
   name                    = "es"
