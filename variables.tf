@@ -88,12 +88,6 @@ variable "iam_role_arns" {
   description = "List of IAM role ARNs to permit access to the Elasticsearch domain"
 }
 
-variable "iam_authorizing_role_arns" {
-  type        = "list"
-  default     = []
-  description = "List of IAM role ARNs to permit to assume the Elasticsearch user role"
-}
-
 variable "iam_actions" {
   type        = "list"
   default     = []
