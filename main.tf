@@ -37,6 +37,9 @@ resource "aws_security_group_rule" "ingress_security_groups" {
   protocol                 = "tcp"
   source_security_group_id = element(var.security_groups, count.index)
   security_group_id        = join("", aws_security_group.default.*.id)
+  lifecycle {
+    ignore_changes = ["source_security_group_id"]
+  }
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
