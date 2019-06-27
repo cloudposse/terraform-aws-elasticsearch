@@ -191,7 +191,7 @@ data "aws_iam_policy_document" "default" {
 resource "aws_elasticsearch_domain_policy" "default" {
   count           = var.enabled == "true" ? 1 : 0
   domain_name     = module.label.id
-  access_policies = join("", data.aws_iam_policy_document.default.*.json)
+  access_policies = data.aws_iam_policy_document.default[count.index].json
 }
 
 module "domain_hostname" {
