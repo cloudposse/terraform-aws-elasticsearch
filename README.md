@@ -82,7 +82,7 @@ module "elasticsearch" {
   kibana_subdomain_name   = "kibana-es"
 
   advanced_options {
-    "rest.action.multi.allow_explicit_index" = "true"
+    rest.action.multi.allow_explicit_index = "true"
   }
 }
 ```
@@ -126,7 +126,7 @@ Available targets:
 | iam_actions | List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost` | list(string) | `<list>` | no |
 | iam_authorizing_role_arns | List of IAM role ARNs to permit to assume the Elasticsearch user role | list(string) | `<list>` | no |
 | iam_role_arns | List of IAM role ARNs to permit access to the Elasticsearch domain | list(string) | `<list>` | no |
-| instance_count | Number of data nodes in the cluster | string | `4` | no |
+| instance_count | Number of data nodes in the cluster | number | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
 | kibana_subdomain_name | The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`) | string | `kibana` | no |
 | log_publishing_application_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log for ES_APPLICATION_LOGS needs to be published | string | `` | no |
