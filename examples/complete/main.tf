@@ -23,6 +23,15 @@ module "subnets" {
   nat_instance_enabled = false
 }
 
+module "dns_zone" {
+  source           = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-zone.git?ref=tags/0.4.0"
+  namespace        = var.namespace
+  stage            = var.stage
+  name             = var.name
+  parent_zone_name = var.parent_zone_name
+  zone_name        = "$${name}.$${parent_zone_name}"
+}
+
 module "elasticsearch" {
   source                         = "../../"
   namespace                      = var.namespace
@@ -39,6 +48,7 @@ module "elasticsearch" {
   dedicated_master_enabled       = var.dedicated_master_enabled
   create_iam_service_linked_role = var.create_iam_service_linked_role
   kibana_subdomain_name          = var.kibana_subdomain_name
+  dns_zone_id                    = module.dns_zone.zone_id
 
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
