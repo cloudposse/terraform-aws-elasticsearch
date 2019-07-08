@@ -12,9 +12,9 @@ instance_type = "t2.small.elasticsearch"
 
 elasticsearch_version = "6.5"
 
-instance_count = 1
+instance_count = 2
 
-zone_awareness_enabled = false
+zone_awareness_enabled = true
 
 encrypt_at_rest_enabled = false
 
