@@ -39,4 +39,26 @@ func TestExamplesComplete(t *testing.T) {
 	publicSubnetCidrs := terraform.OutputList(t, terraformOptions, "public_subnet_cidrs")
 	// Verify we're getting back the outputs we expect
 	assert.Equal(t, []string{"172.16.128.0/18", "172.16.192.0/18"}, publicSubnetCidrs)
+
+	// Run `terraform output` to get the value of an output variable
+	domainHostname := terraform.Output(t, terraformOptions, "domain_hostname")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "es-test.testing.cloudposse.co", domainHostname)
+
+	// Run `terraform output` to get the value of an output variable
+	kibanaHostname := terraform.Output(t, terraformOptions, "kibana_hostname")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "kibana-es-test.testing.cloudposse.co", kibanaHostname)
+
+	// Run `terraform output` to get the value of an output variable
+	domainEndpoint := terraform.Output(t, terraformOptions, "domain_endpoint")
+	// Verify we're getting back the outputs we expect
+	assert.Contains(t, domainEndpoint, "vpc-eg-test-es-test")
+	assert.Contains(t, domainEndpoint, "us-west-1.es.amazonaws.com")
+
+	// Run `terraform output` to get the value of an output variable
+	kibanaEndpoint := terraform.Output(t, terraformOptions, "kibana_endpoint")
+	// Verify we're getting back the outputs we expect
+	assert.Contains(t, kibanaEndpoint, "vpc-eg-test-es-test")
+	assert.Contains(t, kibanaEndpoint, "us-west-1.es.amazonaws.com/_plugin/kibana")
 }
