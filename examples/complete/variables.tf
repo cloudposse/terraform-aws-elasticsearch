@@ -63,7 +63,7 @@ variable "create_iam_service_linked_role" {
   description = "Whether to create `AWSServiceRoleForAmazonElasticsearchService` service-linked role. Set it to `false` if you already have an ElasticSearch cluster created in the AWS account and AWSServiceRoleForAmazonElasticsearchService already exists. See https://github.com/terraform-providers/terraform-provider-aws/issues/5218 for more info"
 }
 
-variable "parent_zone_name" {
+variable "dns_zone_id" {
   type        = string
-  description = "Parent DNS zone name"
+  description = "Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana"
 }

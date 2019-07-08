@@ -24,4 +24,4 @@ kibana_subdomain_name = "kibana-es-test"
 
 create_iam_service_linked_role = false
 
-parent_zone_name = "testing.cloudposse.co"
+dns_zone_id = "Z3SO0TKDDQ0RGG"
