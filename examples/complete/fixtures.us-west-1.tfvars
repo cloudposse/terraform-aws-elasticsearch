@@ -16,7 +16,7 @@ instance_count = 1
 
 zone_awareness_enabled = false
 
-encrypt_at_rest_enabled = true
+encrypt_at_rest_enabled = false
 
 dedicated_master_enabled = false
 
