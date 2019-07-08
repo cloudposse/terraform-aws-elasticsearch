@@ -10,6 +10,8 @@ availability_zones = ["us-west-1b", "us-west-1c"]
 
 instance_type = "t2.small.elasticsearch"
 
+elasticsearch_version = "6.5"
+
 instance_count = 1
 
 zone_awareness_enabled = false
