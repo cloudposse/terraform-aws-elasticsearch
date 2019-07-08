@@ -41,6 +41,6 @@ module "elasticsearch" {
   kibana_subdomain_name          = var.kibana_subdomain_name
 
   advanced_options = {
-    rest.action.multi.allow_explicit_index = "true"
+    "rest.action.multi.allow_explicit_index" = "true"
   }
 }

@@ -82,7 +82,7 @@ module "elasticsearch" {
   kibana_subdomain_name   = "kibana-es"
 
   advanced_options {
-    rest.action.multi.allow_explicit_index = "true"
+    "rest.action.multi.allow_explicit_index" = "true"
   }
 }
 ```
