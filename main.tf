@@ -193,7 +193,7 @@ module "domain_hostname" {
   name    = var.name
   ttl     = 60
   zone_id = var.dns_zone_id
-  records = [aws_elasticsearch_domain.default.*.endpoint]
+  records = [join("", aws_elasticsearch_domain.default.*.endpoint)]
 }
 
 module "kibana_hostname" {
@@ -202,5 +202,5 @@ module "kibana_hostname" {
   name    = var.kibana_subdomain_name
   ttl     = 60
   zone_id = var.dns_zone_id
-  records = [aws_elasticsearch_domain.default.*.kibana_endpoint]
+  records = [join("", aws_elasticsearch_domain.default.*.kibana_endpoint)]
 }
