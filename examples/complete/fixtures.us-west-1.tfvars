@@ -22,6 +22,8 @@ dedicated_master_enabled = false
 
 kibana_subdomain_name = "kibana-es-test"
 
+ebs_volume_size = 10
+
 create_iam_service_linked_role = false
 
 dns_zone_id = "Z3SO0TKDDQ0RGG"

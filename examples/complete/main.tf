@@ -39,6 +39,7 @@ module "elasticsearch" {
   dedicated_master_enabled       = var.dedicated_master_enabled
   create_iam_service_linked_role = var.create_iam_service_linked_role
   kibana_subdomain_name          = var.kibana_subdomain_name
+  ebs_volume_size                = var.ebs_volume_size
   dns_zone_id                    = var.dns_zone_id
 
   advanced_options = {

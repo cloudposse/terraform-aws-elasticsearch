@@ -13,7 +13,7 @@
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
 | dns_zone_id | Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana | string | `` | no |
 | ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | number | `0` | no |
-| ebs_volume_size | Optionally use EBS volumes for data storage by specifying volume size in GB | number | `0` | no |
+| ebs_volume_size | EBS volumes for data storage in GB | number | `0` | no |
 | ebs_volume_type | Storage type of EBS volumes | string | `gp2` | no |
 | elasticsearch_version | Version of Elasticsearch to deploy | string | `6.5` | no |
 | enabled | Set to false to prevent the module from creating any resources | bool | `true` | no |

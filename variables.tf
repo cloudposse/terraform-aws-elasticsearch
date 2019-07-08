@@ -111,7 +111,7 @@ variable "zone_awareness_enabled" {
 
 variable "ebs_volume_size" {
   type        = number
-  description = "Optionally use EBS volumes for data storage by specifying volume size in GB"
+  description = "EBS volumes for data storage in GB"
   default     = 0
 }
 
