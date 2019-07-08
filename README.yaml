@@ -18,9 +18,9 @@ github_repo: cloudposse/terraform-aws-elasticsearch
 
 # Badges to display
 badges:
-  - name: "Build Status"
-    image: "https://travis-ci.org/cloudposse/terraform-aws-elasticsearch.svg?branch=master"
-    url: "https://travis-ci.org/cloudposse/terraform-aws-elasticsearch"
+  - name: "Codefresh Build Status"
+    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-elasticsearch?type=cf-1"
+    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d22bfe5a7e22ea3b67ea820"
   - name: "Latest Release"
     image: "https://img.shields.io/github/release/cloudposse/terraform-aws-elasticsearch.svg"
     url: "https://github.com/cloudposse/terraform-aws-elasticsearch/releases/latest"
@@ -43,7 +43,7 @@ introduction: |-
   __NOTE:__ To enable [zone awareness](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-managedomains.html#es-managedomains-zoneawareness) to deploy Elasticsearch nodes into two different Availability Zones, you need to set `zone_awareness_enabled` to `true` and provide two different subnets in `subnet_ids`.
   If you enable zone awareness for your domain, Amazon ES places an endpoint into two subnets.
   The subnets must be in different Availability Zones in the same region.
-  If you don't enable zone awareness, Amazon ES places an endpoint into only one subnet
+  If you don't enable zone awareness, Amazon ES places an endpoint into only one subnet.
 
 # How to use this project
 usage: |-
@@ -60,12 +60,12 @@ usage: |-
     vpc_id                  = "vpc-XXXXXXXXX"
     subnet_ids              = ["subnet-XXXXXXXXX", "subnet-YYYYYYYY"]
     zone_awareness_enabled  = "true"
-    elasticsearch_version   = "6.2"
+    elasticsearch_version   = "6.5"
     instance_type           = "t2.small.elasticsearch"
     instance_count          = 4
     iam_role_arns           = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
     iam_actions             = ["es:ESHttpGet", "es:ESHttpPut", "es:ESHttpPost"]
-    encrypt_at_rest_enabled = "true"
+    encrypt_at_rest_enabled = true
     kibana_subdomain_name   = "kibana-es"
 
     advanced_options {
