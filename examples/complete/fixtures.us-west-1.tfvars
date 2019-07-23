@@ -6,7 +6,7 @@ stage = "test"
 
 name = "es-test"
 
-availability_zones = ["us-west-1b", "us-west-1c"]
+availability_zones = ["us-west-1a", "us-west-1b", "us-west-1c"]
 
 instance_type = "t2.small.elasticsearch"
 
