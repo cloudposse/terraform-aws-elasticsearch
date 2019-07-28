@@ -125,6 +125,10 @@ resource "aws_elasticsearch_domain" "default" {
     dedicated_master_count   = var.dedicated_master_count
     dedicated_master_type    = var.dedicated_master_type
     zone_awareness_enabled   = var.zone_awareness_enabled
+
+    zone_awareness_config {
+      availability_zone_count = var.availability_zone_count
+    }
   }
 
   node_to_node_encryption {
