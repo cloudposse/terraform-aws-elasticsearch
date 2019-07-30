@@ -96,6 +96,10 @@ resource "aws_elasticsearch_domain" "default" {
     zone_awareness_enabled   = "${var.zone_awareness_enabled}"
   }
 
+  zone_awareness_config {
+    availability_zone_count = "${length(var.subnet_ids) > 2 ? length(var.subnet_ids) : 2}"
+  }
+
   node_to_node_encryption {
     enabled = "${var.node_to_node_encryption_enabled}"
   }
