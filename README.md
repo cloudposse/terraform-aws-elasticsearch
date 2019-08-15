@@ -51,7 +51,7 @@ This module will create:
 __NOTE:__ To enable [zone awareness](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-managedomains.html#es-managedomains-zoneawareness) to deploy Elasticsearch nodes into two different Availability Zones, you need to set `zone_awareness_enabled` to `true` and provide two different subnets in `subnet_ids`.
 If you enable zone awareness for your domain, Amazon ES places an endpoint into two subnets.
 The subnets must be in different Availability Zones in the same region.
-If you don't enable zone awareness, Amazon ES places an endpoint into only one subnet.
+If you don't enable zone awareness, Amazon ES places an endpoint into only one subnet. You also need to set `availability_zone_count` to `1`.
 
 ## Usage
 
