@@ -215,3 +215,9 @@ variable "node_to_node_encryption_enabled" {
   default     = "false"
   description = "Whether to enable node-to-node encryption"
 }
+
+variable "availability_zone_count" {
+  type        = "string"
+  default     = "3"
+  description = "Number of Availability Zones for the domain to use."
+}

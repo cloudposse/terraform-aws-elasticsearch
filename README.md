@@ -139,6 +139,7 @@ Available targets:
 | tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
 | vpc_id | VPC ID | string | - | yes |
 | zone_awareness_enabled | Enable zone awareness for Elasticsearch cluster | string | `true` | no |
+| availability_zone_count | Number of Availability Zones for the domain to use. | string | `2` | no |
 
 ## Outputs
 
