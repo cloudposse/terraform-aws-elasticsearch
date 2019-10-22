@@ -85,6 +85,12 @@ variable "instance_count" {
   default     = 4
 }
 
+variable "create_default_iam_role" {
+  type        = bool
+  description = "Whether to create a default access role"
+  default     = true
+}
+
 variable "iam_role_arns" {
   type        = list(string)
   default     = []
@@ -227,4 +233,12 @@ variable "node_to_node_encryption_enabled" {
   type        = bool
   default     = false
   description = "Whether to enable node-to-node encryption"
+}
+
+locals {
+  trimmed_iam_role_arns = distinct(compact(var.iam_role_arns))
+  # if var.create_default_iam_role is set to true, add the roles arn to the list of allowed principals
+  iam_role_arns = var.create_default_iam_role ? concat(local.trimmed_iam_role_arns, aws_iam_role.elasticsearch_user.*.arn) : local.trimmed_iam_role_arns
+  # if var.create_default_iam_role is set to false and var.iam_role_arns is empty, we use ["*"] to allow any access
+  access_principals = var.create_default_iam_role == false && length(local.iam_role_arns) == 0 ? ["*"] : local.iam_role_arns
 }

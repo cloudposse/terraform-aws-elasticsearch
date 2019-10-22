@@ -70,7 +70,7 @@ resource "aws_iam_service_linked_role" "default" {
 
 # Role that pods can assume for access to elasticsearch and kibana
 resource "aws_iam_role" "elasticsearch_user" {
-  count              = var.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
+  count              = var.enabled && var.create_default_iam_role && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
   name               = module.user_label.id
   assume_role_policy = join("", data.aws_iam_policy_document.assume_role.*.json)
   description        = "IAM Role to assume to access the Elasticsearch ${module.label.id} cluster"
@@ -78,7 +78,7 @@ resource "aws_iam_role" "elasticsearch_user" {
 }
 
 data "aws_iam_policy_document" "assume_role" {
-  count = var.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
+  count = var.enabled && var.create_default_iam_role && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
 
   statement {
     actions = [
@@ -168,7 +168,7 @@ resource "aws_elasticsearch_domain" "default" {
 }
 
 data "aws_iam_policy_document" "default" {
-  count = var.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
+  count = var.enabled ? 1 : 0
 
   statement {
     actions = distinct(compact(var.iam_actions))
@@ -179,14 +179,14 @@ data "aws_iam_policy_document" "default" {
     ]
 
     principals {
-      type        = "AWS"
-      identifiers = distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user.*.arn)))
+      type = "AWS"
+      identifiers = local.access_principals
     }
   }
 }
 
 resource "aws_elasticsearch_domain_policy" "default" {
-  count           = var.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
+  count           = var.enabled ? 1 : 0
   domain_name     = module.label.id
   access_policies = join("", data.aws_iam_policy_document.default.*.json)
 }
