@@ -55,6 +55,11 @@ If you don't enable zone awareness, Amazon ES places an endpoint into only one s
 
 ## Usage
 
+
+**IMPORTANT:** The `master` branch is used in `source` just as an example. In your code, do not pin to `master` because there may be breaking changes between releases.
+Instead pin to the release tag (e.g. `?ref=tags/x.y.z`) of one of our [latest releases](https://github.com/cloudposse/terraform-aws-elasticsearch/releases).
+
+
 Basic [example](examples/basic)
 
 ```hcl
@@ -97,7 +102,6 @@ Available targets:
   lint                                Lint terraform code
 
 ```
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -106,6 +110,7 @@ Available targets:
 | allowed_cidr_blocks | List of CIDR blocks to be allowed to connect to the cluster | list | `<list>` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
 | automated_snapshot_start_hour | Hour at which automated snapshots are taken, in UTC | string | `0` | no |
+| availability_zone_count | Number of Availability Zones for the domain to use. | string | `3` | no |
 | create_iam_service_linked_role | Whether to create `AWSServiceRoleForAmazonElasticsearchService` service-linked role. Set it to `false` if you already have an ElasticSearch cluster created in the AWS account and AWSServiceRoleForAmazonElasticsearchService already exists. See https://github.com/terraform-providers/terraform-provider-aws/issues/5218 for more info | string | `true` | no |
 | dedicated_master_count | Number of dedicated master nodes in the cluster | string | `0` | no |
 | dedicated_master_enabled | Indicates whether dedicated master nodes are enabled for the cluster | string | `false` | no |
@@ -115,11 +120,12 @@ Available targets:
 | ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | string | `0` | no |
 | ebs_volume_size | Optionally use EBS volumes for data storage by specifying volume size in GB | string | `0` | no |
 | ebs_volume_type | Storage type of EBS volumes | string | `gp2` | no |
-| elasticsearch_version | Version of Elasticsearch to deploy | string | `6.2` | no |
+| elasticsearch_version | Version of Elasticsearch to deploy | string | `6.5` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | string | `true` | no |
 | encrypt_at_rest_kms_key_id | The KMS key id to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
 | iam_actions | List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost` | list | `<list>` | no |
+| iam_authorizing_role_arns | List of IAM role ARNs to permit to assume the Elasticsearch user role | list | `<list>` | no |
 | iam_role_arns | List of IAM role ARNs to permit access to the Elasticsearch domain | list | `<list>` | no |
 | instance_count | Number of data nodes in the cluster | string | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
@@ -139,7 +145,6 @@ Available targets:
 | tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
 | vpc_id | VPC ID | string | - | yes |
 | zone_awareness_enabled | Enable zone awareness for Elasticsearch cluster | string | `true` | no |
-| availability_zone_count | Number of Availability Zones for the domain to use. | string | `2` | no |
 
 ## Outputs
 
@@ -149,6 +154,8 @@ Available targets:
 | domain_endpoint | Domain-specific endpoint used to submit index, search, and data upload requests |
 | domain_hostname | Elasticsearch domain hostname to submit index, search, and data upload requests |
 | domain_id | Unique identifier for the Elasticsearch domain |
+| elasticsearch_user_iam_role_arn | The ARN of the IAM role to allow access to Elasticsearch cluster |
+| elasticsearch_user_iam_role_name | The name of the IAM role to allow access to Elasticsearch cluster |
 | kibana_endpoint | Domain-specific endpoint for Kibana without https scheme |
 | kibana_hostname | Kibana hostname |
 | security_group_id | Security Group ID to control access to the Elasticsearch domain |
@@ -234,7 +241,7 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 ## Copyright
 
-Copyright © 2017-2018 [Cloud Posse, LLC](https://cpco.io/copyright)
+Copyright © 2017-2019 [Cloud Posse, LLC](https://cpco.io/copyright)
 
 
 
@@ -293,13 +300,13 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 |---|---|---|---|
 
   [osterman_homepage]: https://github.com/osterman
-  [osterman_avatar]: https://github.com/osterman.png?size=150
+  [osterman_avatar]: https://img.cloudposse.com/150x150/https://github.com/osterman.png
   [aknysh_homepage]: https://github.com/aknysh
-  [aknysh_avatar]: https://github.com/aknysh.png?size=150
+  [aknysh_avatar]: https://img.cloudposse.com/150x150/https://github.com/aknysh.png
   [goruha_homepage]: https://github.com/goruha
-  [goruha_avatar]: https://github.com/goruha.png?size=150
+  [goruha_avatar]: https://img.cloudposse.com/150x150/https://github.com/goruha.png
   [sarkis_homepage]: https://github.com/sarkis
-  [sarkis_avatar]: https://github.com/sarkis.png?size=150
+  [sarkis_avatar]: https://img.cloudposse.com/150x150/https://github.com/sarkis.png
 
 
 
