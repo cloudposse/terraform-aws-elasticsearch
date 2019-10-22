@@ -39,16 +39,27 @@ variable "enabled" {
   description = "Set to false to prevent the module from creating any resources"
 }
 
+variable "create_default_security_group" {
+  type    = bool
+  default = true
+}
+
 variable "security_groups" {
   type        = list(string)
   default     = []
-  description = "List of security group IDs to be allowed to connect to the cluster"
+  description = "List of security group IDs to be allowed to connect to the cluster (will be added as source_security_group_id to the default security group)"
 }
 
 variable "allowed_cidr_blocks" {
   type        = list(string)
   default     = []
-  description = "List of CIDR blocks to be allowed to connect to the cluster"
+  description = "List of CIDR blocks to be allowed to connect to the cluster (will be added as cidr_blocks to the default security group)"
+}
+
+variable "additional_security_groups" {
+  type        = list(string)
+  default     = []
+  description = "List of custom created security group IDs to be allowed to connect to the cluster"
 }
 
 variable "vpc_id" {
