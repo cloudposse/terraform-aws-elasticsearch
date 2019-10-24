@@ -40,8 +40,8 @@ variable "enabled" {
 }
 
 variable "create_default_security_group" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Whether to create a default security group"
 }
 
