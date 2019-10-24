@@ -21,7 +21,7 @@ module "user_label" {
 }
 
 resource "aws_security_group" "default" {
-  count       = var.enabled ? 1 : 0
+  count       = var.enabled && var.create_default_security_group ? 1 : 0
   vpc_id      = var.vpc_id
   name        = module.label.id
   description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
@@ -29,7 +29,7 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
-  count                    = var.enabled ? length(var.security_groups) : 0
+  count                    = var.enabled && var.create_default_security_group ? length(var.security_groups) : 0
   description              = "Allow inbound traffic from Security Groups"
   type                     = "ingress"
   from_port                = 0
@@ -40,7 +40,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = var.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  count             = var.enabled && var.create_default_security_group && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
   from_port         = 0
@@ -51,7 +51,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  count             = var.enabled ? 1 : 0
+  count             = var.enabled && var.create_default_security_group ? 1 : 0
   description       = "Allow all egress traffic"
   type              = "egress"
   from_port         = 0
@@ -136,7 +136,7 @@ resource "aws_elasticsearch_domain" "default" {
   }
 
   vpc_options {
-    security_group_ids = [join("", aws_security_group.default.*.id)]
+    security_group_ids = compact(concat([join("", aws_security_group.default.*.id)], var.additional_security_groups))
     subnet_ids         = var.subnet_ids
   }
 
