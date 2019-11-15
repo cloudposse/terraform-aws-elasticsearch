@@ -15,6 +15,12 @@ variable "name" {
   description = "Name of the application"
 }
 
+variable "environment" {
+  type        = string
+  default     = ""
+  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
+}
+
 variable "delimiter" {
   type        = string
   default     = "-"
@@ -25,6 +31,12 @@ variable "attributes" {
   type        = list(string)
   default     = []
   description = "Additional attributes (e.g. `1`)"
+}
+
+variable "label_order" {
+  type        = list(string)
+  default     = []
+  description = "The naming order of the id output and Name tag"
 }
 
 variable "tags" {
