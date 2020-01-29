@@ -235,3 +235,9 @@ variable "node_to_node_encryption_enabled" {
   default     = false
   description = "Whether to enable node-to-node encryption"
 }
+
+variable "iam_role_max_session_duration" {
+  type        = number
+  default     = 3600
+  description = "The maximum session duration (in seconds) for the user role. Can have a value from 1 hour to 12 hours"
+}

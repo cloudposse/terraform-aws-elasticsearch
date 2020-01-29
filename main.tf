@@ -77,6 +77,8 @@ resource "aws_iam_role" "elasticsearch_user" {
   assume_role_policy = join("", data.aws_iam_policy_document.assume_role.*.json)
   description        = "IAM Role to assume to access the Elasticsearch ${module.label.id} cluster"
   tags               = module.user_label.tags
+
+  max_session_duration = var.iam_role_max_session_duration
 }
 
 data "aws_iam_policy_document" "assume_role" {
