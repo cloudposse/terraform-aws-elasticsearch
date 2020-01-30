@@ -75,6 +75,8 @@ resource "aws_iam_role" "elasticsearch_user" {
   assume_role_policy = "${data.aws_iam_policy_document.assume_role.json}"
   description        = "IAM Role to assume to access the Elasticsearch ${module.label.id} cluster"
   tags               = "${module.user_label.tags}"
+
+  max_session_duration = "${var.iam_role_max_session_duration}"
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -141,19 +143,19 @@ resource "aws_elasticsearch_domain" "default" {
   }
 
   log_publishing_options {
-    enabled                  = "${var.log_publishing_index_enabled }"
+    enabled                  = "${var.log_publishing_index_enabled}"
     log_type                 = "INDEX_SLOW_LOGS"
     cloudwatch_log_group_arn = "${var.log_publishing_index_cloudwatch_log_group_arn}"
   }
 
   log_publishing_options {
-    enabled                  = "${var.log_publishing_search_enabled }"
+    enabled                  = "${var.log_publishing_search_enabled}"
     log_type                 = "SEARCH_SLOW_LOGS"
     cloudwatch_log_group_arn = "${var.log_publishing_search_cloudwatch_log_group_arn}"
   }
 
   log_publishing_options {
-    enabled                  = "${var.log_publishing_application_enabled }"
+    enabled                  = "${var.log_publishing_application_enabled}"
     log_type                 = "ES_APPLICATION_LOGS"
     cloudwatch_log_group_arn = "${var.log_publishing_application_cloudwatch_log_group_arn}"
   }

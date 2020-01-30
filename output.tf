@@ -39,6 +39,6 @@ output "elasticsearch_user_iam_role_name" {
 }
 
 output "elasticsearch_user_iam_role_arn" {
-  value       = "${join(",",aws_iam_role.elasticsearch_user.*.arn)}"
+  value       = "${join(",", aws_iam_role.elasticsearch_user.*.arn)}"
   description = "The ARN of the IAM role to allow access to Elasticsearch cluster"
 }
