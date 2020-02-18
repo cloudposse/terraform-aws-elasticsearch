@@ -11,7 +11,7 @@
 | dedicated_master_count | Number of dedicated master nodes in the cluster | number | `0` | no |
 | dedicated_master_enabled | Indicates whether dedicated master nodes are enabled for the cluster | bool | `false` | no |
 | dedicated_master_type | Instance type of the dedicated master nodes in the cluster | string | `t2.small.elasticsearch` | no |
-| delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
+| delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | string | `-` | no |
 | dns_zone_id | Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana | string | `` | no |
 | ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | number | `0` | no |
 | ebs_volume_size | EBS volumes for data storage in GB | number | `0` | no |
@@ -20,6 +20,7 @@
 | enabled | Set to false to prevent the module from creating any resources | bool | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | bool | `true` | no |
 | encrypt_at_rest_kms_key_id | The KMS key ID to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
+| environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | string | `` | no |
 | iam_actions | List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost` | list(string) | `<list>` | no |
 | iam_authorizing_role_arns | List of IAM role ARNs to permit to assume the Elasticsearch user role | list(string) | `<list>` | no |
 | iam_role_arns | List of IAM role ARNs to permit access to the Elasticsearch domain | list(string) | `<list>` | no |
@@ -32,13 +33,13 @@
 | log_publishing_index_enabled | Specifies whether log publishing option for INDEX_SLOW_LOGS is enabled or not | bool | `false` | no |
 | log_publishing_search_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log for SEARCH_SLOW_LOGS needs to be published | string | `` | no |
 | log_publishing_search_enabled | Specifies whether log publishing option for SEARCH_SLOW_LOGS is enabled or not | bool | `false` | no |
-| name | Name of the application | string | - | yes |
-| namespace | Namespace (e.g. `eg` or `cp`) | string | `` | no |
+| name | Solution name, e.g. 'app' or 'jenkins' | string | `` | no |
+| namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | string | `` | no |
 | node_to_node_encryption_enabled | Whether to enable node-to-node encryption | bool | `false` | no |
 | security_groups | List of security group IDs to be allowed to connect to the cluster | list(string) | `<list>` | no |
-| stage | Stage (e.g. `prod`, `dev`, `staging`) | string | `` | no |
+| stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | string | `` | no |
 | subnet_ids | Subnet IDs | list(string) | - | yes |
-| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map(string) | `<map>` | no |
+| tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | map(string) | `<map>` | no |
 | vpc_id | VPC ID | string | - | yes |
 | zone_awareness_enabled | Enable zone awareness for Elasticsearch cluster | bool | `true` | no |
 
