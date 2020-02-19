@@ -198,7 +198,7 @@ data "aws_iam_policy_document" "default" {
     ]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = local.access_principals
     }
   }
