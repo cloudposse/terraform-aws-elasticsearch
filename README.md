@@ -126,23 +126,9 @@ module "elasticsearch" {
 }
 ```
 
-Allow any access [example](examples/any-access)
 
-In this example the access policy will include any AWS Principals (`[*]`).
 
-```hcl
-module "elasticsearch" {
-  source                  = "git::https://github.com/cloudposse/terraform-aws-elasticsearch.git?ref=master"
-  namespace               = "eg"
-  stage                   = "dev"
-  name                    = "es"
-  create_default_iam_role = false
-  iam_actions             = ["es:*"]
-  vpc_id                  = "vpc-XXXXXXXXX"
-  subnet_ids              = ["subnet-XXXXXXXXX", "subnet-YYYYYYYY"]
-}
 
-```
 
 
 ## Makefile Targets
@@ -164,6 +150,7 @@ Available targets:
 | attributes | Additional attributes (e.g. `1`) | list(string) | `<list>` | no |
 | automated_snapshot_start_hour | Hour at which automated snapshots are taken, in UTC | number | `0` | no |
 | availability_zone_count | Number of Availability Zones for the domain to use. | number | `2` | no |
+| create_default_iam_role | Whether to create a default access role | bool | `true` | no |
 | create_iam_service_linked_role | Whether to create `AWSServiceRoleForAmazonElasticsearchService` service-linked role. Set it to `false` if you already have an ElasticSearch cluster created in the AWS account and AWSServiceRoleForAmazonElasticsearchService already exists. See https://github.com/terraform-providers/terraform-provider-aws/issues/5218 for more info | bool | `true` | no |
 | dedicated_master_count | Number of dedicated master nodes in the cluster | number | `0` | no |
 | dedicated_master_enabled | Indicates whether dedicated master nodes are enabled for the cluster | bool | `false` | no |
@@ -177,7 +164,6 @@ Available targets:
 | enabled | Set to false to prevent the module from creating any resources | bool | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | bool | `true` | no |
 | encrypt_at_rest_kms_key_id | The KMS key ID to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
-| create_default_iam_role | Whether to create a default access role | bool | `true` | no |
 | environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | string | `` | no |
 | iam_actions | List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost` | list(string) | `<list>` | no |
 | iam_authorizing_role_arns | List of IAM role ARNs to permit to assume the Elasticsearch user role | list(string) | `<list>` | no |
