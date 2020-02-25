@@ -63,9 +63,14 @@ resource "aws_security_group_rule" "egress" {
   security_group_id = join("", aws_security_group.default.*.id)
 }
 
+data "aws_iam_role" "default" {
+  count = var.enabled ? 1 : 0
+  name  = "AWSServiceRoleForAmazonElasticsearchService"
+}
+
 # https://github.com/terraform-providers/terraform-provider-aws/issues/5218
 resource "aws_iam_service_linked_role" "default" {
-  count            = var.enabled && var.create_iam_service_linked_role ? 1 : 0
+  count            = var.enabled && length(data.aws_iam_role.default.*.id) == 0 ? 1 : 0
   aws_service_name = "es.amazonaws.com"
   description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
 }
@@ -77,6 +82,8 @@ resource "aws_iam_role" "elasticsearch_user" {
   assume_role_policy = join("", data.aws_iam_policy_document.assume_role.*.json)
   description        = "IAM Role to assume to access the Elasticsearch ${module.label.id} cluster"
   tags               = module.user_label.tags
+
+  max_session_duration = var.iam_role_max_session_duration
 }
 
 data "aws_iam_policy_document" "assume_role" {
