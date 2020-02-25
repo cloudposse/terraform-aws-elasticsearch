@@ -1,23 +1,25 @@
 module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.14.1"
-  enabled    = var.enabled
-  namespace  = var.namespace
-  name       = var.name
-  stage      = var.stage
-  delimiter  = var.delimiter
-  attributes = var.attributes
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
+  enabled     = var.enabled
+  namespace   = var.namespace
+  name        = var.name
+  stage       = var.stage
+  environment = var.environment
+  delimiter   = var.delimiter
+  attributes  = var.attributes
+  tags        = var.tags
 }
 
 module "user_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.14.1"
-  enabled    = var.enabled
-  namespace  = var.namespace
-  name       = var.name
-  stage      = var.stage
-  delimiter  = var.delimiter
-  attributes = concat(var.attributes, ["user"])
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
+  enabled     = var.enabled
+  namespace   = var.namespace
+  name        = var.name
+  stage       = var.stage
+  environment = var.environment
+  delimiter   = var.delimiter
+  attributes  = concat(var.attributes, ["user"])
+  tags        = var.tags
 }
 
 resource "aws_security_group" "default" {
@@ -61,9 +63,14 @@ resource "aws_security_group_rule" "egress" {
   security_group_id = join("", aws_security_group.default.*.id)
 }
 
+data "aws_iam_role" "default" {
+  count = var.enabled ? 1 : 0
+  name  = "AWSServiceRoleForAmazonElasticsearchService"
+}
+
 # https://github.com/terraform-providers/terraform-provider-aws/issues/5218
 resource "aws_iam_service_linked_role" "default" {
-  count            = var.enabled && var.create_iam_service_linked_role ? 1 : 0
+  count            = var.enabled && length(data.aws_iam_role.default.*.id) == 0 ? 1 : 0
   aws_service_name = "es.amazonaws.com"
   description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
 }
@@ -75,6 +82,8 @@ resource "aws_iam_role" "elasticsearch_user" {
   assume_role_policy = join("", data.aws_iam_policy_document.assume_role.*.json)
   description        = "IAM Role to assume to access the Elasticsearch ${module.label.id} cluster"
   tags               = module.user_label.tags
+
+  max_session_duration = var.iam_role_max_session_duration
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -96,6 +105,20 @@ data "aws_iam_policy_document" "assume_role" {
     }
 
     effect = "Allow"
+  }
+}
+
+# inspired by https://github.com/hashicorp/terraform/issues/20692
+# I use 0.12 new "dynamic" block - https://www.terraform.io/docs/configuration/expressions.html
+# If we have 1 az - the count of this resource equals 0, hence no config
+# block appears in the `aws_elasticsearch_domain`
+# If we have more than 1 - we set the trigger to the actual value of 
+# `availability_zone_count`
+# and `dynamic` block kicks in
+resource "null_resource" "azs" {
+  count = var.availability_zone_count > 1 ? 1 : 0
+  triggers = {
+    availability_zone_count = var.availability_zone_count
   }
 }
 
@@ -126,8 +149,11 @@ resource "aws_elasticsearch_domain" "default" {
     dedicated_master_type    = var.dedicated_master_type
     zone_awareness_enabled   = var.zone_awareness_enabled
 
-    zone_awareness_config {
-      availability_zone_count = var.availability_zone_count
+    dynamic "zone_awareness_config" {
+      for_each = null_resource.azs[*].triggers
+      content {
+        availability_zone_count = zone_awareness_config.value.availability_zone_count
+      }
     }
   }
 
