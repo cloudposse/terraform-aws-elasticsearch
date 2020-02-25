@@ -120,7 +120,7 @@ module "elasticsearch" {
   encrypt_at_rest_enabled = true
   kibana_subdomain_name   = "kibana-es"
 
-  advanced_options {
+  advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }
 }
