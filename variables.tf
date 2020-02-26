@@ -28,12 +28,6 @@ variable "enabled" {
   description = "Set to false to prevent the module from creating any resources"
 }
 
-variable "environment" {
-  type        = string
-  default     = ""
-  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
-}
-
 variable "delimiter" {
   type        = string
   default     = "-"
