@@ -7,6 +7,7 @@ module "label" {
   environment = var.environment
   delimiter   = var.delimiter
   attributes  = var.attributes
+  label_order = var.label_order
   tags        = var.tags
 }
 
@@ -19,6 +20,7 @@ module "user_label" {
   environment = var.environment
   delimiter   = var.delimiter
   attributes  = concat(var.attributes, ["user"])
+  label_order = var.label_order
   tags        = var.tags
 }
 

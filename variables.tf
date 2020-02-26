@@ -40,6 +40,12 @@ variable "attributes" {
   description = "Additional attributes (e.g. `1`)"
 }
 
+variable "label_order" {
+  type        = list(string)
+  default     = []
+  description = "The naming order of the id output and Name tag"
+}
+
 variable "tags" {
   type        = map(string)
   default     = {}
