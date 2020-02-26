@@ -6,6 +6,7 @@
 | allowed_cidr_blocks | List of CIDR blocks to be allowed to connect to the cluster | list | `<list>` | no |
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
 | automated_snapshot_start_hour | Hour at which automated snapshots are taken, in UTC | string | `0` | no |
+| availability_zone_count | Number of Availability Zones for the domain to use. | string | `3` | no |
 | create_iam_service_linked_role | Whether to create `AWSServiceRoleForAmazonElasticsearchService` service-linked role. Set it to `false` if you already have an ElasticSearch cluster created in the AWS account and AWSServiceRoleForAmazonElasticsearchService already exists. See https://github.com/terraform-providers/terraform-provider-aws/issues/5218 for more info | string | `true` | no |
 | dedicated_master_count | Number of dedicated master nodes in the cluster | string | `0` | no |
 | dedicated_master_enabled | Indicates whether dedicated master nodes are enabled for the cluster | string | `false` | no |

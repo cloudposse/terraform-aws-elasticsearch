@@ -216,6 +216,12 @@ variable "node_to_node_encryption_enabled" {
   description = "Whether to enable node-to-node encryption"
 }
 
+variable "availability_zone_count" {
+  type        = "string"
+  default     = "3"
+  description = "Number of Availability Zones for the domain to use."
+}
+
 variable "iam_role_max_session_duration" {
   default     = 3600
   description = "The maximum session duration (in seconds) for the user role. Can have a value from 1 hour to 12 hours"
