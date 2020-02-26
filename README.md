@@ -164,7 +164,6 @@ Available targets:
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | bool | `true` | no |
 | encrypt_at_rest_kms_key_id | The KMS key ID to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
 | environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | string | `` | no |
-| environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | string | `` | no |
 | iam_actions | List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost` | list(string) | `<list>` | no |
 | iam_authorizing_role_arns | List of IAM role ARNs to permit to assume the Elasticsearch user role | list(string) | `<list>` | no |
 | iam_role_arns | List of IAM role ARNs to permit access to the Elasticsearch domain | list(string) | `<list>` | no |
