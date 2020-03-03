@@ -117,7 +117,7 @@ resource "null_resource" "azs" {
 
 resource "aws_elasticsearch_domain" "default" {
   count                 = var.enabled ? 1 : 0
-  domain_name           = module.label.id
+  domain_name           = module.label.name
   elasticsearch_version = var.elasticsearch_version
 
   advanced_options = var.advanced_options
