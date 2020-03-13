@@ -16,6 +16,7 @@
 | ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | string | `0` | no |
 | ebs_volume_size | Optionally use EBS volumes for data storage by specifying volume size in GB | string | `0` | no |
 | ebs_volume_type | Storage type of EBS volumes | string | `gp2` | no |
+| elasticsearch_subdomain_name | The name of the subdomain for Elasticsearch endpoint in the DNS zone (_e.g._ `elasticsearch`). If empty then module name will be used. | string | `` | no |
 | elasticsearch_version | Version of Elasticsearch to deploy | string | `6.5` | no |
 | enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | string | `true` | no |

@@ -198,7 +198,7 @@ module "domain_hostname" {
   enabled   = "${var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"}"
   namespace = "${var.namespace}"
   stage     = "${var.stage}"
-  name      = "${var.name}"
+  name      = "${var.elasticsearch_subdomain_name == "" ? var.name : var.elasticsearch_subdomain_name}"
   ttl       = 60
   zone_id   = "${var.dns_zone_id}"
   records   = ["${aws_elasticsearch_domain.default.*.endpoint}"]
