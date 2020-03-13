@@ -204,6 +204,12 @@ variable "kibana_subdomain_name" {
   description = "The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`)"
 }
 
+variable "elasticsearch_subdomain_name" {
+  type        = "string"
+  default     = ""
+  description = "The name of the subdomain for Elasticsearch endpoint in the DNS zone (_e.g._ `elasticsearch`). If empty then module name will be used."
+}
+
 variable "create_iam_service_linked_role" {
   type        = "string"
   default     = "true"
