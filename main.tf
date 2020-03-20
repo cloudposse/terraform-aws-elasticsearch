@@ -66,13 +66,14 @@ resource "aws_security_group_rule" "egress" {
 }
 
 data "aws_iam_role" "default" {
-  count = var.enabled ? 1 : 0
+  count = var.enabled && var.create_iam_service_linked_role == 0 ? 1 : 0
   name  = "AWSServiceRoleForAmazonElasticsearchService"
+
 }
 
 # https://github.com/terraform-providers/terraform-provider-aws/issues/5218
 resource "aws_iam_service_linked_role" "default" {
-  count            = var.enabled && length(data.aws_iam_role.default.*.id) == 0 ? 1 : 0
+  count            = var.enabled && length(data.aws_iam_role.default.*.id) == 0 && var.create_iam_service_linked_role == 1 ? 1 : 0
   aws_service_name = "es.amazonaws.com"
   description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
 }
