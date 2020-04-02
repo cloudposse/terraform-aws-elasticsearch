@@ -35,7 +35,7 @@
 | log_publishing_index_enabled | Specifies whether log publishing option for INDEX_SLOW_LOGS is enabled or not | bool | `false` | no |
 | log_publishing_search_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log for SEARCH_SLOW_LOGS needs to be published | string | `` | no |
 | log_publishing_search_enabled | Specifies whether log publishing option for SEARCH_SLOW_LOGS is enabled or not | bool | `false` | no |
-| name | Solution name, e.g. 'app' or 'jenkins' | string | `` | yes |
+| name | Solution name, e.g. 'app' or 'jenkins' | string | `` | no |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | string | `` | no |
 | node_to_node_encryption_enabled | Whether to enable node-to-node encryption | bool | `false` | no |
 | security_groups | List of security group IDs to be allowed to connect to the cluster | list(string) | `<list>` | no |
@@ -58,4 +58,3 @@
 | kibana_endpoint | Domain-specific endpoint for Kibana without https scheme |
 | kibana_hostname | Kibana hostname |
 | security_group_id | Security Group ID to control access to the Elasticsearch domain |
-
