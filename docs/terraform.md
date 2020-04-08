@@ -58,3 +58,4 @@
 | kibana_endpoint | Domain-specific endpoint for Kibana without https scheme |
 | kibana_hostname | Kibana hostname |
 | security_group_id | Security Group ID to control access to the Elasticsearch domain |
+
