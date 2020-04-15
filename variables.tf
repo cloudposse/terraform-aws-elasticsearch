@@ -247,3 +247,27 @@ variable "iam_role_max_session_duration" {
   default     = 3600
   description = "The maximum session duration (in seconds) for the user role. Can have a value from 1 hour to 12 hours"
 }
+
+variable "cognito_authentication_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to enable Amazon Cognito authentication with Kibana"
+}
+
+variable "cognito_user_pool_id" {
+  type        = string
+  default     = ""
+  description = "The ID of the Cognito User Pool to use"
+}
+
+variable "cognito_identity_pool_id" {
+  type        = string
+  default     = ""
+  description = "The ID of the Cognito Identity Pool to use"
+}
+
+variable "cognito_iam_role_arn" {
+  type        = string
+  default     = ""
+  description = "ARN of the IAM role that has the AmazonESCognitoAccess policy attached"
+}
