@@ -57,6 +57,7 @@
 | domain_endpoint | Domain-specific endpoint used to submit index, search, and data upload requests |
 | domain_hostname | Elasticsearch domain hostname to submit index, search, and data upload requests |
 | domain_id | Unique identifier for the Elasticsearch domain |
+| domain_name | Name of the Elasticsearch domain |
 | elasticsearch_user_iam_role_arn | The ARN of the IAM role to allow access to Elasticsearch cluster |
 | elasticsearch_user_iam_role_name | The name of the IAM role to allow access to Elasticsearch cluster |
 | kibana_endpoint | Domain-specific endpoint for Kibana without https scheme |

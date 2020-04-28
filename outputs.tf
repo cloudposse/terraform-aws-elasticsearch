@@ -13,6 +13,11 @@ output "domain_id" {
   description = "Unique identifier for the Elasticsearch domain"
 }
 
+output "domain_name" {
+  value       = join("", aws_elasticsearch_domain.default.*.domain_name)
+  description = "Name of the Elasticsearch domain"
+}
+
 output "domain_endpoint" {
   value       = join("", aws_elasticsearch_domain.default.*.endpoint)
   description = "Domain-specific endpoint used to submit index, search, and data upload requests"
