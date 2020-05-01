@@ -226,6 +226,7 @@ variable "advanced_options" {
 
 variable "elasticsearch_subdomain_name" {
   type        = string
+  default     = ""
   description = "The name of the subdomain for Elasticsearch in the DNS zone (_e.g._ `elasticsearch`, `ui`, `ui-es`, `search-ui`)"
 }
 
