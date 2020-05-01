@@ -40,6 +40,12 @@ variable "attributes" {
   description = "Additional attributes (e.g. `1`)"
 }
 
+variable "label_order" {
+  type        = list(string)
+  default     = []
+  description = "The naming order of the id output and Name tag"
+}
+
 variable "tags" {
   type        = map(string)
   default     = {}
@@ -76,8 +82,8 @@ variable "dns_zone_id" {
 
 variable "elasticsearch_version" {
   type        = string
-  default     = "6.5"
-  description = "Version of Elasticsearch to deploy"
+  default     = "6.8"
+  description = "Version of Elasticsearch to deploy (_e.g._ `7.1`, `6.8`, `6.7`, `6.5`, `6.4`, `6.3`, `6.2`, `6.0`, `5.6`, `5.5`, `5.3`, `5.1`, `2.3`, `1.5`"
 }
 
 variable "instance_type" {
@@ -218,6 +224,12 @@ variable "advanced_options" {
   description = "Key-value string pairs to specify advanced configuration options"
 }
 
+variable "elasticsearch_subdomain_name" {
+  type        = string
+  default     = ""
+  description = "The name of the subdomain for Elasticsearch in the DNS zone (_e.g._ `elasticsearch`, `ui`, `ui-es`, `search-ui`)"
+}
+
 variable "kibana_subdomain_name" {
   type        = string
   default     = "kibana"
@@ -234,4 +246,34 @@ variable "node_to_node_encryption_enabled" {
   type        = bool
   default     = false
   description = "Whether to enable node-to-node encryption"
+}
+
+variable "iam_role_max_session_duration" {
+  type        = number
+  default     = 3600
+  description = "The maximum session duration (in seconds) for the user role. Can have a value from 1 hour to 12 hours"
+}
+
+variable "cognito_authentication_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to enable Amazon Cognito authentication with Kibana"
+}
+
+variable "cognito_user_pool_id" {
+  type        = string
+  default     = ""
+  description = "The ID of the Cognito User Pool to use"
+}
+
+variable "cognito_identity_pool_id" {
+  type        = string
+  default     = ""
+  description = "The ID of the Cognito Identity Pool to use"
+}
+
+variable "cognito_iam_role_arn" {
+  type        = string
+  default     = ""
+  description = "ARN of the IAM role that has the AmazonESCognitoAccess policy attached"
 }

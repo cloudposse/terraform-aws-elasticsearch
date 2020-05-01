@@ -7,6 +7,7 @@ module "label" {
   environment = var.environment
   delimiter   = var.delimiter
   attributes  = var.attributes
+  label_order = var.label_order
   tags        = var.tags
 }
 
@@ -19,6 +20,7 @@ module "user_label" {
   environment = var.environment
   delimiter   = var.delimiter
   attributes  = concat(var.attributes, ["user"])
+  label_order = var.label_order
   tags        = var.tags
 }
 
@@ -63,9 +65,15 @@ resource "aws_security_group_rule" "egress" {
   security_group_id = join("", aws_security_group.default.*.id)
 }
 
+data "aws_iam_role" "default" {
+  count = var.enabled && var.create_iam_service_linked_role == 0 ? 1 : 0
+  name  = "AWSServiceRoleForAmazonElasticsearchService"
+
+}
+
 # https://github.com/terraform-providers/terraform-provider-aws/issues/5218
 resource "aws_iam_service_linked_role" "default" {
-  count            = var.enabled && var.create_iam_service_linked_role ? 1 : 0
+  count            = var.enabled && var.create_iam_service_linked_role && length(data.aws_iam_role.default.*.id) == 0 ? 1 : 0
   aws_service_name = "es.amazonaws.com"
   description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
 }
@@ -77,6 +85,8 @@ resource "aws_iam_role" "elasticsearch_user" {
   assume_role_policy = join("", data.aws_iam_policy_document.assume_role.*.json)
   description        = "IAM Role to assume to access the Elasticsearch ${module.label.id} cluster"
   tags               = module.user_label.tags
+
+  max_session_duration = var.iam_role_max_session_duration
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -163,6 +173,13 @@ resource "aws_elasticsearch_domain" "default" {
     automated_snapshot_start_hour = var.automated_snapshot_start_hour
   }
 
+  cognito_options {
+    enabled          = var.cognito_authentication_enabled
+    user_pool_id     = var.cognito_user_pool_id
+    identity_pool_id = var.cognito_identity_pool_id
+    role_arn         = var.cognito_iam_role_arn
+  }
+
   log_publishing_options {
     enabled                  = var.log_publishing_index_enabled
     log_type                 = "INDEX_SLOW_LOGS"
@@ -213,7 +230,7 @@ resource "aws_elasticsearch_domain_policy" "default" {
 module "domain_hostname" {
   source  = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
   enabled = var.enabled && var.dns_zone_id != "" ? true : false
-  name    = var.name
+  name    = "${var.elasticsearch_subdomain_name == "" ? var.name : var.elasticsearch_subdomain_name}"
   ttl     = 60
   zone_id = var.dns_zone_id
   records = [join("", aws_elasticsearch_domain.default.*.endpoint)]
@@ -225,5 +242,5 @@ module "kibana_hostname" {
   name    = var.kibana_subdomain_name
   ttl     = 60
   zone_id = var.dns_zone_id
-  records = [join("", aws_elasticsearch_domain.default.*.kibana_endpoint)]
+  records = [join("", aws_elasticsearch_domain.default.*.endpoint)]
 }

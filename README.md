@@ -150,6 +150,10 @@ Available targets:
 | attributes | Additional attributes (e.g. `1`) | list(string) | `<list>` | no |
 | automated_snapshot_start_hour | Hour at which automated snapshots are taken, in UTC | number | `0` | no |
 | availability_zone_count | Number of Availability Zones for the domain to use. | number | `2` | no |
+| cognito_authentication_enabled | Whether to enable Amazon Cognito authentication with Kibana | bool | `false` | no |
+| cognito_iam_role_arn | ARN of the IAM role that has the AmazonESCognitoAccess policy attached | string | `` | no |
+| cognito_identity_pool_id | The ID of the Cognito Identity Pool to use | string | `` | no |
+| cognito_user_pool_id | The ID of the Cognito User Pool to use | string | `` | no |
 | create_iam_service_linked_role | Whether to create `AWSServiceRoleForAmazonElasticsearchService` service-linked role. Set it to `false` if you already have an ElasticSearch cluster created in the AWS account and AWSServiceRoleForAmazonElasticsearchService already exists. See https://github.com/terraform-providers/terraform-provider-aws/issues/5218 for more info | bool | `true` | no |
 | dedicated_master_count | Number of dedicated master nodes in the cluster | number | `0` | no |
 | dedicated_master_enabled | Indicates whether dedicated master nodes are enabled for the cluster | bool | `false` | no |
@@ -159,7 +163,8 @@ Available targets:
 | ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | number | `0` | no |
 | ebs_volume_size | EBS volumes for data storage in GB | number | `0` | no |
 | ebs_volume_type | Storage type of EBS volumes | string | `gp2` | no |
-| elasticsearch_version | Version of Elasticsearch to deploy | string | `6.5` | no |
+| elasticsearch_subdomain_name | The name of the subdomain for Elasticsearch in the DNS zone (_e.g._ `elasticsearch`, `ui`, `ui-es`, `search-ui`) | string | `` | no |
+| elasticsearch_version | Version of Elasticsearch to deploy (_e.g._ `7.1`, `6.8`, `6.7`, `6.5`, `6.4`, `6.3`, `6.2`, `6.0`, `5.6`, `5.5`, `5.3`, `5.1`, `2.3`, `1.5` | string | `6.8` | no |
 | enabled | Set to false to prevent the module from creating any resources | bool | `true` | no |
 | encrypt_at_rest_enabled | Whether to enable encryption at rest | bool | `true` | no |
 | encrypt_at_rest_kms_key_id | The KMS key ID to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | string | `` | no |
@@ -167,9 +172,11 @@ Available targets:
 | iam_actions | List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost` | list(string) | `<list>` | no |
 | iam_authorizing_role_arns | List of IAM role ARNs to permit to assume the Elasticsearch user role | list(string) | `<list>` | no |
 | iam_role_arns | List of IAM role ARNs to permit access to the Elasticsearch domain | list(string) | `<list>` | no |
+| iam_role_max_session_duration | The maximum session duration (in seconds) for the user role. Can have a value from 1 hour to 12 hours | number | `3600` | no |
 | instance_count | Number of data nodes in the cluster | number | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
 | kibana_subdomain_name | The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`) | string | `kibana` | no |
+| label_order | The naming order of the id output and Name tag | list(string) | `<list>` | no |
 | log_publishing_application_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log for ES_APPLICATION_LOGS needs to be published | string | `` | no |
 | log_publishing_application_enabled | Specifies whether log publishing option for ES_APPLICATION_LOGS is enabled or not | bool | `false` | no |
 | log_publishing_index_cloudwatch_log_group_arn | ARN of the CloudWatch log group to which log for INDEX_SLOW_LOGS needs to be published | string | `` | no |
@@ -194,6 +201,7 @@ Available targets:
 | domain_endpoint | Domain-specific endpoint used to submit index, search, and data upload requests |
 | domain_hostname | Elasticsearch domain hostname to submit index, search, and data upload requests |
 | domain_id | Unique identifier for the Elasticsearch domain |
+| domain_name | Name of the Elasticsearch domain |
 | elasticsearch_user_iam_role_arn | The ARN of the IAM role to allow access to Elasticsearch cluster |
 | elasticsearch_user_iam_role_name | The name of the IAM role to allow access to Elasticsearch cluster |
 | kibana_endpoint | Domain-specific endpoint for Kibana without https scheme |
@@ -252,6 +260,10 @@ We deliver 10x the value for a fraction of the cost of a full-time engineer. Our
 ## Slack Community
 
 Join our [Open Source Community][slack] on Slack. It's **FREE** for everyone! Our "SweetOps" community is where you get to talk with others who share a similar vision for how to rollout and manage infrastructure. This is the best place to talk shop, ask questions, solicit feedback, and work together as a community to build totally *sweet* infrastructure.
+
+## Discourse Forums
+
+Participate in our [Discourse Forums][discourse]. Here you'll find answers to commonly asked questions. Most questions will be related to the enormous number of projects we support on our GitHub. Come here to collaborate on answers, find solutions, and get ideas about the products and services we value. It only takes a minute to get started! Just sign in with SSO using your GitHub account.
 
 ## Newsletter
 
@@ -368,6 +380,7 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [testimonial]: https://cpco.io/leave-testimonial?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-elasticsearch&utm_content=testimonial
   [office_hours]: https://cloudposse.com/office-hours?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-elasticsearch&utm_content=office_hours
   [newsletter]: https://cpco.io/newsletter?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-elasticsearch&utm_content=newsletter
+  [discourse]: https://ask.sweetops.com/?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-elasticsearch&utm_content=discourse
   [email]: https://cpco.io/email?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-elasticsearch&utm_content=email
   [commercial_support]: https://cpco.io/commercial-support?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-elasticsearch&utm_content=commercial_support
   [we_love_open_source]: https://cpco.io/we-love-open-source?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-elasticsearch&utm_content=we_love_open_source
