@@ -30,6 +30,8 @@
 | iam_authorizing_role_arns | List of IAM role ARNs to permit to assume the Elasticsearch user role | list(string) | `<list>` | no |
 | iam_role_arns | List of IAM role ARNs to permit access to the Elasticsearch domain | list(string) | `<list>` | no |
 | iam_role_max_session_duration | The maximum session duration (in seconds) for the user role. Can have a value from 1 hour to 12 hours | number | `3600` | no |
+| ingress_port_range_end | End number for allowed port range. (e.g. `443`) | number | `65535` | no |
+| ingress_port_range_start | Start number for allowed port range. (e.g. `443`) | number | `0` | no |
 | instance_count | Number of data nodes in the cluster | number | `4` | no |
 | instance_type | Elasticsearch instance type for data nodes in the cluster | string | `t2.small.elasticsearch` | no |
 | kibana_subdomain_name | The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`) | string | `kibana` | no |
