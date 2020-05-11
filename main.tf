@@ -36,8 +36,8 @@ resource "aws_security_group_rule" "ingress_security_groups" {
   count                    = var.enabled ? length(var.security_groups) : 0
   description              = "Allow inbound traffic from Security Groups"
   type                     = "ingress"
-  from_port                = 0
-  to_port                  = 65535
+  from_port                = var.ingress_port_range_start
+  to_port                  = var.ingress_port_range_end
   protocol                 = "tcp"
   source_security_group_id = var.security_groups[count.index]
   security_group_id        = join("", aws_security_group.default.*.id)
@@ -47,8 +47,8 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
   count             = var.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
-  from_port         = 0
-  to_port           = 65535
+  from_port         = var.ingress_port_range_start
+  to_port           = var.ingress_port_range_end
   protocol          = "tcp"
   cidr_blocks       = var.allowed_cidr_blocks
   security_group_id = join("", aws_security_group.default.*.id)

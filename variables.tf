@@ -58,6 +58,18 @@ variable "security_groups" {
   description = "List of security group IDs to be allowed to connect to the cluster"
 }
 
+variable "ingress_port_range_start" {
+  type        = number
+  default     = 0
+  description = "Start number for allowed port range. (e.g. `443`)"
+}
+
+variable "ingress_port_range_end" {
+  type        = number
+  default     = 65535
+  description = "End number for allowed port range. (e.g. `443`)"
+}
+
 variable "allowed_cidr_blocks" {
   type        = list(string)
   default     = []
