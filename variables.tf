@@ -170,6 +170,12 @@ variable "encrypt_at_rest_kms_key_id" {
   description = "The KMS key ID to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key"
 }
 
+variable "domain_endpoint_options_enforce_https" {
+  type        = bool
+  default     = false
+  description = "Whether or not to require HTTPS"
+}
+
 variable "log_publishing_index_enabled" {
   type        = bool
   default     = false
