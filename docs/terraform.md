@@ -17,6 +17,7 @@
 | dedicated_master_type | Instance type of the dedicated master nodes in the cluster | string | `t2.small.elasticsearch` | no |
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | string | `-` | no |
 | dns_zone_id | Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana | string | `` | no |
+| domain_endpoint_options_enforce_https | Whether or not to require HTTPS | bool | `false` | no |
 | ebs_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | number | `0` | no |
 | ebs_volume_size | EBS volumes for data storage in GB | number | `0` | no |
 | ebs_volume_type | Storage type of EBS volumes | string | `gp2` | no |
