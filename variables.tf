@@ -176,6 +176,13 @@ variable "domain_endpoint_options_enforce_https" {
   description = "Whether or not to require HTTPS"
 }
 
+variable "domain_endpoint_options_tls_security_policy" {
+  type        = string
+  default     = "Policy-Min-TLS-1-0-2019-07"
+  description = "The name of the TLS security policy that needs to be applied to the HTTPS endpoint"
+}
+
+
 variable "log_publishing_index_enabled" {
   type        = bool
   default     = false
