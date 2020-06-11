@@ -79,13 +79,13 @@ variable "allowed_cidr_blocks" {
 variable "vpc_id" {
   type        = string
   description = "VPC ID"
-  default = ""
+  default     = ""
 }
 
 variable "subnet_ids" {
   type        = list(string)
   description = "Subnet IDs"
-  default = []
+  default     = []
 }
 
 variable "dns_zone_id" {
