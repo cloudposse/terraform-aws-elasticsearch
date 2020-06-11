@@ -192,9 +192,9 @@ Available targets:
 | node_to_node_encryption_enabled | Whether to enable node-to-node encryption | bool | `false` | no |
 | security_groups | List of security group IDs to be allowed to connect to the cluster | list(string) | `<list>` | no |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | string | `` | no |
-| subnet_ids | Subnet IDs | list(string) | - | yes |
+| subnet_ids | Subnet IDs | list(string) | `<list>` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | map(string) | `<map>` | no |
-| vpc_id | VPC ID | string | - | yes |
+| vpc_id | VPC ID | string | `` | no |
 | zone_awareness_enabled | Enable zone awareness for Elasticsearch cluster | bool | `true` | no |
 
 ## Outputs
@@ -357,8 +357,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
-|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] | [![Sarkis Varozian][sarkis_avatar]][sarkis_homepage]<br/>[Sarkis Varozian][sarkis_homepage] |
-|---|---|---|---|
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Igor Rodionov][goruha_avatar]][goruha_homepage]<br/>[Igor Rodionov][goruha_homepage] | [![Sarkis Varozian][sarkis_avatar]][sarkis_homepage]<br/>[Sarkis Varozian][sarkis_homepage] | [![Marcin Brański][3h4x_avatar]][3h4x_homepage]<br/>[Marcin Brański][3h4x_homepage] |
+|---|---|---|---|---|
 
   [osterman_homepage]: https://github.com/osterman
   [osterman_avatar]: https://img.cloudposse.com/150x150/https://github.com/osterman.png
@@ -368,6 +368,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [goruha_avatar]: https://img.cloudposse.com/150x150/https://github.com/goruha.png
   [sarkis_homepage]: https://github.com/sarkis
   [sarkis_avatar]: https://img.cloudposse.com/150x150/https://github.com/sarkis.png
+  [3h4x_homepage]: https://github.com/3h4x
+  [3h4x_avatar]: https://img.cloudposse.com/150x150/https://github.com/3h4x.png
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
