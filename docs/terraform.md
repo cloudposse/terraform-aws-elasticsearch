@@ -49,9 +49,10 @@
 | node_to_node_encryption_enabled | Whether to enable node-to-node encryption | bool | `false` | no |
 | security_groups | List of security group IDs to be allowed to connect to the cluster | list(string) | `<list>` | no |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | string | `` | no |
-| subnet_ids | Subnet IDs | list(string) | `<list>` | no |
+| subnet_ids | VPC Subnet IDs | list(string) | `<list>` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | map(string) | `<map>` | no |
-| vpc_id | VPC ID | string | `` | no |
+| vpc_enabled | Set to false if ES should be deployed outside of VPC. | bool | `true` | no |
+| vpc_id | VPC ID | string | `null` | no |
 | zone_awareness_enabled | Enable zone awareness for Elasticsearch cluster | bool | `true` | no |
 
 ## Outputs

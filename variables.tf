@@ -76,15 +76,21 @@ variable "allowed_cidr_blocks" {
   description = "List of CIDR blocks to be allowed to connect to the cluster"
 }
 
+variable "vpc_enabled" {
+  type        = bool
+  description = "Set to false if ES should be deployed outside of VPC."
+  default     = true
+}
+
 variable "vpc_id" {
   type        = string
   description = "VPC ID"
-  default     = ""
+  default     = null
 }
 
 variable "subnet_ids" {
   type        = list(string)
-  description = "Subnet IDs"
+  description = "VPC Subnet IDs"
   default     = []
 }
 

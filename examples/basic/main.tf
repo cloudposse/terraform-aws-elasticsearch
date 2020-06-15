@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "us-east-2"
+}
+
 module "elasticsearch" {
   source                  = "../../"
   namespace               = "eg"
@@ -17,6 +21,6 @@ module "elasticsearch" {
   kibana_subdomain_name   = "kibana-es"
 
   advanced_options = {
-    rest.action.multi.allow_explicit_index = "true"
+    "rest.action.multi.allow_explicit_index" = "true"
   }
 }

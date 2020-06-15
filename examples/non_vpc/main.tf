@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "us-east-2"
+}
+
 module "elasticsearch" {
   source                  = "../../"
   namespace               = "eg"
@@ -5,8 +9,7 @@ module "elasticsearch" {
   name                    = "es"
   dns_zone_id             = "Z14EN2YD427LRQ"
   security_groups         = ["sg-XXXXXXXXX", "sg-YYYYYYYY"]
-  vpc_id                  = "vpc-XXXXXXXXX"
-  subnet_ids              = ["subnet-XXXXXXXXX", "subnet-YYYYYYYY"]
+  vpc_enabled             = false
   zone_awareness_enabled  = "true"
   elasticsearch_version   = "6.5"
   instance_type           = "t2.small.elasticsearch"
@@ -17,6 +20,6 @@ module "elasticsearch" {
   kibana_subdomain_name   = "kibana-es"
 
   advanced_options = {
-    rest.action.multi.allow_explicit_index = "true"
+    "rest.action.multi.allow_explicit_index" = "true"
   }
 }
