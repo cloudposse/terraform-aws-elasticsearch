@@ -176,6 +176,8 @@ Available targets:
 | dedicated\_master\_type | Instance type of the dedicated master nodes in the cluster | `string` | `"t2.small.elasticsearch"` | no |
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
 | dns\_zone\_id | Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana | `string` | `""` | no |
+| domain\_endpoint\_options\_enforce\_https | Whether or not to require HTTPS | `bool` | `false` | no |
+| domain\_endpoint\_options\_tls\_security\_policy | The name of the TLS security policy that needs to be applied to the HTTPS endpoint | `string` | `"Policy-Min-TLS-1-0-2019-07"` | no |
 | ebs\_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | `number` | `0` | no |
 | ebs\_volume\_size | EBS volumes for data storage in GB | `number` | `0` | no |
 | ebs\_volume\_type | Storage type of EBS volumes | `string` | `"gp2"` | no |
@@ -267,7 +269,7 @@ We deliver 10x the value for a fraction of the cost of a full-time engineer. Our
 
 - **Reference Architecture.** You'll get everything you need from the ground up built using 100% infrastructure as code.
 - **Release Engineering.** You'll have end-to-end CI/CD with unlimited staging environments.
-- **Site Reliability Engineering.** You'll have total visibility into your apps and microservices.
+t - **Site Reliability Engineering.** You'll have total visibility into your apps and microservices.
 - **Security Baseline.** You'll have built-in governance with accountability and audit logs for all changes.
 - **GitOps.** You'll be able to operate your infrastructure via Pull Requests.
 - **Training.** You'll receive hands-on training so your team can operate what we build.
