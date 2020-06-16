@@ -25,7 +25,7 @@ module "user_label" {
 }
 
 resource "aws_security_group" "default" {
-  count       = var.enabled ? 1 : 0
+  count       = var.enabled && var.vpc_enabled ? 1 : 0
   vpc_id      = var.vpc_id
   name        = module.label.id
   description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
@@ -33,7 +33,7 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
-  count                    = var.enabled ? length(var.security_groups) : 0
+  count                    = var.enabled && var.vpc_enabled ? length(var.security_groups) : 0
   description              = "Allow inbound traffic from Security Groups"
   type                     = "ingress"
   from_port                = var.ingress_port_range_start
@@ -44,7 +44,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = var.enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  count             = var.enabled && var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
   from_port         = var.ingress_port_range_start
@@ -55,7 +55,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  count             = var.enabled ? 1 : 0
+  count             = var.enabled && var.vpc_enabled ? 1 : 0
   description       = "Allow all egress traffic"
   type              = "egress"
   from_port         = 0
@@ -163,9 +163,13 @@ resource "aws_elasticsearch_domain" "default" {
     enabled = var.node_to_node_encryption_enabled
   }
 
-  vpc_options {
-    security_group_ids = [join("", aws_security_group.default.*.id)]
-    subnet_ids         = var.subnet_ids
+  dynamic "vpc_options" {
+    for_each = var.vpc_enabled ? [true] : []
+
+    content {
+      security_group_ids = [join("", aws_security_group.default.*.id)]
+      subnet_ids         = var.subnet_ids
+    }
   }
 
   snapshot_options {
@@ -229,7 +233,7 @@ resource "aws_elasticsearch_domain_policy" "default" {
 module "domain_hostname" {
   source  = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
   enabled = var.enabled && var.dns_zone_id != "" ? true : false
-  name    = "${var.elasticsearch_subdomain_name == "" ? var.name : var.elasticsearch_subdomain_name}"
+  name    = var.elasticsearch_subdomain_name == "" ? var.name : var.elasticsearch_subdomain_name
   ttl     = 60
   zone_id = var.dns_zone_id
   records = [join("", aws_elasticsearch_domain.default.*.endpoint)]
