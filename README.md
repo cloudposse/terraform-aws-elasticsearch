@@ -269,7 +269,7 @@ We deliver 10x the value for a fraction of the cost of a full-time engineer. Our
 
 - **Reference Architecture.** You'll get everything you need from the ground up built using 100% infrastructure as code.
 - **Release Engineering.** You'll have end-to-end CI/CD with unlimited staging environments.
-t - **Site Reliability Engineering.** You'll have total visibility into your apps and microservices.
+- **Site Reliability Engineering.** You'll have total visibility into your apps and microservices.
 - **Security Baseline.** You'll have built-in governance with accountability and audit logs for all changes.
 - **GitOps.** You'll be able to operate your infrastructure via Pull Requests.
 - **Training.** You'll receive hands-on training so your team can operate what we build.
