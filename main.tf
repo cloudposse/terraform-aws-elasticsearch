@@ -221,6 +221,20 @@ data "aws_iam_policy_document" "default" {
       type        = "AWS"
       identifiers = distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user.*.arn)))
     }
+
+    # This condition is for non VPC ES to allow anonymous access from whitelisted IP ranges without requests signing
+    # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
+    # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
+    dynamic "condition" {
+      for_each = ! var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? [true] : []
+
+      content {
+        test     = "IpAddress"
+        values   = var.allowed_cidr_blocks
+        variable = "aws:SourceIp"
+      }
+    }
+
   }
 }
 
