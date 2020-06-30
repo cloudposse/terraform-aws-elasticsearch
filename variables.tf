@@ -251,6 +251,24 @@ variable "dedicated_master_type" {
   description = "Instance type of the dedicated master nodes in the cluster"
 }
 
+variable "warm_enabled" {
+  type        = bool
+  default     = false
+  description = "Indicates whether dedicated master nodes are enabled for the cluster"
+}
+
+variable "warm_count" {
+  type        = number
+  description = "Number of dedicated master nodes in the cluster"
+  default     = 0
+}
+
+variable "warm_type" {
+  type        = string
+  default     = "ultrawarm1.medium.elasticsearch"
+  description = "Instance type of the dedicated master nodes in the cluster"
+}
+
 variable "advanced_options" {
   type        = map(string)
   default     = {}
