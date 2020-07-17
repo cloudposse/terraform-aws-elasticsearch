@@ -310,3 +310,9 @@ variable "cognito_iam_role_arn" {
   default     = ""
   description = "ARN of the IAM role that has the AmazonESCognitoAccess policy attached"
 }
+
+variable "aws_ec2_service_name" {
+  type        = string
+  default     = ["ec2.amazonaws.com"]
+  description = "AWS EC2 Service Name"
+}
