@@ -23,7 +23,7 @@
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
 | automated\_snapshot\_start\_hour | Hour at which automated snapshots are taken, in UTC | `number` | `0` | no |
 | availability\_zone\_count | Number of Availability Zones for the domain to use. | `number` | `2` | no |
-| aws\_ec2\_service\_name | AWS EC2 Service Name | `list(string)` | `["ec2.amazonaws.com"]` | no |
+| aws\_ec2\_service\_name | AWS EC2 Service Name | `list(string)` | <pre>[<br>  "ec2.amazonaws.com"<br>]</pre> | no |
 | cognito\_authentication\_enabled | Whether to enable Amazon Cognito authentication with Kibana | `bool` | `false` | no |
 | cognito\_iam\_role\_arn | ARN of the IAM role that has the AmazonESCognitoAccess policy attached | `string` | `""` | no |
 | cognito\_identity\_pool\_id | The ID of the Cognito Identity Pool to use | `string` | `""` | no |
