@@ -312,7 +312,7 @@ variable "cognito_iam_role_arn" {
 }
 
 variable "aws_ec2_service_name" {
-  type        = string
+  type        = list(string)
   default     = ["ec2.amazonaws.com"]
   description = "AWS EC2 Service Name"
 }
