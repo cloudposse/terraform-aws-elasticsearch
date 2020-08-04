@@ -176,11 +176,14 @@ resource "aws_elasticsearch_domain" "default" {
     automated_snapshot_start_hour = var.automated_snapshot_start_hour
   }
 
-  cognito_options {
-    enabled          = var.cognito_authentication_enabled
-    user_pool_id     = var.cognito_user_pool_id
-    identity_pool_id = var.cognito_identity_pool_id
-    role_arn         = var.cognito_iam_role_arn
+  dynamic "cognito_options" {
+    for_each = var.cognito_authentication_enabled ? [true] : []
+    content {
+      enabled          = true
+      user_pool_id     = var.cognito_user_pool_id
+      identity_pool_id = var.cognito_identity_pool_id
+      role_arn         = var.cognito_iam_role_arn
+    }
   }
 
   log_publishing_options {
