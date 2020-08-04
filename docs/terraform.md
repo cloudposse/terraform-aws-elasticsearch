@@ -69,6 +69,9 @@
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 | vpc\_enabled | Set to false if ES should be deployed outside of VPC. | `bool` | `true` | no |
 | vpc\_id | VPC ID | `string` | `null` | no |
+| warm\_count | Number of ultrawarm nodes in the cluster | `number` | `0` | no |
+| warm\_enabled | Indicates whether ultrawarm nodes are enabled for the cluster | `bool` | `false` | no |
+| warm\_type | Instance type of the ultrawarm nodes in the cluster | `string` | `"ultrawarm1.medium.elasticsearch"` | no |
 | zone\_awareness\_enabled | Enable zone awareness for Elasticsearch cluster | `bool` | `true` | no |
 
 ## Outputs
