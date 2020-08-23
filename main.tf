@@ -126,6 +126,16 @@ resource "aws_elasticsearch_domain" "default" {
 
   advanced_options = var.advanced_options
 
+  advanced_security_options {
+    enabled                        = var.advanced_security_options_enabled
+    internal_user_database_enabled = var.advanced_security_options_internal_user_database_enabled
+    master_user_options {
+      master_user_arn      = var.advanced_security_options_master_user_arn
+      master_user_name     = var.advanced_security_options_master_user_name
+      master_user_password = var.advanced_security_options_master_user_password
+    }
+  }
+
   ebs_options {
     ebs_enabled = var.ebs_volume_size > 0 ? true : false
     volume_size = var.ebs_volume_size
@@ -150,6 +160,9 @@ resource "aws_elasticsearch_domain" "default" {
     dedicated_master_count   = var.dedicated_master_count
     dedicated_master_type    = var.dedicated_master_type
     zone_awareness_enabled   = var.zone_awareness_enabled
+    warm_enabled             = var.warm_enabled
+    warm_count               = var.warm_count
+    warm_type                = var.warm_type
 
     dynamic "zone_awareness_config" {
       for_each = null_resource.azs[*].triggers
