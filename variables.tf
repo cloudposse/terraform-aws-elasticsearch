@@ -120,7 +120,7 @@ variable "instance_count" {
 
 variable "warm_enabled" {
   type        = bool
-  default     = ""
+  default     = false
   description = "Whether AWS UltraWarm is enabled"
 }
 
