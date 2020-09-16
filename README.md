@@ -163,6 +163,7 @@ Available targets:
 | dns\_zone\_id | Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana | `string` | `""` | no |
 | domain\_endpoint\_options\_enforce\_https | Whether or not to require HTTPS | `bool` | `false` | no |
 | domain\_endpoint\_options\_tls\_security\_policy | The name of the TLS security policy that needs to be applied to the HTTPS endpoint | `string` | `"Policy-Min-TLS-1-0-2019-07"` | no |
+| domain\_hostname\_enabled | Explicit flag to enable creating a DNS hostname for ES. If `true`, then `var.dns_zone_id` is required. | `bool` | `false` | no |
 | ebs\_iops | The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type | `number` | `0` | no |
 | ebs\_volume\_size | EBS volumes for data storage in GB | `number` | `0` | no |
 | ebs\_volume\_type | Storage type of EBS volumes | `string` | `"gp2"` | no |
@@ -180,6 +181,7 @@ Available targets:
 | ingress\_port\_range\_start | Start number for allowed port range. (e.g. `443`) | `number` | `0` | no |
 | instance\_count | Number of data nodes in the cluster | `number` | `4` | no |
 | instance\_type | Elasticsearch instance type for data nodes in the cluster | `string` | `"t2.small.elasticsearch"` | no |
+| kibana\_hostname\_enabled | Explicit flag to enable creating a DNS hostname for Kibana. If `true`, then `var.dns_zone_id` is required. | `bool` | `false` | no |
 | kibana\_subdomain\_name | The name of the subdomain for Kibana in the DNS zone (\_e.g.\_ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`) | `string` | `"kibana"` | no |
 | label\_order | The naming order of the id output and Name tag | `list(string)` | `[]` | no |
 | log\_publishing\_application\_cloudwatch\_log\_group\_arn | ARN of the CloudWatch log group to which log for ES\_APPLICATION\_LOGS needs to be published | `string` | `""` | no |

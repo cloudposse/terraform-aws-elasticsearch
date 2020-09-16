@@ -249,7 +249,7 @@ resource "aws_elasticsearch_domain_policy" "default" {
 
 module "domain_hostname" {
   source  = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.7.0"
-  enabled = var.enabled && var.dns_zone_id != "" ? true : false
+  enabled = var.enabled && var.domain_hostname_enabled
   name    = var.elasticsearch_subdomain_name == "" ? var.name : var.elasticsearch_subdomain_name
   ttl     = 60
   zone_id = var.dns_zone_id
@@ -258,7 +258,7 @@ module "domain_hostname" {
 
 module "kibana_hostname" {
   source  = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.7.0"
-  enabled = var.enabled && var.dns_zone_id != "" ? true : false
+  enabled = var.enabled && var.kibana_hostname_enabled
   name    = var.kibana_subdomain_name
   ttl     = 60
   zone_id = var.dns_zone_id

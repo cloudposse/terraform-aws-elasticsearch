@@ -316,3 +316,15 @@ variable "aws_ec2_service_name" {
   default     = ["ec2.amazonaws.com"]
   description = "AWS EC2 Service Name"
 }
+
+variable "domain_hostname_enabled" {
+  type        = bool
+  description = "Explicit flag to enable creating a DNS hostname for ES. If `true`, then `var.dns_zone_id` is required."
+  default     = false
+}
+
+variable "kibana_hostname_enabled" {
+  type        = bool
+  description = "Explicit flag to enable creating a DNS hostname for Kibana. If `true`, then `var.dns_zone_id` is required."
+  default     = false
+}
