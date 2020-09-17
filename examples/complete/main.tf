@@ -3,31 +3,29 @@ provider "aws" {
 }
 
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.17.0"
-  namespace  = var.namespace
-  stage      = var.stage
-  name       = var.name
+  source = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.17.0"
+
   cidr_block = "172.16.0.0/16"
+
+  context = module.this.context
 }
 
 module "subnets" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.30.0"
+  source = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.30.0"
+
   availability_zones   = var.availability_zones
-  namespace            = var.namespace
-  stage                = var.stage
-  name                 = var.name
   vpc_id               = module.vpc.vpc_id
   igw_id               = module.vpc.igw_id
   cidr_block           = module.vpc.vpc_cidr_block
-  nat_gateway_enabled  = true
+  nat_gateway_enabled  = false
   nat_instance_enabled = false
+
+  context = module.this.context
 }
 
 module "elasticsearch" {
-  source                         = "../../"
-  namespace                      = var.namespace
-  stage                          = var.stage
-  name                           = var.name
+  source = "../../"
+
   security_groups                = [module.vpc.vpc_default_security_group_id]
   vpc_id                         = module.vpc.vpc_id
   subnet_ids                     = module.subnets.private_subnet_ids
@@ -41,8 +39,12 @@ module "elasticsearch" {
   kibana_subdomain_name          = var.kibana_subdomain_name
   ebs_volume_size                = var.ebs_volume_size
   dns_zone_id                    = var.dns_zone_id
+  kibana_hostname_enabled        = var.kibana_hostname_enabled
+  domain_hostname_enabled        = var.domain_hostname_enabled
 
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }
+
+  context = module.this.context
 }

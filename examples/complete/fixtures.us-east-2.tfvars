@@ -1,4 +1,6 @@
-region = "us-west-1"
+enabled = true
+
+region = "us-east-2"
 
 namespace = "eg"
 
@@ -6,7 +8,7 @@ stage = "test"
 
 name = "es-test"
 
-availability_zones = ["us-west-1b", "us-west-1c"]
+availability_zones = ["us-east-2a", "us-east-2b"]
 
 instance_type = "t2.small.elasticsearch"
 
@@ -20,10 +22,16 @@ encrypt_at_rest_enabled = false
 
 dedicated_master_enabled = false
 
-kibana_subdomain_name = "kibana-es-test"
+elasticsearch_subdomain_name = ""
+
+kibana_subdomain_name = ""
 
 ebs_volume_size = 10
 
 create_iam_service_linked_role = false
 
 dns_zone_id = "Z3SO0TKDDQ0RGG"
+
+kibana_hostname_enabled = true
+
+domain_hostname_enabled = true
