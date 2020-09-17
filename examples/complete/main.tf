@@ -41,6 +41,8 @@ module "elasticsearch" {
   kibana_subdomain_name          = var.kibana_subdomain_name
   ebs_volume_size                = var.ebs_volume_size
   dns_zone_id                    = var.dns_zone_id
+  kibana_hostname_enabled        = var.kibana_hostname_enabled
+  domain_hostname_enabled        = var.domain_hostname_enabled
 
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"

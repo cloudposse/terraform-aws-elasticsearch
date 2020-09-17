@@ -72,3 +72,15 @@ variable "dns_zone_id" {
   type        = string
   description = "Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana"
 }
+
+variable "domain_hostname_enabled" {
+  type        = bool
+  description = "Explicit flag to enable creating a DNS hostname for ES. If `true`, then `var.dns_zone_id` is required."
+  default     = false
+}
+
+variable "kibana_hostname_enabled" {
+  type        = bool
+  description = "Explicit flag to enable creating a DNS hostname for Kibana. If `true`, then `var.dns_zone_id` is required."
+  default     = false
+}
