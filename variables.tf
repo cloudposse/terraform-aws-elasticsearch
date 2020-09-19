@@ -64,6 +64,24 @@ variable "instance_count" {
   default     = 4
 }
 
+variable "warm_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether AWS UltraWarm is enabled"
+}
+
+variable "warm_count" {
+  type        = number
+  default     = 2
+  description = "Number of UltraWarm nodes"
+}
+
+variable "warm_type" {
+  type        = string
+  default     = "ultrawarm1.medium.elasticsearch"
+  description = "Type of UltraWarm nodes"
+}
+
 variable "iam_role_arns" {
   type        = list(string)
   default     = []
@@ -272,4 +290,34 @@ variable "kibana_hostname_enabled" {
   type        = bool
   description = "Explicit flag to enable creating a DNS hostname for Kibana. If `true`, then `var.dns_zone_id` is required."
   default     = false
+}
+
+variable "advanced_security_options_enabled" {
+  type        = bool
+  default     = false
+  description = "AWS Elasticsearch Kibana enchanced security plugin enabling (forces new resource)"
+}
+
+variable "advanced_security_options_internal_user_database_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to enable or not internal Kibana user database for ELK OpenDistro security plugin"
+}
+
+variable "advanced_security_options_master_user_arn" {
+  type        = string
+  default     = ""
+  description = "ARN of IAM user who is to be mapped to be Kibana master user (applicable if advanced_security_options_internal_user_database_enabled set to false)"
+}
+
+variable "advanced_security_options_master_user_name" {
+  type        = string
+  default     = ""
+  description = "Master user username (applicable if advanced_security_options_internal_user_database_enabled set to true)"
+}
+
+variable "advanced_security_options_master_user_password" {
+  type        = string
+  default     = ""
+  description = "Master user password (applicable if advanced_security_options_internal_user_database_enabled set to true)"
 }
