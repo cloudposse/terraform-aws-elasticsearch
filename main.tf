@@ -1,8 +1,7 @@
 module "user_label" {
   source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.2"
 
-  enabled    = module.this.enabled
-  attributes = concat(module.this.attributes, ["user"])
+  attributes = compact(concat(module.this.attributes, ["user"]))
 
   context = module.this.context
 }
@@ -10,8 +9,7 @@ module "user_label" {
 module "kibana_label" {
   source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.2"
 
-  enabled    = module.this.enabled
-  attributes = concat(module.this.attributes, ["kibana"])
+  attributes = compact(concat(module.this.attributes, ["kibana"]))
 
   context = module.this.context
 }
@@ -97,20 +95,6 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-# inspired by https://github.com/hashicorp/terraform/issues/20692
-# I use 0.12 new "dynamic" block - https://www.terraform.io/docs/configuration/expressions.html
-# If we have 1 az - the count of this resource equals 0, hence no config
-# block appears in the `aws_elasticsearch_domain`
-# If we have more than 1 - we set the trigger to the actual value of
-# `availability_zone_count`
-# and `dynamic` block kicks in
-resource "null_resource" "azs" {
-  count = var.availability_zone_count > 1 ? 1 : 0
-  triggers = {
-    availability_zone_count = var.availability_zone_count
-  }
-}
-
 resource "aws_elasticsearch_domain" "default" {
   count                 = module.this.enabled ? 1 : 0
   domain_name           = module.this.id
@@ -153,13 +137,13 @@ resource "aws_elasticsearch_domain" "default" {
     dedicated_master_type    = var.dedicated_master_type
     zone_awareness_enabled   = var.zone_awareness_enabled
     warm_enabled             = var.warm_enabled
-    warm_count               = var.warm_count
-    warm_type                = var.warm_type
+    warm_count               = var.warm_enabled ? var.warm_count : null
+    warm_type                = var.warm_enabled ? var.warm_type : null
 
     dynamic "zone_awareness_config" {
-      for_each = null_resource.azs[*].triggers
+      for_each = var.availability_zone_count > 1 ? [true] : []
       content {
-        availability_zone_count = zone_awareness_config.value.availability_zone_count
+        availability_zone_count = var.availability_zone_count
       }
     }
   }
@@ -218,6 +202,9 @@ data "aws_iam_policy_document" "default" {
   count = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
 
   statement {
+    sid    = "AllowEsAccessToSpecifiedRoles"
+    effect = "Allow"
+
     actions = distinct(compact(var.iam_actions))
 
     resources = [
@@ -229,14 +216,30 @@ data "aws_iam_policy_document" "default" {
       type        = "AWS"
       identifiers = distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user.*.arn)))
     }
+  }
 
-    # This condition is for non VPC ES to allow anonymous access from whitelisted IP ranges without requests signing
-    # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
-    # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
-    dynamic "condition" {
-      for_each = ! var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? [true] : []
+  # This statement is for non VPC ES to allow anonymous access from whitelisted IP ranges without requests signing
+  # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
+  # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
+  dynamic "statement" {
+    for_each = length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled ? [true] : []
+    content {
+      sid    = "AllowAnonymousEsAccessFromCIDR"
+      effect = "Allow"
 
-      content {
+      actions = distinct(compact(var.iam_actions))
+
+      resources = [
+        join("", aws_elasticsearch_domain.default.*.arn),
+        "${join("", aws_elasticsearch_domain.default.*.arn)}/*"
+      ]
+
+      principals {
+        type        = "AWS"
+        identifiers = ["*"]
+      }
+
+      condition {
         test     = "IpAddress"
         values   = var.allowed_cidr_blocks
         variable = "aws:SourceIp"
@@ -270,7 +273,10 @@ module "kibana_hostname" {
   dns_name = var.kibana_subdomain_name == "" ? module.kibana_label.id : var.kibana_subdomain_name
   ttl      = 60
   zone_id  = var.dns_zone_id
-  records  = [join("", aws_elasticsearch_domain.default.*.kibana_endpoint)]
+  # Note: kibana_endpoint is not just a domain name, it includes a path component,
+  # and as such is not suitable for a DNS record. The plain endpoint is the
+  # hostname portion and should be used for DNS.
+  records = [join("", aws_elasticsearch_domain.default.*.endpoint)]
 
   context = module.this.context
 }
