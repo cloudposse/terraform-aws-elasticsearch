@@ -273,7 +273,10 @@ module "kibana_hostname" {
   dns_name = var.kibana_subdomain_name == "" ? module.kibana_label.id : var.kibana_subdomain_name
   ttl      = 60
   zone_id  = var.dns_zone_id
-  records  = [join("", aws_elasticsearch_domain.default.*.kibana_endpoint)]
+  # Note: kibana_endpoint is not just a domain name, it includes a path component,
+  # and as such is not suitable for a DNS record. The plain endpoint is the
+  # hostname portion and should be used for DNS.
+  records  = [join("", aws_elasticsearch_domain.default.*.endpoint)]
 
   context = module.this.context
 }
