@@ -276,7 +276,7 @@ module "kibana_hostname" {
   # Note: kibana_endpoint is not just a domain name, it includes a path component,
   # and as such is not suitable for a DNS record. The plain endpoint is the
   # hostname portion and should be used for DNS.
-  records  = [join("", aws_elasticsearch_domain.default.*.endpoint)]
+  records = [join("", aws_elasticsearch_domain.default.*.endpoint)]
 
   context = module.this.context
 }

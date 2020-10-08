@@ -10,9 +10,9 @@ name = "es-test"
 
 availability_zones = ["us-east-2a", "us-east-2b"]
 
-instance_type = "t2.small.elasticsearch"
+instance_type = "t3.small.elasticsearch"
 
-elasticsearch_version = "6.5"
+elasticsearch_version = "7.7"
 
 instance_count = 2
 
@@ -26,7 +26,7 @@ elasticsearch_subdomain_name = ""
 
 kibana_subdomain_name = ""
 
-ebs_volume_size = 10
+ebs_volume_size = 20
 
 create_iam_service_linked_role = false
 
