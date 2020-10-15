@@ -202,7 +202,6 @@ data "aws_iam_policy_document" "default" {
   count = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
 
   statement {
-    sid    = "AllowEsAccessToSpecifiedRoles"
     effect = "Allow"
 
     actions = distinct(compact(var.iam_actions))
@@ -224,7 +223,6 @@ data "aws_iam_policy_document" "default" {
   dynamic "statement" {
     for_each = length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled ? [true] : []
     content {
-      sid    = "AllowAnonymousEsAccessFromCIDR"
       effect = "Allow"
 
       actions = distinct(compact(var.iam_actions))
