@@ -19,7 +19,7 @@
 #
 
 module "this" {
-  source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.2"
+   source = "git::ssh://git@github.com/jurgenweber/terraform-null-label.git?ref=master"
 
   enabled             = var.enabled
   namespace           = var.namespace
