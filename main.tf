@@ -1,5 +1,5 @@
 module "user_label" {
-   source = "git::ssh://git@github.com/jurgenweber/terraform-null-label.git?ref=master"
+   source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.22.0"
 
   attributes = compact(concat(module.this.attributes, ["user"]))
 
@@ -7,7 +7,7 @@ module "user_label" {
 }
 
 module "kibana_label" {
-   source = "git::ssh://git@github.com/jurgenweber/terraform-null-label.git?ref=master"
+   source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.22.0"
 
   attributes = compact(concat(module.this.attributes, ["kibana"]))
 
@@ -253,7 +253,7 @@ resource "aws_elasticsearch_domain_policy" "default" {
 }
 
 module "domain_hostname" {
-  source = "git::https://git@github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=0.8.0"
+  source = "git::https://git@github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.8.0"
 
   enabled  = module.this.enabled && var.domain_hostname_enabled
   dns_name = var.elasticsearch_subdomain_name == "" ? module.this.id : var.elasticsearch_subdomain_name
@@ -265,7 +265,7 @@ module "domain_hostname" {
 }
 
 module "kibana_hostname" {
-  source = "git::https://git@github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=0.8.0"
+  source = "git::https://git@github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.8.0"
 
   enabled  = module.this.enabled && var.kibana_hostname_enabled
   dns_name = var.kibana_subdomain_name == "" ? module.kibana_label.id : var.kibana_subdomain_name
