@@ -57,7 +57,9 @@ usage: |-
 
   ```hcl
   module "elasticsearch" {
-    source                  = "git::https://github.com/cloudposse/terraform-aws-elasticsearch.git?ref=master"
+    source = "cloudposse/elasticsearch/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
     namespace               = "eg"
     stage                   = "dev"
     name                    = "es"
