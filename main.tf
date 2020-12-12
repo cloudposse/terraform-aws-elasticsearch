@@ -1,5 +1,6 @@
 module "user_label" {
-  source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.2"
+  source  = "cloudposse/label/null"
+  version = "0.19.2"
 
   attributes = compact(concat(module.this.attributes, ["user"]))
 
@@ -7,7 +8,8 @@ module "user_label" {
 }
 
 module "kibana_label" {
-  source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.2"
+  source  = "cloudposse/label/null"
+  version = "0.19.2"
 
   attributes = compact(concat(module.this.attributes, ["kibana"]))
 
@@ -188,6 +190,12 @@ resource "aws_elasticsearch_domain" "default" {
   }
 
   log_publishing_options {
+    enabled                  = var.log_publishing_audit_enabled
+    log_type                 = "AUDIT_LOGS"
+    cloudwatch_log_group_arn = var.log_publishing_audit_cloudwatch_log_group_arn
+  }
+
+  log_publishing_options {
     enabled                  = var.log_publishing_application_enabled
     log_type                 = "ES_APPLICATION_LOGS"
     cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
@@ -253,7 +261,8 @@ resource "aws_elasticsearch_domain_policy" "default" {
 }
 
 module "domain_hostname" {
-  source = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.7.0"
+  source  = "cloudposse/route53-cluster-hostname/aws"
+  version = "0.7.0"
 
   enabled  = module.this.enabled && var.domain_hostname_enabled
   dns_name = var.elasticsearch_subdomain_name == "" ? module.this.id : var.elasticsearch_subdomain_name
@@ -265,7 +274,8 @@ module "domain_hostname" {
 }
 
 module "kibana_hostname" {
-  source = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.7.0"
+  source  = "cloudposse/route53-cluster-hostname/aws"
+  version = "0.7.0"
 
   enabled  = module.this.enabled && var.kibana_hostname_enabled
   dns_name = var.kibana_subdomain_name == "" ? module.kibana_label.id : var.kibana_subdomain_name

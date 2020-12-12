@@ -167,6 +167,12 @@ variable "log_publishing_search_enabled" {
   description = "Specifies whether log publishing option for SEARCH_SLOW_LOGS is enabled or not"
 }
 
+variable "log_publishing_audit_enabled" {
+  type        = bool
+  default     = false
+  description = "Specifies whether log publishing option for AUDIT_LOGS is enabled or not"
+}
+
 variable "log_publishing_application_enabled" {
   type        = bool
   default     = false
@@ -183,6 +189,12 @@ variable "log_publishing_search_cloudwatch_log_group_arn" {
   type        = string
   default     = ""
   description = "ARN of the CloudWatch log group to which log for SEARCH_SLOW_LOGS needs to be published"
+}
+
+variable "log_publishing_audit_cloudwatch_log_group_arn" {
+  type        = string
+  default     = ""
+  description = "ARN of the CloudWatch log group to which log for AUDIT_LOGS needs to be published"
 }
 
 variable "log_publishing_application_cloudwatch_log_group_arn" {
