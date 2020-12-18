@@ -1,6 +1,6 @@
 module "user_label" {
   source  = "cloudposse/label/null"
-  version = "0.19.2"
+  version = "0.22.0"
 
   attributes = compact(concat(module.this.attributes, ["user"]))
 
@@ -9,7 +9,7 @@ module "user_label" {
 
 module "kibana_label" {
   source  = "cloudposse/label/null"
-  version = "0.19.2"
+  version = "0.22.0"
 
   attributes = compact(concat(module.this.attributes, ["kibana"]))
 
@@ -262,7 +262,7 @@ resource "aws_elasticsearch_domain_policy" "default" {
 
 module "domain_hostname" {
   source  = "cloudposse/route53-cluster-hostname/aws"
-  version = "0.7.0"
+  version = "0.8.0"
 
   enabled  = module.this.enabled && var.domain_hostname_enabled
   dns_name = var.elasticsearch_subdomain_name == "" ? module.this.id : var.elasticsearch_subdomain_name
@@ -275,7 +275,7 @@ module "domain_hostname" {
 
 module "kibana_hostname" {
   source  = "cloudposse/route53-cluster-hostname/aws"
-  version = "0.7.0"
+  version = "0.8.0"
 
   enabled  = module.this.enabled && var.kibana_hostname_enabled
   dns_name = var.kibana_subdomain_name == "" ? module.kibana_label.id : var.kibana_subdomain_name
