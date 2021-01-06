@@ -1,6 +1,6 @@
 module "user_label" {
   source  = "cloudposse/label/null"
-  version = "0.22.0"
+  version = "0.22.1"
 
   attributes = compact(concat(module.this.attributes, ["user"]))
 
@@ -9,7 +9,7 @@ module "user_label" {
 
 module "kibana_label" {
   source  = "cloudposse/label/null"
-  version = "0.22.0"
+  version = "0.22.1"
 
   attributes = compact(concat(module.this.attributes, ["kibana"]))
 
