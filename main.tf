@@ -1,17 +1,17 @@
 module "user_label" {
   source  = "cloudposse/label/null"
-  version = "0.22.0"
+  version = "0.22.1"
 
-  attributes = compact(concat(module.this.attributes, ["user"]))
+  attributes = ["user"]
 
   context = module.this.context
 }
 
 module "kibana_label" {
   source  = "cloudposse/label/null"
-  version = "0.22.0"
+  version = "0.22.1"
 
-  attributes = compact(concat(module.this.attributes, ["kibana"]))
+  attributes = ["kibana"]
 
   context = module.this.context
 }
@@ -229,7 +229,7 @@ data "aws_iam_policy_document" "default" {
   # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
   # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
   dynamic "statement" {
-    for_each = length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled ? [true] : []
+    for_each = length(var.allowed_cidr_blocks) > 0 && !var.vpc_enabled ? [true] : []
     content {
       effect = "Allow"
 
@@ -262,7 +262,7 @@ resource "aws_elasticsearch_domain_policy" "default" {
 
 module "domain_hostname" {
   source  = "cloudposse/route53-cluster-hostname/aws"
-  version = "0.8.0"
+  version = "0.10.0"
 
   enabled  = module.this.enabled && var.domain_hostname_enabled
   dns_name = var.elasticsearch_subdomain_name == "" ? module.this.id : var.elasticsearch_subdomain_name
@@ -275,7 +275,7 @@ module "domain_hostname" {
 
 module "kibana_hostname" {
   source  = "cloudposse/route53-cluster-hostname/aws"
-  version = "0.8.0"
+  version = "0.10.0"
 
   enabled  = module.this.enabled && var.kibana_hostname_enabled
   dns_name = var.kibana_subdomain_name == "" ? module.kibana_label.id : var.kibana_subdomain_name
