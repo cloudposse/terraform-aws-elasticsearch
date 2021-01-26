@@ -144,7 +144,7 @@ variable "encrypt_at_rest_kms_key_id" {
 
 variable "domain_endpoint_options_enforce_https" {
   type        = bool
-  default     = false
+  default     = true
   description = "Whether or not to require HTTPS"
 }
 
