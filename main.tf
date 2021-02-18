@@ -177,28 +177,40 @@ resource "aws_elasticsearch_domain" "default" {
     }
   }
 
-  log_publishing_options {
-    enabled                  = var.log_publishing_index_enabled
-    log_type                 = "INDEX_SLOW_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_index_cloudwatch_log_group_arn
+  dynamic "log_publishing_options" {
+    for_each = var.log_publishing_index_enabled ? [true] : []
+    content {
+      enabled                  = var.log_publishing_index_enabled
+      log_type                 = "INDEX_SLOW_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_index_cloudwatch_log_group_arn
+    }
   }
 
-  log_publishing_options {
-    enabled                  = var.log_publishing_search_enabled
-    log_type                 = "SEARCH_SLOW_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_search_cloudwatch_log_group_arn
+  dynamic "log_publishing_options" {
+    for_each = var.log_publishing_search_enabled ? [true] : []
+    content {
+      enabled                  = var.log_publishing_search_enabled
+      log_type                 = "SEARCH_SLOW_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_search_cloudwatch_log_group_arn
+    }
   }
 
-  log_publishing_options {
-    enabled                  = var.log_publishing_audit_enabled
-    log_type                 = "AUDIT_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_audit_cloudwatch_log_group_arn
+  dynamic "log_publishing_options" {
+    for_each = var.log_publishing_audit_enabled ? [true] : []
+    content {
+      enabled                  = var.log_publishing_audit_enabled
+      log_type                 = "AUDIT_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_audit_cloudwatch_log_group_arn
+    }
   }
 
-  log_publishing_options {
-    enabled                  = var.log_publishing_application_enabled
-    log_type                 = "ES_APPLICATION_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
+  dynamic "log_publishing_options" {
+    for_each = var.log_publishing_application_enabled ? [true] : []
+    content {
+      enabled                  = var.log_publishing_application_enabled
+      log_type                 = "ES_APPLICATION_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
+    }
   }
 
   tags = module.this.tags
