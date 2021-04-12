@@ -127,8 +127,11 @@ resource "aws_elasticsearch_domain" "default" {
   }
 
   domain_endpoint_options {
-    enforce_https       = var.domain_endpoint_options_enforce_https
-    tls_security_policy = var.domain_endpoint_options_tls_security_policy
+    enforce_https                   = var.domain_endpoint_options_enforce_https
+    tls_security_policy             = var.domain_endpoint_options_tls_security_policy
+    custom_endpoint_enabled         = var.custom_endpoint_enabled
+    custom_endpoint                 = var.custom_endpoint_enabled ? var.custom_endpoint : null
+    custom_endpoint_certificate_arn = var.custom_endpoint_enabled ? var.custom_endpoint_certificate_arn : null
   }
 
   cluster_config {

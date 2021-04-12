@@ -333,3 +333,21 @@ variable "advanced_security_options_master_user_password" {
   default     = ""
   description = "Master user password (applicable if advanced_security_options_internal_user_database_enabled set to true)"
 }
+
+variable "custom_endpoint_enabled" {
+  type        = bool
+  description = "Whether to enable custom endpoint for the Elasticsearch domain."
+  default     = false
+}
+
+variable "custom_endpoint" {
+  type        = string
+  description = "Fully qualified domain for custom endpoint."
+  default     = ""
+}
+
+variable "custom_endpoint_certificate_arn" {
+  type        = string
+  description = "ACM certificate ARN for custom endpoint."
+  default     = ""
+}
