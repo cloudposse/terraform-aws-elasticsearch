@@ -241,6 +241,7 @@ variable "elasticsearch_subdomain_name" {
 
 variable "kibana_subdomain_name" {
   type        = string
+  default     = ""
   description = "The name of the subdomain for Kibana in the DNS zone (_e.g._ `kibana`, `ui`, `ui-es`, `search-ui`, `kibana.elasticsearch`)"
 }
 
