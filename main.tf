@@ -1,3 +1,7 @@
+locals {
+  security_group_enabled = module.this.enabled && var.security_group_enabled
+}
+
 module "user_label" {
   source  = "cloudposse/label/null"
   version = "0.24.1"
@@ -16,45 +20,17 @@ module "kibana_label" {
   context = module.this.context
 }
 
-resource "aws_security_group" "default" {
-  count       = module.this.enabled && var.vpc_enabled ? 1 : 0
-  vpc_id      = var.vpc_id
-  name        = module.this.id
-  description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
-  tags        = module.this.tags
-}
+module "security_group" {
+  source  = "cloudposse/security-group/aws"
+  version = "0.3.1"
 
-resource "aws_security_group_rule" "ingress_security_groups" {
-  count                    = module.this.enabled && var.vpc_enabled ? length(var.security_groups) : 0
-  description              = "Allow inbound traffic from Security Groups"
-  type                     = "ingress"
-  from_port                = var.ingress_port_range_start
-  to_port                  = var.ingress_port_range_end
-  protocol                 = "tcp"
-  source_security_group_id = var.security_groups[count.index]
-  security_group_id        = join("", aws_security_group.default.*.id)
-}
+  use_name_prefix = var.security_group_use_name_prefix
+  rules           = var.security_group_rules
+  description     = var.security_group_description
+  vpc_id          = var.vpc_id
 
-resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = module.this.enabled && var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
-  description       = "Allow inbound traffic from CIDR blocks"
-  type              = "ingress"
-  from_port         = var.ingress_port_range_start
-  to_port           = var.ingress_port_range_end
-  protocol          = "tcp"
-  cidr_blocks       = var.allowed_cidr_blocks
-  security_group_id = join("", aws_security_group.default.*.id)
-}
-
-resource "aws_security_group_rule" "egress" {
-  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
-  description       = "Allow all egress traffic"
-  type              = "egress"
-  from_port         = 0
-  to_port           = 65535
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = join("", aws_security_group.default.*.id)
+  enabled = local.security_group_enabled
+  context = module.this.context
 }
 
 # https://github.com/terraform-providers/terraform-provider-aws/issues/5218
@@ -161,7 +137,7 @@ resource "aws_elasticsearch_domain" "default" {
     for_each = var.vpc_enabled ? [true] : []
 
     content {
-      security_group_ids = [join("", aws_security_group.default.*.id)]
+      security_group_ids = compact(concat(module.security_group.*.id, var.security_groups))
       subnet_ids         = var.subnet_ids
     }
   }
@@ -232,7 +208,7 @@ data "aws_iam_policy_document" "default" {
   # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
   # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
   dynamic "statement" {
-    for_each = length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled ? [true] : []
+    for_each = length(var.allowed_cidr_blocks) > 0 && !var.vpc_enabled ? [true] : []
     content {
       effect = "Allow"
 

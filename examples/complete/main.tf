@@ -44,6 +44,27 @@ module "elasticsearch" {
   kibana_hostname_enabled        = var.kibana_hostname_enabled
   domain_hostname_enabled        = var.domain_hostname_enabled
 
+  security_group_rules = [
+    {
+      type                     = "egress"
+      from_port                = 0
+      to_port                  = 65535
+      protocol                 = "-1"
+      cidr_blocks              = ["0.0.0.0/0"]
+      source_security_group_id = null
+      description              = "Allow all outbound traffic"
+    },
+    {
+      type                     = "ingress"
+      from_port                = 0
+      to_port                  = 65535
+      protocol                 = "-1"
+      cidr_blocks              = []
+      source_security_group_id = module.vpc.vpc_default_security_group_id
+      description              = "Allow all inbound traffic from trusted Security Groups"
+    },
+  ]
+
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }

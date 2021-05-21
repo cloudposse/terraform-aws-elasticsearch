@@ -1,33 +1,3 @@
-variable "security_groups" {
-  type        = list(string)
-  default     = []
-  description = "List of security group IDs to be allowed to connect to the cluster"
-}
-
-variable "ingress_port_range_start" {
-  type        = number
-  default     = 0
-  description = "Start number for allowed port range. (e.g. `443`)"
-}
-
-variable "ingress_port_range_end" {
-  type        = number
-  default     = 65535
-  description = "End number for allowed port range. (e.g. `443`)"
-}
-
-variable "allowed_cidr_blocks" {
-  type        = list(string)
-  default     = []
-  description = "List of CIDR blocks to be allowed to connect to the cluster"
-}
-
-variable "vpc_enabled" {
-  type        = bool
-  description = "Set to false if ES should be deployed outside of VPC."
-  default     = true
-}
-
 variable "vpc_id" {
   type        = string
   description = "VPC ID"
@@ -37,6 +7,49 @@ variable "vpc_id" {
 variable "subnet_ids" {
   type        = list(string)
   description = "VPC Subnet IDs"
+  default     = []
+}
+
+variable "security_group_enabled" {
+  type        = bool
+  description = "Whether to create default Security Group for Elasticsearch."
+  default     = true
+}
+
+variable "security_group_description" {
+  type        = string
+  default     = "Elasticsearch Security Group"
+  description = "The Security Group description."
+}
+
+variable "security_group_use_name_prefix" {
+  type        = bool
+  default     = false
+  description = "Whether to create a default Security Group with unique name beginning with the normalized prefix."
+}
+
+variable "security_group_rules" {
+  type = list(any)
+  default = [
+    {
+      type        = "egress"
+      from_port   = 0
+      to_port     = 65535
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "Allow all outbound traffic"
+    }
+  ]
+  description = <<-EOT
+    A list of maps of Security Group rules. 
+    The values of map is fully complated with `aws_security_group_rule` resource. 
+    To get more info see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule .
+  EOT
+}
+
+variable "security_groups" {
+  description = "A list of Security Group IDs to associate with Elasticsearch."
+  type        = list(string)
   default     = []
 }
 
