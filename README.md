@@ -272,6 +272,7 @@ Available targets:
 | <a name="input_stage"></a> [stage](#input\_stage) | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | VPC Subnet IDs | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
+| <a name="input_vpc_enabled"></a> [vpc\_enabled](#input\_vpc\_enabled) | Set to false if ES should be deployed outside of VPC. | `bool` | `true` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID | `string` | `null` | no |
 | <a name="input_warm_count"></a> [warm\_count](#input\_warm\_count) | Number of UltraWarm nodes | `number` | `2` | no |
 | <a name="input_warm_enabled"></a> [warm\_enabled](#input\_warm\_enabled) | Whether AWS UltraWarm is enabled | `bool` | `false` | no |

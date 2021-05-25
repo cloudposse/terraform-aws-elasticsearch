@@ -10,6 +10,12 @@ variable "subnet_ids" {
   default     = []
 }
 
+variable "vpc_enabled" {
+  type        = bool
+  description = "Set to false if ES should be deployed outside of VPC."
+  default     = true
+}
+
 variable "security_group_enabled" {
   type        = bool
   description = "Whether to create default Security Group for Elasticsearch."

@@ -1,5 +1,5 @@
 locals {
-  security_group_enabled = module.this.enabled && var.security_group_enabled
+  security_group_enabled = module.this.enabled && var.security_group_enabled && var.vpc_enabled
 }
 
 module "user_label" {
