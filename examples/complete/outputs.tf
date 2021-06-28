@@ -15,7 +15,17 @@ output "vpc_cidr" {
 
 output "security_group_id" {
   value       = module.elasticsearch.security_group_id
-  description = "Security Group ID to control access to the Elasticsearch domain"
+  description = "Elasticsearch Security Group ID"
+}
+
+output "security_group_arn" {
+  value       = module.elasticsearch.security_group_arn
+  description = "Elasticsearch Security Group ARN"
+}
+
+output "security_group_name" {
+  value       = module.elasticsearch.security_group_name
+  description = "Elasticsearch Security Group name"
 }
 
 output "domain_arn" {

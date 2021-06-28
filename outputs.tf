@@ -1,6 +1,16 @@
 output "security_group_id" {
-  value       = join("", aws_security_group.default.*.id)
-  description = "Security Group ID to control access to the Elasticsearch domain"
+  value       = module.security_group.id
+  description = "Elasticsearch Security Group ID"
+}
+
+output "security_group_arn" {
+  value       = module.security_group.arn
+  description = "Elasticsearch Security Group ARN"
+}
+
+output "security_group_name" {
+  value       = module.security_group.name
+  description = "Elasticsearch Security Group name"
 }
 
 output "domain_arn" {
