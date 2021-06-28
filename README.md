@@ -1,3 +1,4 @@
+
 <!-- markdownlint-disable -->
 # terraform-aws-elasticsearch [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-elasticsearch?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d22bfe5a7e22ea3b67ea820) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-elasticsearch.svg)](https://github.com/cloudposse/terraform-aws-elasticsearch/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 <!-- markdownlint-restore -->
@@ -29,7 +30,6 @@
 
 Terraform module to provision an [`Elasticsearch`](https://aws.amazon.com/elasticsearch-service/) cluster with built-in integrations with [Kibana](https://aws.amazon.com/elasticsearch-service/kibana/) and [Logstash](https://aws.amazon.com/elasticsearch-service/logstash/).
 
-
 ---
 
 This project is part of our comprehensive ["SweetOps"](https://cpco.io/sweetops) approach towards DevOps.
@@ -59,7 +59,6 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 
 
-
 ## Introduction
 
 This module will create:
@@ -73,6 +72,7 @@ __NOTE:__ To enable [zone awareness](https://docs.aws.amazon.com/elasticsearch-s
 If you enable zone awareness for your domain, Amazon ES places an endpoint into two subnets.
 The subnets must be in different Availability Zones in the same region.
 If you don't enable zone awareness, Amazon ES places an endpoint into only one subnet. You also need to set `availability_zone_count` to `1`.
+
 
 ## Security & Compliance [<img src="https://cloudposse.com/wp-content/uploads/2020/11/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
 
@@ -169,7 +169,6 @@ Available targets:
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.35.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | >= 2.0 |
-| <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.0 |
 
 ## Providers
 
@@ -296,6 +295,7 @@ Available targets:
 | <a name="output_kibana_hostname"></a> [kibana\_hostname](#output\_kibana\_hostname) | Kibana hostname |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | Security Group ID to control access to the Elasticsearch domain |
 <!-- markdownlint-restore -->
+
 
 
 
