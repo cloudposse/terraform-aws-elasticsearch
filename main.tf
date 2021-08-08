@@ -118,7 +118,28 @@ resource "aws_security_group_rule" "ingress_cidr_blocks_9300" {
   cidr_blocks       = var.allowed_cidr_blocks
   security_group_id = join("", aws_security_group.default.*.id)
 }
-resource "aws_security_group_rule" "egress" {
+# Egress Rules
+resource "aws_security_group_rule" "egress_dns_tcp" {
+  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
+  description       = "Allow 53 TCP egress traffic"
+  type              = "egress"
+  from_port         = 53
+  to_port           = 53
+  protocol          = "tcp"
+  self              = true
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+resource "aws_security_group_rule" "egress_dns_udp" {
+  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
+  description       = "Allow 53 UDP egress traffic"
+  type              = "egress"
+  from_port         = 53
+  to_port           = 53
+  protocol          = "udp"
+  self              = true
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+resource "aws_security_group_rule" "egress_443" {
   count             = module.this.enabled && var.vpc_enabled ? 1 : 0
   description       = "Allow 443 egress traffic"
   type              = "egress"
@@ -128,7 +149,7 @@ resource "aws_security_group_rule" "egress" {
   self              = true
   security_group_id = join("", aws_security_group.default.*.id)
 }
-resource "aws_security_group_rule" "egress" {
+resource "aws_security_group_rule" "egress_9200" {
   count             = module.this.enabled && var.vpc_enabled ? 1 : 0
   description       = "Allow 9200 egress traffic"
   type              = "egress"
@@ -138,7 +159,7 @@ resource "aws_security_group_rule" "egress" {
   self              = true
   security_group_id = join("", aws_security_group.default.*.id)
 }
-resource "aws_security_group_rule" "egress" {
+resource "aws_security_group_rule" "egress_9300" {
   count             = module.this.enabled && var.vpc_enabled ? 1 : 0
   description       = "Allow 9300 egress traffic"
   type              = "egress"
