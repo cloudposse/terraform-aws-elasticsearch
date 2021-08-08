@@ -31,7 +31,7 @@ variable "vpc_enabled" {
 variable "dns_resolver_ip" {
   type        = string
   description = "Set to IP of DNS Resolver for your VPC."
-  default     = "0.0.0.0/0"
+  default     = "10.0.0.0/8"
 }
 
 variable "vpc_id" {

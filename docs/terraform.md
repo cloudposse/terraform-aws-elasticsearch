@@ -78,11 +78,7 @@
 | <a name="input_dedicated_master_enabled"></a> [dedicated\_master\_enabled](#input\_dedicated\_master\_enabled) | Indicates whether dedicated master nodes are enabled for the cluster | `bool` | `false` | no |
 | <a name="input_dedicated_master_type"></a> [dedicated\_master\_type](#input\_dedicated\_master\_type) | Instance type of the dedicated master nodes in the cluster | `string` | `"t2.small.elasticsearch"` | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
-<<<<<<< HEAD
-| <a name="input_dns_resolver_ip"></a> [dns\_resolver\_ip](#input\_dns\_resolver\_ip) | Set to IP of DNS Resolver for your VPC. | `string` | `"0.0.0.0/0"` | no |
-=======
-| <a name="input_dns_resolver_ip"></a> [dns\_resolver\_ip](#input\_dns\_resolver\_ip) | Set to IP of DNS Resolver for your VPC. | `bool` | `"0.0.0.0/0"` | no |
->>>>>>> 82315ed093c25818864644368307d7f31afae3e5
+| <a name="input_dns_resolver_ip"></a> [dns\_resolver\_ip](#input\_dns\_resolver\_ip) | Set to IP of DNS Resolver for your VPC. | `string` | `"10.0.0.0/8"` | no |
 | <a name="input_dns_zone_id"></a> [dns\_zone\_id](#input\_dns\_zone\_id) | Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana | `string` | `""` | no |
 | <a name="input_domain_endpoint_options_enforce_https"></a> [domain\_endpoint\_options\_enforce\_https](#input\_domain\_endpoint\_options\_enforce\_https) | Whether or not to require HTTPS | `bool` | `true` | no |
 | <a name="input_domain_endpoint_options_tls_security_policy"></a> [domain\_endpoint\_options\_tls\_security\_policy](#input\_domain\_endpoint\_options\_tls\_security\_policy) | The name of the TLS security policy that needs to be applied to the HTTPS endpoint | `string` | `"Policy-Min-TLS-1-0-2019-07"` | no |
