@@ -126,7 +126,7 @@ resource "aws_security_group_rule" "egress_dns_tcp" {
   from_port         = 53
   to_port           = 53
   protocol          = "tcp"
-  self              = true
+  cidr_blocks       = [var.dns_resolver_ip]
   security_group_id = join("", aws_security_group.default.*.id)
 }
 resource "aws_security_group_rule" "egress_dns_udp" {
@@ -136,7 +136,7 @@ resource "aws_security_group_rule" "egress_dns_udp" {
   from_port         = 53
   to_port           = 53
   protocol          = "udp"
-  self              = true
+  cidr_blocks       = [var.dns_resolver_ip]
   security_group_id = join("", aws_security_group.default.*.id)
 }
 resource "aws_security_group_rule" "egress_443" {
@@ -345,7 +345,7 @@ data "aws_iam_policy_document" "default" {
   # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
   # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
   dynamic "statement" {
-    for_each = length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled ? [true] : []
+    for_each = length(var.allowed_cidr_blocks) > 0 && !var.vpc_enabled ? [true] : []
     content {
       effect = "Allow"
 
