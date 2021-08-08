@@ -15,45 +15,137 @@ module "kibana_label" {
 
   context = module.this.context
 }
-
+# Security Groups Limited to ES Ports
 resource "aws_security_group" "default" {
   count       = module.this.enabled && var.vpc_enabled ? 1 : 0
   vpc_id      = var.vpc_id
   name        = module.this.id
-  description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
+  description = "Allow outbound and inbound traffic from Self, Security Groups and CIDRs."
   tags        = module.this.tags
 }
+resource "aws_security_group_rule" "ingress_security_groups_self_443" {
+  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
+  description       = "Allow inbound traffic from Security Groups"
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  self              = true
+  security_group_id = join("", aws_security_group.default.*.id)
+}
 
-resource "aws_security_group_rule" "ingress_security_groups" {
+resource "aws_security_group_rule" "ingress_security_groups_self_9200" {
+  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
+  description       = "Allow inbound traffic from Security Groups"
+  type              = "ingress"
+  from_port         = 9200
+  to_port           = 9200
+  protocol          = "tcp"
+  self              = true
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+resource "aws_security_group_rule" "ingress_security_groups_self_9300" {
+  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
+  description       = "Allow inbound traffic from Security Groups"
+  type              = "ingress"
+  from_port         = 9300
+  to_port           = 9300
+  protocol          = "tcp"
+  self              = true
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+
+resource "aws_security_group_rule" "ingress_security_groups_443" {
   count                    = module.this.enabled && var.vpc_enabled ? length(var.security_groups) : 0
   description              = "Allow inbound traffic from Security Groups"
   type                     = "ingress"
-  from_port                = var.ingress_port_range_start
-  to_port                  = var.ingress_port_range_end
+  from_port                = 443
+  to_port                  = 443
   protocol                 = "tcp"
   source_security_group_id = var.security_groups[count.index]
   security_group_id        = join("", aws_security_group.default.*.id)
 }
 
-resource "aws_security_group_rule" "ingress_cidr_blocks" {
+resource "aws_security_group_rule" "ingress_security_groups_9200" {
+  count                    = module.this.enabled && var.vpc_enabled ? length(var.security_groups) : 0
+  description              = "Allow inbound traffic from Security Groups"
+  type                     = "ingress"
+  from_port                = 9200
+  to_port                  = 9200
+  protocol                 = "tcp"
+  source_security_group_id = var.security_groups[count.index]
+  security_group_id        = join("", aws_security_group.default.*.id)
+}
+resource "aws_security_group_rule" "ingress_security_groups_9300" {
+  count                    = module.this.enabled && var.vpc_enabled ? length(var.security_groups) : 0
+  description              = "Allow inbound traffic from Security Groups"
+  type                     = "ingress"
+  from_port                = 9300
+  to_port                  = 9300
+  protocol                 = "tcp"
+  source_security_group_id = var.security_groups[count.index]
+  security_group_id        = join("", aws_security_group.default.*.id)
+}
+resource "aws_security_group_rule" "ingress_cidr_blocks_443" {
   count             = module.this.enabled && var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
-  from_port         = var.ingress_port_range_start
-  to_port           = var.ingress_port_range_end
+  from_port         = 443
+  to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = var.allowed_cidr_blocks
   security_group_id = join("", aws_security_group.default.*.id)
 }
 
+resource "aws_security_group_rule" "ingress_cidr_blocks_9200" {
+  count             = module.this.enabled && var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  description       = "Allow inbound traffic from CIDR blocks"
+  type              = "ingress"
+  from_port         = 9200
+  to_port           = 9200
+  protocol          = "tcp"
+  cidr_blocks       = var.allowed_cidr_blocks
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+
+resource "aws_security_group_rule" "ingress_cidr_blocks_9300" {
+  count             = module.this.enabled && var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  description       = "Allow inbound traffic from CIDR blocks"
+  type              = "ingress"
+  from_port         = 9300
+  to_port           = 9300
+  protocol          = "tcp"
+  cidr_blocks       = var.allowed_cidr_blocks
+  security_group_id = join("", aws_security_group.default.*.id)
+}
 resource "aws_security_group_rule" "egress" {
   count             = module.this.enabled && var.vpc_enabled ? 1 : 0
-  description       = "Allow all egress traffic"
+  description       = "Allow 443 egress traffic"
   type              = "egress"
-  from_port         = 0
-  to_port           = 65535
+  from_port         = 443
+  to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  self              = true
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+resource "aws_security_group_rule" "egress" {
+  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
+  description       = "Allow 9200 egress traffic"
+  type              = "egress"
+  from_port         = 9200
+  to_port           = 9200
+  protocol          = "tcp"
+  self              = true
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+resource "aws_security_group_rule" "egress" {
+  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
+  description       = "Allow 9300 egress traffic"
+  type              = "egress"
+  from_port         = 9300
+  to_port           = 9300
+  protocol          = "tcp"
+  self              = true
   security_group_id = join("", aws_security_group.default.*.id)
 }
 
@@ -232,7 +324,7 @@ data "aws_iam_policy_document" "default" {
   # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
   # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
   dynamic "statement" {
-    for_each = length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled ? [true] : []
+    for_each = length(var.allowed_cidr_blocks) > 0 && !var.vpc_enabled ? [true] : []
     content {
       effect = "Allow"
 
