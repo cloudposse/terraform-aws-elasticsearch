@@ -331,7 +331,6 @@ variable "advanced_security_options_master_user_name" {
 
 variable "advanced_security_options_master_user_password" {
   type        = string
-  default     = ""
   description = "Master user password (applicable if advanced_security_options_internal_user_database_enabled set to true)"
 }
 
