@@ -17,8 +17,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_domain_hostname"></a> [domain\_hostname](#module\_domain\_hostname) | cloudposse/route53-cluster-hostname/aws | 0.12.0 |
-| <a name="module_kibana_hostname"></a> [kibana\_hostname](#module\_kibana\_hostname) | cloudposse/route53-cluster-hostname/aws | 0.12.0 |
+| <a name="module_domain_hostname"></a> [domain\_hostname](#module\_domain\_hostname) | cloudposse/route53-cluster-hostname/aws | 0.12.2 |
+| <a name="module_kibana_hostname"></a> [kibana\_hostname](#module\_kibana\_hostname) | cloudposse/route53-cluster-hostname/aws | 0.12.2 |
 | <a name="module_kibana_label"></a> [kibana\_label](#module\_kibana\_label) | cloudposse/label/null | 0.24.1 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 | <a name="module_user_label"></a> [user\_label](#module\_user\_label) | cloudposse/label/null | 0.24.1 |
