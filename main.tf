@@ -1,6 +1,6 @@
 module "user_label" {
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   attributes = ["user"]
 
@@ -9,7 +9,7 @@ module "user_label" {
 
 module "kibana_label" {
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   attributes = ["kibana"]
 
