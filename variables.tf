@@ -90,7 +90,7 @@ variable "iam_role_arns" {
 
 variable "iam_role_permissions_boundary" {
   type        = string
-  default     = ""
+  default     = null
   description = "The ARN of the permissions boundary policy which will be attached to the Elasticsearch user role"
 }
 
