@@ -88,6 +88,12 @@ variable "iam_role_arns" {
   description = "List of IAM role ARNs to permit access to the Elasticsearch domain"
 }
 
+variable "iam_role_permissions_boundary" {
+  type        = string
+  default     = ""
+  description = "The ARN of the permissions boundary policy which will be attached to the Elasticsearch user role"
+}
+
 variable "iam_authorizing_role_arns" {
   type        = list(string)
   default     = []
