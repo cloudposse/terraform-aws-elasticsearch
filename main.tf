@@ -73,6 +73,8 @@ resource "aws_iam_role" "elasticsearch_user" {
   tags               = module.user_label.tags
 
   max_session_duration = var.iam_role_max_session_duration
+
+  permissions_boundary = var.iam_role_permissions_boundary
 }
 
 data "aws_iam_policy_document" "assume_role" {
