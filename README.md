@@ -73,7 +73,7 @@ The table below correctly indicates which inputs are required.
 ```hcl
 module "elasticsearch" {
   source = "appzen-oss/elasticsearch/aws"
-  # Cloud Posse recommends pinning every module to a specific version
+  # We recommends pinning every module to a specific version
   # version     = "x.x.x"
   namespace               = "eg"
   stage                   = "dev"
