@@ -269,6 +269,33 @@ resource "aws_elasticsearch_domain_policy" "default" {
   access_policies = join("", data.aws_iam_policy_document.default.*.json)
 }
 
+## IAM ES access_policies for master_user & master_password to access opensearch 
+data "aws_iam_policy_document" "master_user_policy_document" {
+  count = module.this.enabled && (var.advanced_security_options_enabled && length(var.advanced_security_options_master_user_name) > 0) ? 1 : 0
+
+  statement {
+    effect = "Allow"
+
+    actions = distinct(compact(var.iam_actions))
+
+    resources = [
+      join("", aws_elasticsearch_domain.default.*.arn),
+      "${join("", aws_elasticsearch_domain.default.*.arn)}/*"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+  }
+}
+
+resource "aws_elasticsearch_domain_policy" "master_user_policy" {
+  count           = module.this.enabled && (var.advanced_security_options_enabled && length(var.advanced_security_options_master_user_name) > 0) ? 1 : 0
+  domain_name     = module.this.id
+  access_policies = join("", data.aws_iam_policy_document.master_user_policy_document.*.json)
+}
+
 module "domain_hostname" {
   source  = "cloudposse/route53-cluster-hostname/aws"
   version = "0.12.2"
