@@ -1,10 +1,8 @@
 
 <!-- markdownlint-disable -->
-# terraform-aws-elasticsearch [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-elasticsearch?type=cf-1)]
+# terraform-aws-elasticsearch
+
 <!-- markdownlint-restore -->
-
-[![README Header][readme_header_img]][readme_header_link]
-
 
 <!--
 
