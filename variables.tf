@@ -365,9 +365,9 @@ variable "custom_endpoint_certificate_arn" {
 }
 
 variable "auto_tune_options_desired_state" {
-  type = string
+  type        = string
   description = "Desired state of the auto-tune options"
-  default = "DISABLED"
+  default     = "DISABLED"
   validation {
     condition     = contains(["DISABLED", "ENABLED"], var.auto_tune_options_desired_state)
     error_message = "The Auto-Tune desired state must be DISABLED or ENABLED"
@@ -375,51 +375,51 @@ variable "auto_tune_options_desired_state" {
 }
 
 variable "auto_tune_options_rollback_on_disable" {
-  type = string
+  type        = string
   description = "Whether to roll back to default Auto-Tune settings when disabling Auto-Tune"
-  default = null
+  default     = null
   validation {
-    condition     =  var.target_group_stickiness_duration == null || contains(["DEFAULT_ROLLBACK", "NO_ROLLBACK"], var.auto_tune_options_rollback_on_disable)
+    condition     = var.target_group_stickiness_duration == null || contains(["DEFAULT_ROLLBACK", "NO_ROLLBACK"], var.auto_tune_options_rollback_on_disable)
     error_message = "The roll-back on disable state must be DEFAULT_ROLLBACK or NO_ROLLBACK"
   }
 }
 
 variable "auto_tune_options_maintenance_schedule_cron_expression_for_recurrence" {
-  type = string
+  type        = string
   description = "Cron expression specifying the recurrence pattern for an Auto-Tune maintenance schedule (Required if rollback_on_disable is set to DEFAULT_ROLLBACK)"
-  default = null
+  default     = null
   validation {
-    condition = (var.auto_tune_options_rollback_on_disable == "DEFAULT_ROLLBACK" && var.auto_tune_options_maintenance_schedule_cron_expression_for_recurrence != null) || var.auto_tune_options_rollback_on_disable != "DEFAULT_ROLLBACK"
+    condition     = (var.auto_tune_options_rollback_on_disable == "DEFAULT_ROLLBACK" && var.auto_tune_options_maintenance_schedule_cron_expression_for_recurrence != null) || var.auto_tune_options_rollback_on_disable != "DEFAULT_ROLLBACK"
     error_message = "The maintenance schedule cron expression for recurrence must be specified if auto_tune_options_rollback_on_disable is set to DEFAULT_ROLLBACK"
   }
 }
 
 variable "auto_tune_options_maintenance_schedule_start_at" {
-  type = string
+  type        = string
   description = "Date and time at which to start the Auto-Tune maintenance schedule in RFC3339 format (Required if rollback_on_disable is set to DEFAULT_ROLLBACK)"
-  default = null
+  default     = null
   validation {
-    condition = (var.auto_tune_options_rollback_on_disable == "DEFAULT_ROLLBACK" && var.auto_tune_options_maintenance_schedule_start_at != null) || var.auto_tune_options_rollback_on_disable != "DEFAULT_ROLLBACK"
+    condition     = (var.auto_tune_options_rollback_on_disable == "DEFAULT_ROLLBACK" && var.auto_tune_options_maintenance_schedule_start_at != null) || var.auto_tune_options_rollback_on_disable != "DEFAULT_ROLLBACK"
     error_message = "The maintenance schedule start time must be specified if auto_tune_options_rollback_on_disable is set to DEFAULT_ROLLBACK"
   }
 }
 
 variable "auto_tune_options_maintenance_schedule_duration_unit" {
-  type = string
+  type        = string
   description = "The unit of time specifying the duration of an Auto-Tune maintenance window (Required if rollback_on_disable is set to DEFAULT_ROLLBACK)"
-  default = null
+  default     = null
   validation {
-    condition = (var.auto_tune_options_rollback_on_disable == "DEFAULT_ROLLBACK" && var.auto_tune_options_maintenance_schedule_duration_unit == "HOURS") || var.auto_tune_options_rollback_on_disable != "DEFAULT_ROLLBACK"
+    condition     = (var.auto_tune_options_rollback_on_disable == "DEFAULT_ROLLBACK" && var.auto_tune_options_maintenance_schedule_duration_unit == "HOURS") || var.auto_tune_options_rollback_on_disable != "DEFAULT_ROLLBACK"
     error_message = "The maintenance schedule duration unit must be HOURS if auto_tune_options_rollback_on_disable is set to DEFAULT_ROLLBACK"
   }
 }
 
 variable "auto_tune_options_maintenance_schedule_duration_value" {
-  type = number
+  type        = number
   description = "An integer specifying the value of the duration of an Auto-Tune maintenance window (Required if rollback_on_disable is set to DEFAULT_ROLLBACK)"
-  default = null
-   validation {
-    condition = (var.auto_tune_options_rollback_on_disable == "DEFAULT_ROLLBACK" && var.auto_tune_options_maintenance_schedule_duration_value == "HOURS") || var.auto_tune_options_rollback_on_disable != "DEFAULT_ROLLBACK"
+  default     = null
+  validation {
+    condition     = (var.auto_tune_options_rollback_on_disable == "DEFAULT_ROLLBACK" && var.auto_tune_options_maintenance_schedule_duration_value == "HOURS") || var.auto_tune_options_rollback_on_disable != "DEFAULT_ROLLBACK"
     error_message = "The maintenance schedule duration value must be specified if auto_tune_options_rollback_on_disable is set to DEFAULT_ROLLBACK"
   }
 }

@@ -121,7 +121,7 @@ resource "aws_elasticsearch_domain" "default" {
   }
 
   auto_tune_options {
-    desired_state = var.auto_tune_options_desired_state
+    desired_state       = var.auto_tune_options_desired_state
     rollback_on_disable = var.auto_tune_options_rollback_on_disable
     maintenance_schedule {
       cron_expression_for_recurrence = var.auto_tune_options_maintenance_schedule_cron_expression_for_recurrence
