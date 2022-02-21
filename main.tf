@@ -120,6 +120,19 @@ resource "aws_elasticsearch_domain" "default" {
     }
   }
 
+  auto_tune_options {
+    desired_state = var.auto_tune_options_desired_state
+    rollback_on_disable = var.auto_tune_options_rollback_on_disable
+    maintenance_schedule {
+      cron_expression_for_recurrence = var.auto_tune_options_maintenance_schedule_cron_expression_for_recurrence
+      start_at                       = var.auto_tune_options_maintenance_schedule_start_at
+      duration {
+        unit  = var.auto_tune_options_maintenance_schedule_duration_unit
+        value = var.auto_tune_options_maintenance_schedule_duration_value
+      }
+    }
+  }
+
   ebs_options {
     ebs_enabled = var.ebs_volume_size > 0 ? true : false
     volume_size = var.ebs_volume_size
