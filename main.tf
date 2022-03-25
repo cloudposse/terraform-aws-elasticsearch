@@ -28,36 +28,69 @@ resource "aws_security_group" "default" {
   }
 }
 
-resource "aws_security_group_rule" "ingress_security_groups" {
+resource "aws_security_group_rule" "tls_ingress_security_groups" {
   count                    = module.this.enabled && var.vpc_enabled ? length(var.security_groups) : 0
   description              = "Allow inbound traffic from Security Groups"
   type                     = "ingress"
-  from_port                = var.ingress_port_range_start
-  to_port                  = var.ingress_port_range_end
+  from_port                = 443
+  to_port                  = 443
   protocol                 = "tcp"
   source_security_group_id = var.security_groups[count.index]
   security_group_id        = join("", aws_security_group.default.*.id)
 }
 
-resource "aws_security_group_rule" "ingress_cidr_blocks" {
+resource "aws_security_group_rule" "es_ingress_security_groups" {
+  count                    = module.this.enabled && var.vpc_enabled ? length(var.security_groups) : 0
+  description              = "Allow inbound traffic from Security Groups"
+  type                     = "ingress"
+  from_port                = 9200
+  to_port                  = 9200
+  protocol                 = "tcp"
+  source_security_group_id = var.security_groups[count.index]
+  security_group_id        = join("", aws_security_group.default.*.id)
+}
+
+resource "aws_security_group_rule" "tls_ingress_cidr_blocks" {
   count             = module.this.enabled && var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
-  from_port         = var.ingress_port_range_start
-  to_port           = var.ingress_port_range_end
+  from_port         = 443
+  to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = var.allowed_cidr_blocks
   security_group_id = join("", aws_security_group.default.*.id)
 }
 
-resource "aws_security_group_rule" "egress" {
+resource "aws_security_group_rule" "es_ingress_cidr_blocks" {
+  count             = module.this.enabled && var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  description       = "Allow inbound traffic from CIDR blocks"
+  type              = "ingress"
+  from_port         = 9200
+  to_port           = 9200
+  protocol          = "tcp"
+  cidr_blocks       = var.allowed_cidr_blocks
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+
+resource "aws_security_group_rule" "tls_egress" {
   count             = module.this.enabled && var.vpc_enabled ? 1 : 0
   description       = "Allow all egress traffic"
   type              = "egress"
-  from_port         = 0
-  to_port           = 65535
+  from_port         = 443
+  to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_blocks       = var.allowed_cidr_blocks
+  security_group_id = join("", aws_security_group.default.*.id)
+}
+
+resource "aws_security_group_rule" "es_egress" {
+  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
+  description       = "Allow all egress traffic"
+  type              = "egress"
+  from_port         = 9200
+  to_port           = 9200
+  protocol          = "tcp"
+  cidr_blocks       = var.allowed_cidr_blocks
   security_group_id = join("", aws_security_group.default.*.id)
 }
 
