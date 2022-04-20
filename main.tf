@@ -65,7 +65,7 @@ resource "aws_security_group_rule" "egress" {
 resource "aws_iam_service_linked_role" "default" {
   count            = module.this.enabled && var.create_iam_service_linked_role ? 1 : 0
   aws_service_name = "es.amazonaws.com"
-  description      = "AWSServiceRoleForAmazonElasticsearchService Service-Linked Role"
+  description      = "AWSServiceRoleForAmazonOpenSearchService Service-Linked Role"
 }
 
 # Role that pods can assume for access to elasticsearch and kibana
@@ -103,10 +103,10 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-resource "aws_elasticsearch_domain" "default" {
+resource "aws_opensearch_domain" "default" {
   count                 = module.this.enabled ? 1 : 0
   domain_name           = module.this.id
-  elasticsearch_version = var.elasticsearch_version
+  engine_version        = var.elasticsearch_version
 
   advanced_options = var.advanced_options
 
@@ -224,8 +224,8 @@ data "aws_iam_policy_document" "default" {
     actions = distinct(compact(var.iam_actions))
 
     resources = [
-      join("", aws_elasticsearch_domain.default.*.arn),
-      "${join("", aws_elasticsearch_domain.default.*.arn)}/*"
+      join("", aws_opensearch_domain.default.*.arn),
+      "${join("", aws_opensearch_domain.default.*.arn)}/*"
     ]
 
     principals {
@@ -245,8 +245,8 @@ data "aws_iam_policy_document" "default" {
       actions = distinct(compact(var.iam_actions))
 
       resources = [
-        join("", aws_elasticsearch_domain.default.*.arn),
-        "${join("", aws_elasticsearch_domain.default.*.arn)}/*"
+        join("", aws_opensearch_domain.default.*.arn),
+        "${join("", aws_opensearch_domain.default.*.arn)}/*"
       ]
 
       principals {
@@ -263,7 +263,7 @@ data "aws_iam_policy_document" "default" {
   }
 }
 
-resource "aws_elasticsearch_domain_policy" "default" {
+resource "aws_opensearch_domain_policy" "default" {
   count           = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
   domain_name     = module.this.id
   access_policies = join("", data.aws_iam_policy_document.default.*.json)
@@ -277,7 +277,7 @@ module "domain_hostname" {
   dns_name = var.elasticsearch_subdomain_name == "" ? module.this.id : var.elasticsearch_subdomain_name
   ttl      = 60
   zone_id  = var.dns_zone_id
-  records  = [join("", aws_elasticsearch_domain.default.*.endpoint)]
+  records  = [join("", aws_opensearch_domain.default.*.endpoint)]
 
   context = module.this.context
 }
@@ -293,7 +293,7 @@ module "kibana_hostname" {
   # Note: kibana_endpoint is not just a domain name, it includes a path component,
   # and as such is not suitable for a DNS record. The plain endpoint is the
   # hostname portion and should be used for DNS.
-  records = [join("", aws_elasticsearch_domain.default.*.endpoint)]
+  records = [join("", aws_opensearch_domain.default.*.endpoint)]
 
   context = module.this.context
 }
