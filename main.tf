@@ -104,9 +104,9 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_opensearch_domain" "default" {
-  count                 = module.this.enabled ? 1 : 0
-  domain_name           = module.this.id
-  engine_version        = var.elasticsearch_version
+  count          = module.this.enabled ? 1 : 0
+  domain_name    = module.this.id
+  engine_version = var.elasticsearch_version
 
   advanced_options = var.advanced_options
 
