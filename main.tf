@@ -22,6 +22,13 @@ resource "aws_security_group" "default" {
   name        = module.this.id
   description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
   tags        = module.this.tags
+  ingress {
+    description = "Private subnets access"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = var.private_subnets
+  }
 
   lifecycle {
     create_before_destroy = true
