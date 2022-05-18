@@ -30,6 +30,14 @@ resource "aws_security_group" "default" {
     cidr_blocks = flatten([var.private_subnets])
   }
 
+  ingress {
+    description     = "VPN Access"
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = flatten([var.vpn])
+  }
+
   lifecycle {
     create_before_destroy = true
   }

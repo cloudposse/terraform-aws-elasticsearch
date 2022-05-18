@@ -369,3 +369,9 @@ variable "custom_endpoint_certificate_arn" {
   description = "ACM certificate ARN for custom endpoint."
   default     = ""
 }
+
+variable "vpn" {
+  type        = list(string)
+  default     = []
+  description = "vpn subnet"
+}
