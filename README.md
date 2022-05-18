@@ -1,8 +1,5 @@
 Terraform module to provision an [`Elasticsearch`](https://aws.amazon.com/elasticsearch-service/) cluster with built-in integrations with [Kibana](https://aws.amazon.com/elasticsearch-service/kibana/) and [Logstash](https://aws.amazon.com/elasticsearch-service/logstash/).
 
-[Terraform Open Source Modules](https://docs.cloudposse.com/images/terraform-open-source-modules.svg)]
-
-
 
 It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
@@ -11,8 +8,6 @@ It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
 
 
-
-We literally have [*hundreds of terraform modules*][terraform_modules] that are Open Source and well-maintained. Check them out!
 
 
 
