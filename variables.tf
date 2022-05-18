@@ -100,6 +100,12 @@ variable "iam_authorizing_role_arns" {
   description = "List of IAM role ARNs to permit to assume the Elasticsearch user role"
 }
 
+variable "private_subnets" {
+  type        = list(string)
+  default     = []
+  description = "List of private subnets"
+}
+
 variable "iam_actions" {
   type        = list(string)
   default     = []
