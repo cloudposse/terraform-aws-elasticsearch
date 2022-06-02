@@ -246,7 +246,9 @@ variable "dedicated_master_type" {
 
 variable "advanced_options" {
   type        = map(string)
-  default     = {}
+  default     = {
+    override_main_response_version = true
+  }
   description = "Key-value string pairs to specify advanced configuration options"
 }
 
