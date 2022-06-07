@@ -216,21 +216,24 @@ resource "aws_elasticsearch_domain" "default" {
 }
 
 data "aws_iam_policy_document" "default" {
-  count = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
+  count = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0 || (length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled)) ? 1 : 0
 
-  statement {
-    effect = "Allow"
+  dynamic "statement" {
+    for_each = (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? [true] : []
+    content {
+      effect = "Allow"
 
-    actions = distinct(compact(var.iam_actions))
+      actions = distinct(compact(var.iam_actions))
 
-    resources = [
-      join("", aws_elasticsearch_domain.default.*.arn),
-      "${join("", aws_elasticsearch_domain.default.*.arn)}/*"
-    ]
+      resources = [
+        join("", aws_elasticsearch_domain.default.*.arn),
+        "${join("", aws_elasticsearch_domain.default.*.arn)}/*"
+      ]
 
-    principals {
-      type        = "AWS"
-      identifiers = distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user.*.arn)))
+      principals {
+        type        = "AWS"
+        identifiers = distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user.*.arn)))
+      }
     }
   }
 
@@ -264,7 +267,7 @@ data "aws_iam_policy_document" "default" {
 }
 
 resource "aws_elasticsearch_domain_policy" "default" {
-  count           = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
+  count           = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0 || (length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled)) ? 1 : 0
   domain_name     = module.this.id
   access_policies = join("", data.aws_iam_policy_document.default.*.json)
 }
