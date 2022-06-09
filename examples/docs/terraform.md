@@ -48,7 +48,7 @@
 | ebs\_volume\_size | EBS volumes for data storage in GB | `number` | `0` | no |
 | ebs\_volume\_type | Storage type of EBS volumes | `string` | `"gp2"` | no |
 | elasticsearch\_subdomain\_name | The name of the subdomain for Elasticsearch in the DNS zone (\_e.g.\_ `elasticsearch`, `ui`, `ui-es`, `search-ui`) | `string` | `""` | no |
-| elasticsearch\_version | Version of Elasticsearch to deploy (\_e.g.\_ `7.4`, `7.1`, `6.8`, `6.7`, `6.5`, `6.4`, `6.3`, `6.2`, `6.0`, `5.6`, `5.5`, `5.3`, `5.1`, `2.3`, `1.5` | `string` | `"7.4"` | no |
+| elasticsearch\_version | Version of Elasticsearch to deploy (\_e.g.\_ `Elasticsearch_7.9`, `Elasticsearch_7.10`, `OpenSearch_1.0`, `OpenSearch_1.1` | `string` | `"7.4"` | no |
 | enabled | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
 | encrypt\_at\_rest\_enabled | Whether to enable encryption at rest | `bool` | `true` | no |
 | encrypt\_at\_rest\_kms\_key\_id | The KMS key ID to encrypt the Elasticsearch domain with. If not specified, then it defaults to using the AWS/Elasticsearch service KMS key | `string` | `""` | no |
