@@ -115,6 +115,9 @@ references:
   - name: "elasticsearch_domain_policy"
     description: "Terraform reference documentation for the `elasticsearch_domain_policy` resource"
     url: "https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html"
+  - name: "AWS IAM roles for service accounts"
+    description: "Associate an IAM role with a Kubernetes service account"
+    url: "https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html"
 
 # Contributors to this project
 contributors:

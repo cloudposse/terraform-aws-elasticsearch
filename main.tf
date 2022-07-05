@@ -82,7 +82,7 @@ resource "aws_iam_role" "elasticsearch_user" {
 }
 
 data "aws_iam_policy_document" "assume_role" {
-  count = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
+  count = module.this.enabled ? 1 : 0
 
   statement {
     actions = [
@@ -94,12 +94,46 @@ data "aws_iam_policy_document" "assume_role" {
       identifiers = var.aws_ec2_service_name
     }
 
-    principals {
-      type        = "AWS"
-      identifiers = compact(concat(var.iam_authorizing_role_arns, var.iam_role_arns))
-    }
-
     effect = "Allow"
+  }
+
+  dynamic "statement" {
+    for_each = length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0 ? [true] : []
+
+    content {
+      effect = "Allow"
+
+      actions = [
+        "sts:AssumeRole"
+      ]
+
+      principals {
+        type        = "AWS"
+        identifiers = compact(concat(var.iam_authorizing_role_arns, var.iam_role_arns))
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = var.iam_irsa_openid_connect_provider_arn != "" ? [true] : []
+    content {
+      effect = "Allow"
+
+      actions = [
+        "sts:AssumeRoleWithWebIdentity"
+      ]
+
+      principals {
+        type        = "Federated"
+        identifiers = compact([var.iam_irsa_openid_connect_provider_arn])
+      }
+
+      condition {
+        test     = "StringLike"
+        variable = join(":", [var.iam_irsa_openid_connect_provider_url, "sub"])
+        values   = [var.iam_irsa_service_account]
+      }
+    }
   }
 }
 
@@ -238,7 +272,7 @@ data "aws_iam_policy_document" "default" {
   # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
   # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
   dynamic "statement" {
-    for_each = length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled ? [true] : []
+    for_each = length(var.allowed_cidr_blocks) > 0 && !var.vpc_enabled ? [true] : []
     content {
       effect = "Allow"
 

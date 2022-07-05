@@ -106,6 +106,24 @@ variable "iam_actions" {
   description = "List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
 }
 
+variable "iam_irsa_openid_connect_provider_arn" {
+  type        = string
+  default     = ""
+  description = "ARN of the OpenID connect provider to allow usage of IRSA"
+}
+
+variable "iam_irsa_openid_connect_provider_url" {
+  type        = string
+  default     = ""
+  description = "URL of the OpenID connect provider to allow usage of IRSA"
+}
+
+variable "iam_irsa_service_account" {
+  type        = string
+  default     = "system:serviceaccount:default:*"
+  description = "Kubernetes ServiceAccount to allow to access the Elastic Domain via IRSA"
+}
+
 variable "zone_awareness_enabled" {
   type        = bool
   default     = true

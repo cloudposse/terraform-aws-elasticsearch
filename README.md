@@ -246,6 +246,9 @@ Available targets:
 | <a name="input_environment"></a> [environment](#input\_environment) | ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
 | <a name="input_iam_actions"></a> [iam\_actions](#input\_iam\_actions) | List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost` | `list(string)` | `[]` | no |
 | <a name="input_iam_authorizing_role_arns"></a> [iam\_authorizing\_role\_arns](#input\_iam\_authorizing\_role\_arns) | List of IAM role ARNs to permit to assume the Elasticsearch user role | `list(string)` | `[]` | no |
+| <a name="input_iam_irsa_openid_connect_provider_arn"></a> [iam\_irsa\_openid\_connect\_provider\_arn](#input\_iam\_irsa\_openid\_connect\_provider\_arn) | ARN of the OpenID connect provider to allow usage of IRSA | `string` | `""` | no |
+| <a name="input_iam_irsa_openid_connect_provider_url"></a> [iam\_irsa\_openid\_connect\_provider\_url](#input\_iam\_irsa\_openid\_connect\_provider\_url) | URL of the OpenID connect provider to allow usage of IRSA | `string` | `""` | no |
+| <a name="input_iam_irsa_service_account"></a> [iam\_irsa\_service\_account](#input\_iam\_irsa\_service\_account) | Kubernetes ServiceAccount to allow to access the Elastic Domain via IRSA | `string` | `"system:serviceaccount:default:*"` | no |
 | <a name="input_iam_role_arns"></a> [iam\_role\_arns](#input\_iam\_role\_arns) | List of IAM role ARNs to permit access to the Elasticsearch domain | `list(string)` | `[]` | no |
 | <a name="input_iam_role_max_session_duration"></a> [iam\_role\_max\_session\_duration](#input\_iam\_role\_max\_session\_duration) | The maximum session duration (in seconds) for the user role. Can have a value from 1 hour to 12 hours | `number` | `3600` | no |
 | <a name="input_iam_role_permissions_boundary"></a> [iam\_role\_permissions\_boundary](#input\_iam\_role\_permissions\_boundary) | The ARN of the permissions boundary policy which will be attached to the Elasticsearch user role | `string` | `null` | no |
@@ -317,6 +320,7 @@ For additional context, refer to some of these links.
 - [Control Access to Amazon Elasticsearch Service Domain](https://aws.amazon.com/blogs/security/how-to-control-access-to-your-amazon-elasticsearch-service-domain/) - Describes how to Control Access to Amazon Elasticsearch Service Domain
 - [elasticsearch_domain](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain.html) - Terraform reference documentation for the `elasticsearch_domain` resource
 - [elasticsearch_domain_policy](https://www.terraform.io/docs/providers/aws/r/elasticsearch_domain_policy.html) - Terraform reference documentation for the `elasticsearch_domain_policy` resource
+- [AWS IAM roles for service accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) - Associate an IAM role with a Kubernetes service account
 
 
 ## Help
