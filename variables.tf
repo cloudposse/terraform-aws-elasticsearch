@@ -371,7 +371,7 @@ variable "aws_service_type" {
   default = "elasticsearch"
 
   validation {
-    condition     = contains(["elasticsearch", "opensearch"], value)
+    condition     = contains(["elasticsearch", "opensearch"], var.aws_service_type)
     error_message = "Value can only be one of `elasticsearch` or `opensearch`."
   }
 }
