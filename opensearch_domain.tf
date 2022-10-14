@@ -91,28 +91,43 @@ resource "aws_opensearch_domain" "default" {
     }
   }
 
-  log_publishing_options {
-    enabled                  = var.log_publishing_index_enabled
-    log_type                 = "INDEX_SLOW_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_index_cloudwatch_log_group_arn
+  # Converted `log_publishing_options` to dynamic blocks due to the follow errors
+  # │ Error: Error creating OpenSearch domain: InvalidParameter: 4 validation error(s) found.
+  # │ - minimum field size of 20, CreateDomainInput.LogPublishingOptions[ES_APPLICATION_LOGS].CloudWatchLogsLogGroupArn.
+  # │ - minimum field size of 20, CreateDomainInput.LogPublishingOptions[AUDIT_LOGS].CloudWatchLogsLogGroupArn.
+  # │ - minimum field size of 20, CreateDomainInput.LogPublishingOptions[SEARCH_SLOW_LOGS].CloudWatchLogsLogGroupArn.
+  # │ - minimum field size of 20, CreateDomainInput.LogPublishingOptions[INDEX_SLOW_LOGS].CloudWatchLogsLogGroupArn.
+
+  dynamic "log_publishing_options" {
+    for_each = var.log_publishing_index_enabled ? [true] : []
+    content {
+      log_type                 = "INDEX_SLOW_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_index_cloudwatch_log_group_arn
+    }
   }
 
-  log_publishing_options {
-    enabled                  = var.log_publishing_search_enabled
-    log_type                 = "SEARCH_SLOW_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_search_cloudwatch_log_group_arn
+  dynamic "log_publishing_options" {
+    for_each = var.log_publishing_search_enabled ? [true] : []
+    content {
+      log_type                 = "SEARCH_SLOW_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_search_cloudwatch_log_group_arn
+    }
   }
 
-  log_publishing_options {
-    enabled                  = var.log_publishing_audit_enabled
-    log_type                 = "AUDIT_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_audit_cloudwatch_log_group_arn
+  dynamic "log_publishing_options" {
+    for_each = var.log_publishing_audit_enabled ? [true] : []
+    content {
+      log_type                 = "AUDIT_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_audit_cloudwatch_log_group_arn
+    }
   }
 
-  log_publishing_options {
-    enabled                  = var.log_publishing_application_enabled
-    log_type                 = "ES_APPLICATION_LOGS"
-    cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
+  dynamic "log_publishing_options" {
+    for_each = var.log_publishing_application_enabled ? [true] : []
+    content {
+      log_type                 = "ES_APPLICATION_LOGS"
+      cloudwatch_log_group_arn = var.log_publishing_application_cloudwatch_log_group_arn
+    }
   }
 
   tags = module.this.tags
