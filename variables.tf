@@ -363,3 +363,15 @@ variable "custom_endpoint_certificate_arn" {
   description = "ACM certificate ARN for custom endpoint."
   default     = ""
 }
+
+variable "aws_service_type" {
+  type        = string
+  description = "The type of AWS service to deploy (`elasticsearch` or `opensearch`)."
+  # For backwards comptibility we default to elasticsearch
+  default = "elasticsearch"
+
+  validation {
+    condition     = contains(["elasticsearch", "opensearch"], value)
+    error_message = "Value can only be one of `elasticsearch` or `opensearch`."
+  }
+}
