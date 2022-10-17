@@ -103,7 +103,13 @@ variable "iam_authorizing_role_arns" {
 variable "iam_actions" {
   type        = list(string)
   default     = []
-  description = "List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
+  description = "List of actions to allow for the user IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
+}
+
+variable "anonymous_iam_actions" {
+  type        = list(string)
+  default     = []
+  description = "List of actions to allow for the anonymous (`*`) IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
 }
 
 variable "zone_awareness_enabled" {
