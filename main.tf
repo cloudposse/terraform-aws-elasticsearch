@@ -119,6 +119,8 @@ data "aws_iam_policy_document" "assume_role" {
 data "aws_iam_policy_document" "default" {
   count = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
 
+  source_policy_documents = var.additional_policy_documents
+
   statement {
     sid = "User"
 
@@ -166,8 +168,6 @@ data "aws_iam_policy_document" "default" {
       }
     }
   }
-
-  source_policy_documents = var.additional_policy_documents
 
 }
 
