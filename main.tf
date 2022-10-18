@@ -162,6 +162,9 @@ data "aws_iam_policy_document" "default" {
       }
     }
   }
+
+  source_policy_documents = var.additional_policy_documents
+
 }
 
 module "domain_hostname" {

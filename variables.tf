@@ -381,3 +381,9 @@ variable "aws_service_type" {
     error_message = "Value can only be one of `elasticsearch` or `opensearch`."
   }
 }
+
+variable "additional_policy_documents" {
+  type        = list(string)
+  description = "List of json policy docs in string format to be added in addition to default generated policy."
+  default     = []
+}
