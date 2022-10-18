@@ -119,8 +119,6 @@ data "aws_iam_policy_document" "assume_role" {
 data "aws_iam_policy_document" "default" {
   count = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
 
-  source_policy_documents = var.additional_policy_documents
-
   statement {
     sid = "User"
 
@@ -143,7 +141,7 @@ data "aws_iam_policy_document" "default" {
   # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
   # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
   dynamic "statement" {
-    for_each = length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled ? [true] : []
+    for_each = length(var.allowed_cidr_blocks) > 0 && !var.vpc_enabled ? [true] : []
     content {
       sid = "Anonymous"
 
@@ -168,6 +166,9 @@ data "aws_iam_policy_document" "default" {
       }
     }
   }
+
+  source_policy_documents   = var.additional_policy_documents
+  override_policy_documents = var.override_policy_documents
 
 }
 

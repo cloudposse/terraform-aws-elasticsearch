@@ -383,7 +383,13 @@ variable "aws_service_type" {
 }
 
 variable "additional_policy_documents" {
-  type        = list(any)
-  description = "List of json policy docs in string format to be added in addition to default generated policy."
+  type        = list(string)
+  description = "List of json policy docs in string format to be added in addition to the default generated policy statements."
+  default     = []
+}
+
+variable "override_policy_documents" {
+  type        = list(string)
+  description = "List of json policy docs in string format to be used as overrides to the default generated policy statements."
   default     = []
 }
