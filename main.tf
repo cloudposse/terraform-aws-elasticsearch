@@ -125,6 +125,7 @@ resource "aws_elasticsearch_domain" "default" {
     volume_size = var.ebs_volume_size
     volume_type = var.ebs_volume_type
     iops        = var.ebs_iops
+    throughput  = var.ebs_throughput
   }
 
   encrypt_at_rest {
