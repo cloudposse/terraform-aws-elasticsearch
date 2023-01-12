@@ -159,6 +159,23 @@ resource "aws_elasticsearch_domain" "default" {
     }
   }
 
+  dynamic "auto_tune_options" {
+    for_each = var.auto_tune_enabled ? [true] : []
+    content {
+      desired_state       = "ENABLED"
+      rollback_on_disable = var.auto_tune_rollback_settings
+      maintenance_schedule {
+        # Required until https://github.com/hashicorp/terraform-provider-aws/issues/22239 would be resolved
+        start_at = var.auto_tune_starting_time == null ? timeadd(timestamp(), "1h") : var.auto_tune_starting_time
+        duration {
+          value = var.auto_tune_duration
+          unit  = "HOURS"
+        }
+        cron_expression_for_recurrence = var.auto_tune_cron_schedule
+      }
+    }
+  }
+
   node_to_node_encryption {
     enabled = var.node_to_node_encryption_enabled
   }
@@ -238,7 +255,7 @@ data "aws_iam_policy_document" "default" {
   # https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-ip
   # https://aws.amazon.com/premiumsupport/knowledge-center/anonymous-not-authorized-elasticsearch/
   dynamic "statement" {
-    for_each = length(var.allowed_cidr_blocks) > 0 && ! var.vpc_enabled ? [true] : []
+    for_each = length(var.allowed_cidr_blocks) > 0 && !var.vpc_enabled ? [true] : []
     content {
       effect = "Allow"
 

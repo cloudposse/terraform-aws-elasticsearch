@@ -363,3 +363,36 @@ variable "custom_endpoint_certificate_arn" {
   description = "ACM certificate ARN for custom endpoint."
   default     = ""
 }
+
+variable "auto_tune_enabled" {
+  type        = bool
+  description = "Whether to enable autotune."
+  default     = false
+}
+
+variable "auto_tune_rollback_settings" {
+  type        = string
+  description = "Whether to roll back to default Auto-Tune settings when disabling Auto-Tune."
+  default     = "NO_ROLLBACK"
+
+  validation {
+    condition     = contains(["DEFAULT_ROLLBACK", "NO_ROLLBACK"], var.auto_tune_rollback_settings)
+    error_message = "Valid values: DEFAULT_ROLLBACK or NO_ROLLBACK."
+  }
+}
+
+variable "auto_tune_starting_time" {
+  type        = string
+  description = "Date and time at which to start the Auto-Tune maintenance schedule in RFC3339 format. Time should be in the future."
+  default = null
+}
+
+variable "auto_tune_cron_schedule" {
+  type        = string
+  description = "A cron expression specifying the recurrence pattern for an Auto-Tune maintenance schedule."
+}
+
+variable "auto_tune_duration" {
+  type        = number
+  description = "Autotune maintanance window duration time in hours."
+}
