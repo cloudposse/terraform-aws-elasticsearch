@@ -384,7 +384,7 @@ variable "auto_tune_rollback_settings" {
 variable "auto_tune_starting_time" {
   type        = string
   description = "Date and time at which to start the Auto-Tune maintenance schedule in RFC3339 format. Time should be in the future."
-  default = null
+  default     = null
 }
 
 variable "auto_tune_cron_schedule" {
