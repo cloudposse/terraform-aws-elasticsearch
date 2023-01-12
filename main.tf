@@ -157,6 +157,10 @@ resource "aws_elasticsearch_domain" "default" {
         availability_zone_count = var.availability_zone_count
       }
     }
+
+    cold_storage_options {
+      enabled = var.cold_storage_enabled
+    }
   }
 
   node_to_node_encryption {

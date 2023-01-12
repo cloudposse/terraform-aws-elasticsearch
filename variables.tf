@@ -363,3 +363,9 @@ variable "custom_endpoint_certificate_arn" {
   description = "ACM certificate ARN for custom endpoint."
   default     = ""
 }
+
+variable "cold_storage_enabled" {
+  type        = bool
+  description = "Enables cold storage support."
+  default     = false
+}
