@@ -161,7 +161,7 @@ resource "aws_elasticsearch_domain" "default" {
     dynamic "cold_storage_options" {
       for_each = var.cold_storage_enabled ? [true] : []
       content {
-      enabled = var.cold_storage_enabled
+        enabled = var.cold_storage_enabled
       }
     }
   }
