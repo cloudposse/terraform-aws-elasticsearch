@@ -396,5 +396,5 @@ variable "auto_tune_cron_schedule" {
 variable "auto_tune_duration" {
   type        = number
   description = "Autotune maintanance window duration time in hours."
-  default.       = null
+  default       = null
 }
