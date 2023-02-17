@@ -391,7 +391,7 @@ variable "auto_tune" {
   EOT
 
   validation {
-    condition     = var.auto_tune.enabled == true && var.auto_tune.cron_schedule != null
+    condition     = var.auto_tune.enabled == false || var.auto_tune.cron_schedule != null
     error_message = "Variable auto_tune.cron_schedule should be set if var.auto_tune.enabled == true."
   }
 
