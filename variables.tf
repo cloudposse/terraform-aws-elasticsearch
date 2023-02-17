@@ -364,37 +364,44 @@ variable "custom_endpoint_certificate_arn" {
   default     = ""
 }
 
-variable "auto_tune_enabled" {
-  type        = bool
-  description = "Whether to enable autotune."
-  default     = false
-}
+variable "auto_tune" {
+  type = object({
+    enabled             = bool
+    rollback_on_disable = string
+    starting_time       = string
+    cron_schedule       = string
+    duration            = number
+  })
 
-variable "auto_tune_rollback_settings" {
-  type        = string
-  description = "Whether to roll back to default Auto-Tune settings when disabling Auto-Tune."
-  default     = "NO_ROLLBACK"
+  default = {
+    enabled             = false
+    rollback_on_disable = "NO_ROLLBACK"
+    starting_time       = null
+    cron_schedule       = null
+    duration            = null
+  }
+
+  description = <<-EOT
+    This object represents the auto_tune configuration. It contains the following filed:
+    - enabled - Whether to enable autotune.
+    - rollback_on_disable - Whether to roll back to default Auto-Tune settings when disabling Auto-Tune.
+    - starting_time - Date and time at which to start the Auto-Tune maintenance schedule in RFC3339 format. Time should be in the future.
+    - cron_schedule - A cron expression specifying the recurrence pattern for an Auto-Tune maintenance schedule.
+    - duration - Autotune maintanance window duration time in hours.
+  EOT
 
   validation {
-    condition     = contains(["DEFAULT_ROLLBACK", "NO_ROLLBACK"], var.auto_tune_rollback_settings)
-    error_message = "Valid values: DEFAULT_ROLLBACK or NO_ROLLBACK."
+    condition     = var.auto_tune.enabled == true && var.cron_schedule != null
+    error_message = "var.auto_tune.cron_schedule should be set if var.auto_tune.enabled == true"
   }
-}
 
-variable "auto_tune_starting_time" {
-  type        = string
-  description = "Date and time at which to start the Auto-Tune maintenance schedule in RFC3339 format. Time should be in the future."
-  default     = null
-}
+  validation {
+    condition     = var.auto_tune.enabled == true && var.duration != null
+    error_message = "var.auto_tune.duration should be set if var.auto_tune.enabled == true"
+  }
 
-variable "auto_tune_cron_schedule" {
-  type        = string
-  description = "A cron expression specifying the recurrence pattern for an Auto-Tune maintenance schedule."
-  default     = null
-}
-
-variable "auto_tune_duration" {
-  type        = number
-  description = "Autotune maintanance window duration time in hours."
-  default     = null
+  validation {
+    condition     = contains(["DEFAULT_ROLLBACK", "NO_ROLLBACK"], var.auto_tune.rollback_on_disable)
+    error_message = "var.auto_tune.rollback_on_disable valid values: DEFAULT_ROLLBACK or NO_ROLLBACK."
+  }
 }
