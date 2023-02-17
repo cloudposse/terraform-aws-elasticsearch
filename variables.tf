@@ -396,7 +396,7 @@ variable "auto_tune" {
   }
 
   validation {
-    condition     = var.auto_tune.enabled == true && var.auto_tune.duration != null
+    condition     = var.auto_tune.enabled == false || var.auto_tune.duration != null
     error_message = "Variable auto_tune.duration should be set if var.auto_tune.enabled == true."
   }
 
