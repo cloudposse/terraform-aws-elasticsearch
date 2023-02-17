@@ -141,6 +141,12 @@ variable "ebs_iops" {
   description = "The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type"
 }
 
+variable "ebs_throughput" {
+  type        = number
+  default     = null
+  description = "Specifies the throughput (in MiB/s) of the EBS volumes attached to data nodes. Applicable only for the gp3 volume type. Valid values are between 125 and 1000."
+}
+
 variable "encrypt_at_rest_enabled" {
   type        = bool
   default     = true
