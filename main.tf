@@ -163,6 +163,23 @@ resource "aws_elasticsearch_domain" "default" {
     }
   }
 
+  dynamic "auto_tune_options" {
+    for_each = var.auto_tune.enabled ? [true] : []
+    content {
+      desired_state       = "ENABLED"
+      rollback_on_disable = var.auto_tune.rollback_on_disable
+      maintenance_schedule {
+        # Required until https://github.com/hashicorp/terraform-provider-aws/issues/22239 would be resolved
+        start_at = var.auto_tune.starting_time == null ? timeadd(timestamp(), "1h") : var.auto_tune.starting_time
+        duration {
+          value = var.auto_tune.duration
+          unit  = "HOURS"
+        }
+        cron_expression_for_recurrence = var.auto_tune_cron_schedule
+      }
+    }
+  }
+
   node_to_node_encryption {
     enabled = var.node_to_node_encryption_enabled
   }
