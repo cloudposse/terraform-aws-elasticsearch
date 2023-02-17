@@ -391,17 +391,17 @@ variable "auto_tune" {
   EOT
 
   validation {
-    condition     = var.auto_tune.enabled == true && var.cron_schedule != null
-    error_message = "var.auto_tune.cron_schedule should be set if var.auto_tune.enabled == true"
+    condition     = var.auto_tune.enabled == true && var.auto_tune.cron_schedule != null
+    error_message = "Variable auto_tune.cron_schedule should be set if var.auto_tune.enabled == true."
   }
 
   validation {
-    condition     = var.auto_tune.enabled == true && var.duration != null
-    error_message = "var.auto_tune.duration should be set if var.auto_tune.enabled == true"
+    condition     = var.auto_tune.enabled == true && var.auto_tune.duration != null
+    error_message = "Variable auto_tune.duration should be set if var.auto_tune.enabled == true."
   }
 
   validation {
     condition     = contains(["DEFAULT_ROLLBACK", "NO_ROLLBACK"], var.auto_tune.rollback_on_disable)
-    error_message = "var.auto_tune.rollback_on_disable valid values: DEFAULT_ROLLBACK or NO_ROLLBACK."
+    error_message = "Variable auto_tune.rollback_on_disable valid values: DEFAULT_ROLLBACK or NO_ROLLBACK."
   }
 }
