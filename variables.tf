@@ -390,11 +390,11 @@ variable "auto_tune_starting_time" {
 variable "auto_tune_cron_schedule" {
   type        = string
   description = "A cron expression specifying the recurrence pattern for an Auto-Tune maintenance schedule."
-  default        = null
+  default     = null
 }
 
 variable "auto_tune_duration" {
   type        = number
   description = "Autotune maintanance window duration time in hours."
-  default       = null
+  default     = null
 }
