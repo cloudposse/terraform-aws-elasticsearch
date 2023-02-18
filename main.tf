@@ -158,6 +158,13 @@ resource "aws_elasticsearch_domain" "default" {
         availability_zone_count = var.availability_zone_count
       }
     }
+
+    dynamic "cold_storage_options" {
+      for_each = var.cold_storage_enabled ? [true] : []
+      content {
+        enabled = var.cold_storage_enabled
+      }
+    }
   }
 
   dynamic "auto_tune_options" {

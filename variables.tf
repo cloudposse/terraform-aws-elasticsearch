@@ -370,6 +370,12 @@ variable "custom_endpoint_certificate_arn" {
   default     = ""
 }
 
+variable "cold_storage_enabled" {
+  type        = bool
+  description = "Enables cold storage support."
+  default     = false
+}
+
 variable "auto_tune" {
   type = object({
     enabled             = bool
@@ -411,3 +417,4 @@ variable "auto_tune" {
     error_message = "Variable auto_tune.rollback_on_disable valid values: DEFAULT_ROLLBACK or NO_ROLLBACK."
   }
 }
+
