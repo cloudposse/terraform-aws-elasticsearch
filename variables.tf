@@ -1,7 +1,13 @@
 variable "security_groups" {
   type        = list(string)
   default     = []
-  description = "List of security group IDs to be allowed to connect to the cluster"
+  description = "List of security group IDs to be allowed to connect to the cluster or the security group IDs to apply to the cluster when the `create_security_group` variable is set to false."
+}
+
+variable "create_security_group" {
+  type        = bool
+  default     = true
+  description = "Whether to create a dedicated security group for the Elasticsearch domain. Set it to `false` if you already have security groups that you want to attach to the domain and specify them in the `security_groups` variable."
 }
 
 variable "ingress_port_range_start" {
