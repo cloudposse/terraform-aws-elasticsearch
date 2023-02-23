@@ -120,7 +120,7 @@ module "elasticsearch" {
   security_groups         = ["sg-XXXXXXXXX", "sg-YYYYYYYY"]
   vpc_id                  = "vpc-XXXXXXXXX"
   subnet_ids              = ["subnet-XXXXXXXXX", "subnet-YYYYYYYY"]
-  zone_awareness_enabled  = "true"
+  zone_awareness_enabled  = true
   elasticsearch_version   = "6.5"
   instance_type           = "t2.small.elasticsearch"
   instance_count          = 4
