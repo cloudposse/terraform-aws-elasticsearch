@@ -448,3 +448,12 @@ variable "auto_tune" {
   }
 }
 
+variable "access_policies" {
+  description = "JSON string for the IAM policy document specifying the access policies for the domain."
+  type        = string
+  default     = ""
+  validation {
+    condition     = var.access_policies == "" || try(jsondecode(var.access_policies), null) != null
+    error_message = "The access_policies JSON string is not valid."
+  }
+}
