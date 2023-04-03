@@ -366,3 +366,7 @@ variable "env" {
 variable "datacenters" {
   type = string
 }
+
+variable "es_uri" {
+  type = string
+}
