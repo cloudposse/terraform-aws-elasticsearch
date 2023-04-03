@@ -56,7 +56,7 @@ job "elasticsearch-exporter" {
 
       template {
         data = <<-EOH
-          ES_URI="https://${es_uri}"
+          ES_URI="https://${es_uri}:443"
         EOH
         destination = "local/env"
         env         = true
