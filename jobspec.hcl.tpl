@@ -55,8 +55,8 @@ ob "prom-mysql-exporter" {
       }
 
       template {
-        data = <<EOH
-ES_URI="https://${{es_uri}}"
+        data = <<-EOH
+          ES_URI="https://${es_uri}"
         EOH
         destination = "local/env"
         env         = true
