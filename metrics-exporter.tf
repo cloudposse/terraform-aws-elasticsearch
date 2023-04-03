@@ -19,7 +19,8 @@ resource "nomad_job" "elasticsearch-exporter" {
       "job_name"    = join("-", ["elasticsearch-exporter", var.env])
       "datacenters" = var.datacenters
       "env" 	    = var.env
-      "es_uri" 	    = module.domain_hostname.hostname
+      #"es_uri" 	    = module.domain_hostname.hostname
+      "es_uri" 	    = "test"
     }
   }
 }
