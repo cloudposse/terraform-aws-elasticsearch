@@ -82,7 +82,3 @@ variable "env" {
 variable "job_name" {
   type = string
 }
-
-variable "es_uri" {
-  type = string
-}
