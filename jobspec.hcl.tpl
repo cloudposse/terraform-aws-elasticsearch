@@ -1,4 +1,4 @@
-job "prom-mysql-exporter" {
+job "elasticsearch-exporter" {
   id          = var.job_name
   name        = var.job_name
   region      = "eu-central-1"
@@ -20,7 +20,7 @@ job "prom-mysql-exporter" {
     change_signal = "SIGUSR1"
   }
 
-  group "prom-mysql-exporter" {
+  group "elasticsearch-exporter" {
     count = 1
 
     constraint {
