@@ -1,4 +1,4 @@
-ob "prom-mysql-exporter" {
+job "prom-mysql-exporter" {
   id          = var.job_name
   name        = var.job_name
   region      = "eu-central-1"
