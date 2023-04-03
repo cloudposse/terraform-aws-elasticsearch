@@ -10,7 +10,7 @@ data "aws_instances" "nomad_server" {
   }
 }
 
-resource "nomad_job" "mysql-exporter" {
+resource "nomad_job" "elasticsearch-exporter" {
   count      = var.env == "test-sre" || var.env == "infra" ? 0 : 1
   jobspec    = templatefile("${path.module}/jobspec.hcl.tpl", {})
   hcl2 {
