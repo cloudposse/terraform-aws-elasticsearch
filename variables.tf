@@ -362,3 +362,7 @@ variable "custom_endpoint_certificate_arn" {
 variable "env" {
   type = string
 }
+
+variable "datacenters" {
+  type = string
+}
