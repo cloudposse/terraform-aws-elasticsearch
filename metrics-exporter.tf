@@ -12,8 +12,9 @@ data "aws_instances" "nomad_server" {
 
 resource "nomad_job" "elasticsearch-exporter" {
   count      = var.env == "test-sre" || var.env == "infra" ? 0 : 1
-  jobspec    = templatefile("${path.module}/jobspec.hcl.tpl", {})
+  jobspec    = templatefile("${path.module}/jobspec.hcl.tpl", {
     es_uri = module.domain_hostname.hostname
+  })
   hcl2 {
     enabled = true
     vars = {
