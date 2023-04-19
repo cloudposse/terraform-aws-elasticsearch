@@ -122,11 +122,6 @@ variable "availability_zone_count" {
   type        = number
   default     = 2
   description = "Number of Availability Zones for the domain to use."
-
-  validation {
-    condition     = contains([2, 3], var.availability_zone_count)
-    error_message = "The availibility zone count must be 2 or 3."
-  }
 }
 
 variable "ebs_volume_size" {
