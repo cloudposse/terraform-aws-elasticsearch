@@ -17,7 +17,7 @@ module "kibana_label" {
 }
 
 resource "aws_security_group" "default" {
-  count       = module.this.enabled && var.vpc_enabled ? 1 : 0
+  count       = module.this.enabled && var.vpc_enabled && var.create_security_group ? 1 : 0
   vpc_id      = var.vpc_id
   name        = module.this.id
   description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
@@ -29,7 +29,7 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
-  count                    = module.this.enabled && var.vpc_enabled ? length(var.security_groups) : 0
+  count                    = module.this.enabled && var.vpc_enabled && var.create_security_group ? length(var.security_groups) : 0
   description              = "Allow inbound traffic from Security Groups"
   type                     = "ingress"
   from_port                = var.ingress_port_range_start
@@ -40,7 +40,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = module.this.enabled && var.vpc_enabled && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
+  count             = module.this.enabled && var.vpc_enabled && var.create_security_group && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
   description       = "Allow inbound traffic from CIDR blocks"
   type              = "ingress"
   from_port         = var.ingress_port_range_start
@@ -51,7 +51,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  count             = module.this.enabled && var.vpc_enabled ? 1 : 0
+  count             = module.this.enabled && var.vpc_enabled && var.create_security_group ? 1 : 0
   description       = "Allow all egress traffic"
   type              = "egress"
   from_port         = 0
@@ -179,8 +179,8 @@ resource "aws_elasticsearch_domain" "default" {
     instance_count           = var.instance_count
     instance_type            = var.instance_type
     dedicated_master_enabled = var.dedicated_master_enabled
-    dedicated_master_count   = var.dedicated_master_count
-    dedicated_master_type    = var.dedicated_master_type
+    dedicated_master_count   = var.dedicated_master_enabled ? var.dedicated_master_count : null
+    dedicated_master_type    = var.dedicated_master_enabled ? var.dedicated_master_type : null
     zone_awareness_enabled   = var.zone_awareness_enabled
     warm_enabled             = var.warm_enabled
     warm_count               = var.warm_enabled ? var.warm_count : null
@@ -226,7 +226,7 @@ resource "aws_elasticsearch_domain" "default" {
     for_each = var.vpc_enabled ? [true] : []
 
     content {
-      security_group_ids = [join("", aws_security_group.default.*.id)]
+      security_group_ids = var.create_security_group ? [join("", aws_security_group.default.*.id)] : var.security_groups
       subnet_ids         = var.subnet_ids
     }
   }
@@ -330,7 +330,7 @@ resource "aws_elasticsearch_domain_policy" "default" {
 
 module "domain_hostname" {
   source  = "cloudposse/route53-cluster-hostname/aws"
-  version = "0.12.2"
+  version = "0.12.3"
 
   enabled  = module.this.enabled && var.domain_hostname_enabled
   dns_name = var.elasticsearch_subdomain_name == "" ? module.this.id : var.elasticsearch_subdomain_name
@@ -343,7 +343,7 @@ module "domain_hostname" {
 
 module "kibana_hostname" {
   source  = "cloudposse/route53-cluster-hostname/aws"
-  version = "0.12.2"
+  version = "0.12.3"
 
   enabled  = module.this.enabled && var.kibana_hostname_enabled
   dns_name = var.kibana_subdomain_name == "" ? module.kibana_label.id : var.kibana_subdomain_name
