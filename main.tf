@@ -255,7 +255,7 @@ data "aws_iam_policy_document" "default" {
 
     principals {
       type        = "AWS"
-      identifiers = distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user.*.arn)))
+      identifiers = distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user[*].arn)))
     }
   }
 
