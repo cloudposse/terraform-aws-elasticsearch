@@ -82,7 +82,7 @@ resource "aws_iam_role" "elasticsearch_user" {
 }
 
 data "aws_iam_policy_document" "assume_role" {
-  count = module.this.enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
+  count = module.this.enabled && var.create_elasticsearch_user_role && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
 
   statement {
     actions = [
