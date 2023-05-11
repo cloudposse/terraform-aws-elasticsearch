@@ -10,6 +10,12 @@ variable "create_security_group" {
   description = "Whether to create a dedicated security group for the Elasticsearch domain. Set it to `false` if you already have security groups that you want to attach to the domain and specify them in the `security_groups` variable."
 }
 
+variable "create_elasticsearch_user_role" {
+  type        = bool
+  default     = true
+  description = "Whether to create an IAM role for Users/EC2 to assume to access the Elasticsearch domain. Set it to `false` if you already manage access through other means."
+}
+
 variable "ingress_port_range_start" {
   type        = number
   default     = 0
