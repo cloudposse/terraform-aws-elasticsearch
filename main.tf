@@ -179,7 +179,7 @@ resource "aws_elasticsearch_domain" "default" {
           value = var.auto_tune.duration
           unit  = "HOURS"
         }
-        cron_expression_for_recurrence = var.auto_tune_cron_schedule
+        cron_expression_for_recurrence = var.auto_tune.cron_schedule
       }
     }
   }
