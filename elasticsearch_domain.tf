@@ -77,7 +77,7 @@ resource "aws_elasticsearch_domain" "default" {
     content {
       desired_state       = "ENABLED"
       rollback_on_disable = var.auto_tune.rollback_on_disable
-        maintenance_schedule {
+      maintenance_schedule {
         # Required until https://github.com/hashicorp/terraform-provider-aws/issues/22239 would be resolved
         start_at = var.auto_tune.starting_time == null ? timeadd(timestamp(), "1h") : var.auto_tune.starting_time
         duration {
