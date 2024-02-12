@@ -97,7 +97,7 @@ resource "aws_elasticsearch_domain" "default" {
     for_each = var.vpc_enabled ? [true] : []
 
     content {
-      security_group_ids = var.create_security_group ? [ one(aws_security_group.default[*].id)] : var.security_groups
+      security_group_ids = var.create_security_group ? [one(aws_security_group.default[*].id)] : var.security_groups
       subnet_ids         = var.subnet_ids
     }
   }
