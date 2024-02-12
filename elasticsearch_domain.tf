@@ -30,6 +30,7 @@ resource "aws_elasticsearch_domain" "default" {
     volume_size = var.ebs_volume_size
     volume_type = var.ebs_volume_type
     iops        = var.ebs_iops
+    throughput  = var.ebs_throughput
   }
 
   encrypt_at_rest {
@@ -49,8 +50,8 @@ resource "aws_elasticsearch_domain" "default" {
     instance_count           = var.instance_count
     instance_type            = var.instance_type
     dedicated_master_enabled = var.dedicated_master_enabled
-    dedicated_master_count   = var.dedicated_master_count
-    dedicated_master_type    = var.dedicated_master_type
+    dedicated_master_count   = var.dedicated_master_enabled ? var.dedicated_master_count : null
+    dedicated_master_type    = var.dedicated_master_enabled ? var.dedicated_master_type : null
     zone_awareness_enabled   = var.zone_awareness_enabled
     warm_enabled             = var.warm_enabled
     warm_count               = var.warm_enabled ? var.warm_count : null
@@ -60,6 +61,30 @@ resource "aws_elasticsearch_domain" "default" {
       for_each = var.availability_zone_count > 1 && var.zone_awareness_enabled ? [true] : []
       content {
         availability_zone_count = var.availability_zone_count
+      }
+    }
+
+    dynamic "cold_storage_options" {
+      for_each = var.cold_storage_enabled ? [true] : []
+      content {
+        enabled = var.cold_storage_enabled
+      }
+    }
+  }
+
+  dynamic "auto_tune_options" {
+    for_each = var.auto_tune.enabled ? [true] : []
+    content {
+      desired_state       = "ENABLED"
+      rollback_on_disable = var.auto_tune.rollback_on_disable
+        maintenance_schedule {
+        # Required until https://github.com/hashicorp/terraform-provider-aws/issues/22239 would be resolved
+        start_at = var.auto_tune.starting_time == null ? timeadd(timestamp(), "1h") : var.auto_tune.starting_time
+        duration {
+          value = var.auto_tune.duration
+          unit  = "HOURS"
+        }
+        cron_expression_for_recurrence = var.auto_tune.cron_schedule
       }
     }
   }
@@ -72,7 +97,7 @@ resource "aws_elasticsearch_domain" "default" {
     for_each = var.vpc_enabled ? [true] : []
 
     content {
-      security_group_ids = [join("", aws_security_group.default.*.id)]
+      security_group_ids = var.create_security_group ? [join("", aws_security_group.default[*].id)] : var.security_groups
       subnet_ids         = var.subnet_ids
     }
   }
