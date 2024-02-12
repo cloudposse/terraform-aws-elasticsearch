@@ -5,7 +5,7 @@
 resource "aws_elasticsearch_domain_policy" "default" {
   count           = local.elasticsearch_enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
   domain_name     = module.this.id
-  access_policies = one(data.aws_iam_policy_document.default[*].json)
+  access_policies = join("", data.aws_iam_policy_document.default[*].json)
 }
 
 resource "aws_elasticsearch_domain" "default" {
@@ -97,7 +97,7 @@ resource "aws_elasticsearch_domain" "default" {
     for_each = var.vpc_enabled ? [true] : []
 
     content {
-      security_group_ids = var.create_security_group ? [one(aws_security_group.default[*].id)] : var.security_groups
+      security_group_ids = var.create_security_group ? [ join("", aws_security_group.default[*].id)] : var.security_groups
       subnet_ids         = var.subnet_ids
     }
   }
