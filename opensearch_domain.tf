@@ -5,7 +5,7 @@
 resource "aws_opensearch_domain_policy" "default" {
   count           = local.opensearch_enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
   domain_name     = module.this.id
-  access_policies = join("", data.aws_iam_policy_document.default.*.json)
+  access_policies = join("", data.aws_iam_policy_document.default[*].json)
 }
 
 resource "aws_opensearch_domain" "default" {
@@ -72,7 +72,7 @@ resource "aws_opensearch_domain" "default" {
     for_each = var.vpc_enabled ? [true] : []
 
     content {
-      security_group_ids = [join("", aws_security_group.default.*.id)]
+      security_group_ids = [join("", aws_security_group.default[*].id)]
       subnet_ids         = var.subnet_ids
     }
   }

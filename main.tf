@@ -4,11 +4,11 @@ locals {
 
   service_linked_role_name = local.elasticsearch_enabled ? "AWSServiceRoleForAmazonElasticsearchService" : "AWSServiceRoleForAmazonOpenSearchService"
 
-  aws_service_domain_arn             = coalesce(join("", aws_elasticsearch_domain.default.*.arn), join("", aws_opensearch_domain.default.*.arn))
-  aws_service_domain_endpoint        = coalesce(join("", aws_elasticsearch_domain.default.*.endpoint), join("", aws_opensearch_domain.default.*.endpoint))
-  aws_service_domain_id              = coalesce(join("", aws_elasticsearch_domain.default.*.domain_id), join("", aws_opensearch_domain.default.*.domain_id))
-  aws_service_domain_name            = coalesce(join("", aws_elasticsearch_domain.default.*.domain_name), join("", aws_opensearch_domain.default.*.domain_name))
-  aws_service_domain_kibana_endpoint = coalesce(join("", aws_elasticsearch_domain.default.*.kibana_endpoint), join("", aws_opensearch_domain.default.*.kibana_endpoint))
+  aws_service_domain_arn             = coalesce(one(aws_elasticsearch_domain.default[*].arn), one(aws_opensearch_domain.default[*].arn))
+  aws_service_domain_endpoint        = coalesce(one(aws_elasticsearch_domain.default[*].endpoint), one(aws_opensearch_domain.default[*].endpoint))
+  aws_service_domain_id              = coalesce(one(aws_elasticsearch_domain.default[*].domain_id), one(aws_opensearch_domain.default[*].domain_id))
+  aws_service_domain_name            = coalesce(one(aws_elasticsearch_domain.default[*].domain_name), one(aws_opensearch_domain.default[*].domain_name))
+  aws_service_domain_kibana_endpoint = coalesce(one(aws_elasticsearch_domain.default[*].kibana_endpoint), one(aws_opensearch_domain.default[*].kibana_endpoint))
 }
 
 module "user_label" {
@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
   to_port                  = var.ingress_port_range_end
   protocol                 = "tcp"
   source_security_group_id = var.security_groups[count.index]
-  security_group_id        = join("", aws_security_group.default[*].id)
+  security_group_id        = one(aws_security_group.default[*].id)
 }
 
 resource "aws_security_group_rule" "ingress_cidr_blocks" {
@@ -60,7 +60,7 @@ resource "aws_security_group_rule" "ingress_cidr_blocks" {
   to_port           = var.ingress_port_range_end
   protocol          = "tcp"
   cidr_blocks       = var.allowed_cidr_blocks
-  security_group_id = join("", aws_security_group.default[*].id)
+  security_group_id = one(aws_security_group.default[*].id)
 }
 
 resource "aws_security_group_rule" "egress" {
@@ -71,7 +71,7 @@ resource "aws_security_group_rule" "egress" {
   to_port           = 65535
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = join("", aws_security_group.default[*].id)
+  security_group_id = one(aws_security_group.default[*].id)
 }
 
 # https://github.com/terraform-providers/terraform-provider-aws/issues/5218
@@ -85,7 +85,7 @@ resource "aws_iam_service_linked_role" "default" {
 resource "aws_iam_role" "elasticsearch_user" {
   count              = module.this.enabled && var.create_elasticsearch_user_role && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
   name               = module.user_label.id
-  assume_role_policy = join("", data.aws_iam_policy_document.assume_role[*].json)
+  assume_role_policy = one(data.aws_iam_policy_document.assume_role[*].json)
   description        = "IAM Role to assume to access the Elasticsearch ${module.this.id} cluster"
   tags               = module.user_label.tags
 
