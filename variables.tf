@@ -1,7 +1,19 @@
 variable "security_groups" {
   type        = list(string)
   default     = []
-  description = "List of security group IDs to be allowed to connect to the cluster"
+  description = "List of security group IDs to be allowed to connect to the cluster or the security group IDs to apply to the cluster when the `create_security_group` variable is set to false."
+}
+
+variable "create_security_group" {
+  type        = bool
+  default     = true
+  description = "Whether to create a dedicated security group for the Elasticsearch domain. Set it to `false` if you already have security groups that you want to attach to the domain and specify them in the `security_groups` variable."
+}
+
+variable "create_elasticsearch_user_role" {
+  type        = bool
+  default     = true
+  description = "Whether to create an IAM role for Users/EC2 to assume to access the Elasticsearch domain. Set it to `false` if you already manage access through other means."
 }
 
 variable "ingress_port_range_start" {
@@ -123,10 +135,10 @@ variable "availability_zone_count" {
   default     = 2
   description = "Number of Availability Zones for the domain to use."
 
-  # validation {
-  #   condition     = contains([2, 3], var.availability_zone_count)
-  #   error_message = "The availibility zone count must be 2 or 3."
-  # }
+  validation {
+    condition     = contains([2, 3], var.availability_zone_count)
+    error_message = "The availibility zone count must be 2 or 3."
+  }
 }
 
 variable "ebs_volume_size" {
@@ -145,6 +157,12 @@ variable "ebs_iops" {
   type        = number
   default     = 0
   description = "The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type"
+}
+
+variable "ebs_throughput" {
+  type        = number
+  default     = null
+  description = "Specifies the throughput (in MiB/s) of the EBS volumes attached to data nodes. Applicable only for the gp3 volume type. Valid values are between 125 and 1000."
 }
 
 variable "encrypt_at_rest_enabled" {
@@ -381,3 +399,52 @@ variable "aws_service_type" {
     error_message = "Value can only be one of `elasticsearch` or `opensearch`."
   }
 }
+
+variable "cold_storage_enabled" {
+  type        = bool
+  description = "Enables cold storage support."
+  default     = false
+}
+
+variable "auto_tune" {
+  type = object({
+    enabled             = bool
+    rollback_on_disable = string
+    starting_time       = string
+    cron_schedule       = string
+    duration            = number
+  })
+
+  default = {
+    enabled             = false
+    rollback_on_disable = "NO_ROLLBACK"
+    starting_time       = null
+    cron_schedule       = null
+    duration            = null
+  }
+
+  description = <<-EOT
+    This object represents the auto_tune configuration. It contains the following filed:
+    - enabled - Whether to enable autotune.
+    - rollback_on_disable - Whether to roll back to default Auto-Tune settings when disabling Auto-Tune.
+    - starting_time - Date and time at which to start the Auto-Tune maintenance schedule in RFC3339 format. Time should be in the future.
+    - cron_schedule - A cron expression specifying the recurrence pattern for an Auto-Tune maintenance schedule.
+    - duration - Autotune maintanance window duration time in hours.
+  EOT
+
+  validation {
+    condition     = var.auto_tune.enabled == false || var.auto_tune.cron_schedule != null
+    error_message = "Variable auto_tune.cron_schedule should be set if var.auto_tune.enabled == true."
+  }
+
+  validation {
+    condition     = var.auto_tune.enabled == false || var.auto_tune.duration != null
+    error_message = "Variable auto_tune.duration should be set if var.auto_tune.enabled == true."
+  }
+
+  validation {
+    condition     = contains(["DEFAULT_ROLLBACK", "NO_ROLLBACK"], var.auto_tune.rollback_on_disable)
+    error_message = "Variable auto_tune.rollback_on_disable valid values: DEFAULT_ROLLBACK or NO_ROLLBACK."
+  }
+}
+
