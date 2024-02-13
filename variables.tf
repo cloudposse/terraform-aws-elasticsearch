@@ -115,7 +115,13 @@ variable "iam_authorizing_role_arns" {
 variable "iam_actions" {
   type        = list(string)
   default     = []
-  description = "List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
+  description = "List of actions to allow for the user IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
+}
+
+variable "anonymous_iam_actions" {
+  type        = list(string)
+  default     = []
+  description = "List of actions to allow for the anonymous (`*`) IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
 }
 
 variable "zone_awareness_enabled" {
@@ -380,6 +386,18 @@ variable "custom_endpoint_certificate_arn" {
   type        = string
   description = "ACM certificate ARN for custom endpoint."
   default     = ""
+}
+
+variable "aws_service_type" {
+  type        = string
+  description = "The type of AWS service to deploy (`elasticsearch` or `opensearch`)."
+  # For backwards comptibility we default to elasticsearch
+  default = "elasticsearch"
+
+  validation {
+    condition     = contains(["elasticsearch", "opensearch"], var.aws_service_type)
+    error_message = "Value can only be one of `elasticsearch` or `opensearch`."
+  }
 }
 
 variable "cold_storage_enabled" {
