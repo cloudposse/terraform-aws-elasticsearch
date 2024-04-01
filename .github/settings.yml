@@ -1,0 +1,7 @@
+# Upstream changes from _extends are only recognized when modifications are made to this file in the default branch.
+_extends: .github
+repository:
+  name: terraform-aws-elasticsearch
+  description: Terraform module to provision an Elasticsearch cluster with built-in integrations with Kibana and Logstash.
+  homepage: https://cloudposse.com/accelerate
+  topics: aws, terraform, terraform-module, elasticsearch, kibana, elk, efk, fluentd, hcl2
