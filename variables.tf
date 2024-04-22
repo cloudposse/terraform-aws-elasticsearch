@@ -137,7 +137,7 @@ variable "availability_zone_count" {
 
   validation {
     condition     = contains([2, 3], var.availability_zone_count)
-    error_message = "The availibility zone count must be 2 or 3."
+    error_message = "The availability zone count must be 2 or 3."
   }
 }
 
