@@ -170,7 +170,7 @@ data "aws_iam_policy_document" "default" {
 
 module "domain_hostname" {
   source  = "cloudposse/route53-cluster-hostname/aws"
-  version = "0.12.3"
+  version = "0.13.0"
 
   enabled  = module.this.enabled && var.domain_hostname_enabled
   dns_name = var.elasticsearch_subdomain_name == "" ? module.this.id : var.elasticsearch_subdomain_name
@@ -183,7 +183,7 @@ module "domain_hostname" {
 
 module "kibana_hostname" {
   source  = "cloudposse/route53-cluster-hostname/aws"
-  version = "0.12.3"
+  version = "0.13.0"
 
   enabled  = module.this.enabled && var.kibana_hostname_enabled
   dns_name = var.kibana_subdomain_name == "" ? module.kibana_label.id : var.kibana_subdomain_name
