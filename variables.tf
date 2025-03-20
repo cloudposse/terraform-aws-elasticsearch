@@ -141,6 +141,12 @@ variable "availability_zone_count" {
   }
 }
 
+variable "multi_az_with_standby_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable domain with standby for OpenSearch cluster"
+}
+
 variable "ebs_volume_size" {
   type        = number
   description = "EBS volumes for data storage in GB"
