@@ -4,13 +4,13 @@
 
 resource "aws_elasticsearch_domain_policy" "default" {
   count           = local.elasticsearch_enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
-  domain_name     = var.elasticsearch_domain_name != "" ? var.elasticsearch_domain_name : module.this.id
+  domain_name     = length(var.elasticsearch_domain_name) > 0 ? var.elasticsearch_domain_name : module.this.id
   access_policies = join("", data.aws_iam_policy_document.default[*].json)
 }
 
 resource "aws_elasticsearch_domain" "default" {
   count                 = local.elasticsearch_enabled ? 1 : 0
-  domain_name           = var.elasticsearch_domain_name != "" ? var.elasticsearch_domain_name : module.this.id
+  domain_name           = length(var.elasticsearch_domain_name) > 0 ? var.elasticsearch_domain_name : module.this.id
   elasticsearch_version = var.elasticsearch_version
 
   advanced_options = var.advanced_options
