@@ -72,7 +72,7 @@ resource "aws_opensearch_domain" "default" {
     for_each = var.vpc_enabled ? [true] : []
 
     content {
-      security_group_ids = [join("", aws_security_group.default[*].id)]
+      security_group_ids = var.create_security_group ? [join("", aws_security_group.default[*].id)] : var.security_groups
       subnet_ids         = var.subnet_ids
     }
   }
