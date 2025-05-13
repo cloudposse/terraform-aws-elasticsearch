@@ -46,15 +46,16 @@ resource "aws_opensearch_domain" "default" {
   }
 
   cluster_config {
-    instance_count           = var.instance_count
-    instance_type            = var.instance_type
-    dedicated_master_enabled = var.dedicated_master_enabled
-    dedicated_master_count   = var.dedicated_master_count
-    dedicated_master_type    = var.dedicated_master_type
-    zone_awareness_enabled   = var.zone_awareness_enabled
-    warm_enabled             = var.warm_enabled
-    warm_count               = var.warm_enabled ? var.warm_count : null
-    warm_type                = var.warm_enabled ? var.warm_type : null
+    instance_count                = var.instance_count
+    instance_type                 = var.instance_type
+    dedicated_master_enabled      = var.dedicated_master_enabled
+    dedicated_master_count        = var.dedicated_master_count
+    dedicated_master_type         = var.dedicated_master_type
+    multi_az_with_standby_enabled = var.multi_az_with_standby_enabled
+    zone_awareness_enabled        = var.zone_awareness_enabled
+    warm_enabled                  = var.warm_enabled
+    warm_count                    = var.warm_enabled ? var.warm_count : null
+    warm_type                     = var.warm_enabled ? var.warm_type : null
 
     dynamic "zone_awareness_config" {
       for_each = var.availability_zone_count > 1 && var.zone_awareness_enabled ? [true] : []
