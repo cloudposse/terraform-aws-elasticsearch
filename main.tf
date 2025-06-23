@@ -8,7 +8,7 @@ locals {
   aws_service_domain_endpoint        = coalesce(join("", aws_elasticsearch_domain.default[*].endpoint), join("", aws_opensearch_domain.default[*].endpoint))
   aws_service_domain_id              = coalesce(join("", aws_elasticsearch_domain.default[*].domain_id), join("", aws_opensearch_domain.default[*].domain_id))
   aws_service_domain_name            = coalesce(join("", aws_elasticsearch_domain.default[*].domain_name), join("", aws_opensearch_domain.default[*].domain_name))
-  aws_service_domain_kibana_endpoint = coalesce(join("", aws_elasticsearch_domain.default[*].kibana_endpoint), join("", aws_opensearch_domain.default[*].kibana_endpoint))
+  aws_service_domain_kibana_endpoint = coalesce(join("", aws_elasticsearch_domain.default[*].dashboard_endpoint), join("", aws_opensearch_domain.default[*].dashboard_endpoint))
 }
 
 module "user_label" {
