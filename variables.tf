@@ -463,3 +463,9 @@ variable "auto_tune" {
     error_message = "Variable auto_tune.rollback_on_disable valid values: DEFAULT_ROLLBACK or NO_ROLLBACK."
   }
 }
+
+variable "advanced_security_options_anonymous_auth_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether Anonymous auth is enabled. Enables fine-grained access control on an existing domain"
+}
