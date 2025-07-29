@@ -25,7 +25,7 @@ badges:
     url: https://github.com/cloudposse/terraform-aws-elasticsearch/commits
   - name: Slack Community
     image: https://slack.cloudposse.com/for-the-badge.svg
-    url: https://slack.cloudposse.com
+    url: https://cloudposse.com/slack
 description: |-
   Terraform module to provision an [`Elasticsearch`](https://aws.amazon.com/elasticsearch-service/) cluster with built-in integrations with [Kibana](https://aws.amazon.com/elasticsearch-service/kibana/) and [Logstash](https://aws.amazon.com/elasticsearch-service/logstash/).
 
@@ -80,10 +80,7 @@ usage: |2-
   }
   ```
 
-include:
-  - "docs/targets.md"
-  - "docs/terraform.md"
-
+include: []
 references:
   - name: "What is Amazon Elasticsearch Service"
     description: "Complete description of Amazon Elasticsearch Service"

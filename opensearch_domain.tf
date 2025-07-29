@@ -4,13 +4,13 @@
 
 resource "aws_opensearch_domain_policy" "default" {
   count           = local.opensearch_enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
-  domain_name     = module.this.id
+  domain_name     = length(var.elasticsearch_domain_name) > 0 ? var.elasticsearch_domain_name : module.this.id
   access_policies = join("", data.aws_iam_policy_document.default[*].json)
 }
 
 resource "aws_opensearch_domain" "default" {
   count          = local.opensearch_enabled ? 1 : 0
-  domain_name    = module.this.id
+  domain_name    = length(var.elasticsearch_domain_name) > 0 ? var.elasticsearch_domain_name : module.this.id
   engine_version = var.elasticsearch_version
 
   advanced_options = var.advanced_options
@@ -18,6 +18,7 @@ resource "aws_opensearch_domain" "default" {
   advanced_security_options {
     enabled                        = var.advanced_security_options_enabled
     internal_user_database_enabled = var.advanced_security_options_internal_user_database_enabled
+    anonymous_auth_enabled         = var.advanced_security_options_anonymous_auth_enabled
     master_user_options {
       master_user_arn      = var.advanced_security_options_master_user_arn
       master_user_name     = var.advanced_security_options_master_user_name
