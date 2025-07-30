@@ -5,3 +5,7 @@ repository:
   description: Terraform module to provision an Elasticsearch cluster with built-in integrations with Kibana and Logstash.
   homepage: https://cloudposse.com/accelerate
   topics: aws, terraform, terraform-module, elasticsearch, kibana, elk, efk, fluentd, hcl2
+
+
+
+
