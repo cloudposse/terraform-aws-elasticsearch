@@ -54,12 +54,12 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	domainHostname := terraform.Output(t, terraformOptions, "domain_hostname")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-es-test-"+randId+".testing.cloudposse.co", domainHostname)
+	assert.Equal(t, "eg-test-es-test-"+randId+".modules.cptest.test-automation.app", domainHostname)
 
 	// Run `terraform output` to get the value of an output variable
 	kibanaHostname := terraform.Output(t, terraformOptions, "kibana_hostname")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-es-test-"+randId+"-kibana.testing.cloudposse.co", kibanaHostname)
+	assert.Equal(t, "eg-test-es-test-"+randId+"-kibana.modules.cptest.test-automation.app", kibanaHostname)
 
 	// Run `terraform output` to get the value of an output variable
 	domainEndpoint := terraform.Output(t, terraformOptions, "domain_endpoint")

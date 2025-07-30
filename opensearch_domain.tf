@@ -4,13 +4,13 @@
 
 resource "aws_opensearch_domain_policy" "default" {
   count           = local.opensearch_enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
-  domain_name     = module.this.id
+  domain_name     = length(var.elasticsearch_domain_name) > 0 ? var.elasticsearch_domain_name : module.this.id
   access_policies = join("", data.aws_iam_policy_document.default[*].json)
 }
 
 resource "aws_opensearch_domain" "default" {
   count          = local.opensearch_enabled ? 1 : 0
-  domain_name    = module.this.id
+  domain_name    = length(var.elasticsearch_domain_name) > 0 ? var.elasticsearch_domain_name : module.this.id
   engine_version = var.elasticsearch_version
 
   advanced_options = var.advanced_options
@@ -18,6 +18,7 @@ resource "aws_opensearch_domain" "default" {
   advanced_security_options {
     enabled                        = var.advanced_security_options_enabled
     internal_user_database_enabled = var.advanced_security_options_internal_user_database_enabled
+    anonymous_auth_enabled         = var.advanced_security_options_anonymous_auth_enabled
     master_user_options {
       master_user_arn      = var.advanced_security_options_master_user_arn
       master_user_name     = var.advanced_security_options_master_user_name
@@ -46,15 +47,16 @@ resource "aws_opensearch_domain" "default" {
   }
 
   cluster_config {
-    instance_count           = var.instance_count
-    instance_type            = var.instance_type
-    dedicated_master_enabled = var.dedicated_master_enabled
-    dedicated_master_count   = var.dedicated_master_count
-    dedicated_master_type    = var.dedicated_master_type
-    zone_awareness_enabled   = var.zone_awareness_enabled
-    warm_enabled             = var.warm_enabled
-    warm_count               = var.warm_enabled ? var.warm_count : null
-    warm_type                = var.warm_enabled ? var.warm_type : null
+    instance_count                = var.instance_count
+    instance_type                 = var.instance_type
+    dedicated_master_enabled      = var.dedicated_master_enabled
+    dedicated_master_count        = var.dedicated_master_count
+    dedicated_master_type         = var.dedicated_master_type
+    multi_az_with_standby_enabled = var.multi_az_with_standby_enabled
+    zone_awareness_enabled        = var.zone_awareness_enabled
+    warm_enabled                  = var.warm_enabled
+    warm_count                    = var.warm_enabled ? var.warm_count : null
+    warm_type                     = var.warm_enabled ? var.warm_type : null
 
     dynamic "zone_awareness_config" {
       for_each = var.availability_zone_count > 1 && var.zone_awareness_enabled ? [true] : []
@@ -72,7 +74,7 @@ resource "aws_opensearch_domain" "default" {
     for_each = var.vpc_enabled ? [true] : []
 
     content {
-      security_group_ids = [join("", aws_security_group.default[*].id)]
+      security_group_ids = var.create_security_group ? [join("", aws_security_group.default[*].id)] : var.security_groups
       subnet_ids         = var.subnet_ids
     }
   }

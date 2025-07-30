@@ -137,8 +137,14 @@ variable "availability_zone_count" {
 
   validation {
     condition     = contains([2, 3], var.availability_zone_count)
-    error_message = "The availibility zone count must be 2 or 3."
+    error_message = "The availability zone count must be 2 or 3."
   }
+}
+
+variable "multi_az_with_standby_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable domain with standby for OpenSearch cluster"
 }
 
 variable "ebs_volume_size" {
@@ -266,6 +272,22 @@ variable "advanced_options" {
   type        = map(string)
   default     = {}
   description = "Key-value string pairs to specify advanced configuration options"
+}
+
+variable "elasticsearch_domain_name" {
+  type        = string
+  default     = ""
+  description = "The name of the Elasticsearch domain. Must be at least 3 and no more than 28 characters long. Valid characters are a-z (lowercase letters), 0-9, and - (hyphen)."
+
+  validation {
+    condition     = var.elasticsearch_domain_name == "" || (length(var.elasticsearch_domain_name) >= 3 && length(var.elasticsearch_domain_name) <= 28)
+    error_message = "The elasticsearch_domain_name must meet following conditions: 1) be empty string or 2) must start with a lowercase alphabet and be at least 3 and no more than 28 characters long. Valid characters are a-z (lowercase letters), 0-9, and - (hyphen)."
+  }
+
+  validation {
+    condition     = var.elasticsearch_domain_name == "" || can(regex("^[a-z][a-z0-9-]*$", var.elasticsearch_domain_name))
+    error_message = "The elasticsearch_domain_name must meet following conditions: 1) be empty string or 2) must start with a lowercase alphabet and be at least 3 and no more than 28 characters long. Valid characters are a-z (lowercase letters), 0-9, and - (hyphen)."
+  }
 }
 
 variable "elasticsearch_subdomain_name" {
@@ -448,3 +470,8 @@ variable "auto_tune" {
   }
 }
 
+variable "advanced_security_options_anonymous_auth_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether Anonymous auth is enabled. Enables fine-grained access control on an existing domain"
+}
