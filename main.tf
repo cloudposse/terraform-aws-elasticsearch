@@ -138,7 +138,7 @@ data "aws_iam_policy_document" "assume_role" {
 
       principals {
         type        = "Federated"
-        identifiers = compact([var.iam_irsa_openid_connect_provider_arn])
+        identifiers = [var.iam_irsa_openid_connect_provider_arn]
       }
 
       condition {
