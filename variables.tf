@@ -115,7 +115,13 @@ variable "iam_authorizing_role_arns" {
 variable "iam_actions" {
   type        = list(string)
   default     = []
-  description = "List of actions to allow for the IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
+  description = "List of actions to allow for the user IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
+}
+
+variable "anonymous_iam_actions" {
+  type        = list(string)
+  default     = []
+  description = "List of actions to allow for the anonymous (`*`) IAM roles, _e.g._ `es:ESHttpGet`, `es:ESHttpPut`, `es:ESHttpPost`"
 }
 
 variable "iam_irsa_openid_connect_provider_arn" {
@@ -149,8 +155,14 @@ variable "availability_zone_count" {
 
   validation {
     condition     = contains([2, 3], var.availability_zone_count)
-    error_message = "The availibility zone count must be 2 or 3."
+    error_message = "The availability zone count must be 2 or 3."
   }
+}
+
+variable "multi_az_with_standby_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable domain with standby for OpenSearch cluster"
 }
 
 variable "ebs_volume_size" {
@@ -280,6 +292,22 @@ variable "advanced_options" {
   description = "Key-value string pairs to specify advanced configuration options"
 }
 
+variable "elasticsearch_domain_name" {
+  type        = string
+  default     = ""
+  description = "The name of the Elasticsearch domain. Must be at least 3 and no more than 28 characters long. Valid characters are a-z (lowercase letters), 0-9, and - (hyphen)."
+
+  validation {
+    condition     = var.elasticsearch_domain_name == "" || (length(var.elasticsearch_domain_name) >= 3 && length(var.elasticsearch_domain_name) <= 28)
+    error_message = "The elasticsearch_domain_name must meet following conditions: 1) be empty string or 2) must start with a lowercase alphabet and be at least 3 and no more than 28 characters long. Valid characters are a-z (lowercase letters), 0-9, and - (hyphen)."
+  }
+
+  validation {
+    condition     = var.elasticsearch_domain_name == "" || can(regex("^[a-z][a-z0-9-]*$", var.elasticsearch_domain_name))
+    error_message = "The elasticsearch_domain_name must meet following conditions: 1) be empty string or 2) must start with a lowercase alphabet and be at least 3 and no more than 28 characters long. Valid characters are a-z (lowercase letters), 0-9, and - (hyphen)."
+  }
+}
+
 variable "elasticsearch_subdomain_name" {
   type        = string
   default     = ""
@@ -400,6 +428,18 @@ variable "custom_endpoint_certificate_arn" {
   default     = ""
 }
 
+variable "aws_service_type" {
+  type        = string
+  description = "The type of AWS service to deploy (`elasticsearch` or `opensearch`)."
+  # For backwards comptibility we default to elasticsearch
+  default = "elasticsearch"
+
+  validation {
+    condition     = contains(["elasticsearch", "opensearch"], var.aws_service_type)
+    error_message = "Value can only be one of `elasticsearch` or `opensearch`."
+  }
+}
+
 variable "cold_storage_enabled" {
   type        = bool
   description = "Enables cold storage support."
@@ -448,3 +488,8 @@ variable "auto_tune" {
   }
 }
 
+variable "advanced_security_options_anonymous_auth_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether Anonymous auth is enabled. Enables fine-grained access control on an existing domain"
+}
