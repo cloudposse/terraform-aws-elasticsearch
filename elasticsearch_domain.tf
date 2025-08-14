@@ -3,9 +3,15 @@
 #
 
 resource "aws_elasticsearch_domain_policy" "default" {
+<<<<<<< HEAD
   count           = local.elasticsearch_enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0) ? 1 : 0
   domain_name     = length(var.elasticsearch_domain_name) > 0 ? var.elasticsearch_domain_name : module.this.id
   access_policies = join("", data.aws_iam_policy_document.default[*].json)
+=======
+  count           = local.elasticsearch_enabled && (length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0 || length(var.access_policies) > 0) ? 1 : 0
+  domain_name     = module.this.id
+  access_policies = coalesce(var.access_policies, join("", data.aws_iam_policy_document.default[*].json))
+>>>>>>> 97f52e5ac8369f5e75495fa72a2ce89db6cebccd
 }
 
 resource "aws_elasticsearch_domain" "default" {
