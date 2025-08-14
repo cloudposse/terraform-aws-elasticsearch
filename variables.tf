@@ -493,3 +493,13 @@ variable "advanced_security_options_anonymous_auth_enabled" {
   default     = false
   description = "Whether Anonymous auth is enabled. Enables fine-grained access control on an existing domain"
 }
+
+variable "access_policies" {
+  description = "JSON string for the IAM policy document specifying the access policies for the domain."
+  type        = string
+  default     = ""
+  validation {
+    condition     = var.access_policies == "" || try(jsondecode(var.access_policies), null) != null
+    error_message = "The access_policies JSON string is not valid."
+  }
+}
