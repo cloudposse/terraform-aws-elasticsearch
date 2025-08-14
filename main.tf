@@ -107,12 +107,46 @@ data "aws_iam_policy_document" "assume_role" {
       identifiers = var.aws_ec2_service_name
     }
 
-    principals {
-      type        = "AWS"
-      identifiers = compact(concat(var.iam_authorizing_role_arns, var.iam_role_arns))
-    }
-
     effect = "Allow"
+  }
+
+  dynamic "statement" {
+    for_each = length(var.iam_authorizing_role_arns) > 0 || length(var.iam_role_arns) > 0 ? [true] : []
+
+    content {
+      effect = "Allow"
+
+      actions = [
+        "sts:AssumeRole"
+      ]
+
+      principals {
+        type        = "AWS"
+        identifiers = compact(concat(var.iam_authorizing_role_arns, var.iam_role_arns))
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = var.iam_irsa_openid_connect_provider_arn != "" ? [true] : []
+    content {
+      effect = "Allow"
+
+      actions = [
+        "sts:AssumeRoleWithWebIdentity"
+      ]
+
+      principals {
+        type        = "Federated"
+        identifiers = [var.iam_irsa_openid_connect_provider_arn]
+      }
+
+      condition {
+        test     = "StringLike"
+        variable = join(":", [var.iam_irsa_openid_connect_provider_url, "sub"])
+        values   = [var.iam_irsa_service_account]
+      }
+    }
   }
 }
 
