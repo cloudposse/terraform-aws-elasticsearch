@@ -4,11 +4,11 @@ locals {
 
   service_linked_role_name = local.elasticsearch_enabled ? "AWSServiceRoleForAmazonElasticsearchService" : "AWSServiceRoleForAmazonOpenSearchService"
 
-  aws_service_domain_arn             = coalesce(join("", aws_elasticsearch_domain.default[*].arn), join("", aws_opensearch_domain.default[*].arn))
-  aws_service_domain_endpoint        = coalesce(join("", aws_elasticsearch_domain.default[*].endpoint), join("", aws_opensearch_domain.default[*].endpoint))
-  aws_service_domain_id              = coalesce(join("", aws_elasticsearch_domain.default[*].domain_id), join("", aws_opensearch_domain.default[*].domain_id))
-  aws_service_domain_name            = coalesce(join("", aws_elasticsearch_domain.default[*].domain_name), join("", aws_opensearch_domain.default[*].domain_name))
-  aws_service_domain_kibana_endpoint = coalesce(join("", aws_elasticsearch_domain.default[*].kibana_endpoint), join("", aws_opensearch_domain.default[*].dashboard_endpoint))
+  aws_service_domain_arn             = module.this.enabled ? coalesce(join("", aws_elasticsearch_domain.default[*].arn), join("", aws_opensearch_domain.default[*].arn)) : null
+  aws_service_domain_endpoint        = module.this.enabled ? coalesce(join("", aws_elasticsearch_domain.default[*].endpoint), join("", aws_opensearch_domain.default[*].endpoint)) : null
+  aws_service_domain_id              = module.this.enabled ? coalesce(join("", aws_elasticsearch_domain.default[*].domain_id), join("", aws_opensearch_domain.default[*].domain_id)) : null
+  aws_service_domain_name            = module.this.enabled ? coalesce(join("", aws_elasticsearch_domain.default[*].domain_name), join("", aws_opensearch_domain.default[*].domain_name)) : null
+  aws_service_domain_kibana_endpoint = module.this.enabled ? coalesce(join("", aws_elasticsearch_domain.default[*].kibana_endpoint), join("", aws_opensearch_domain.default[*].dashboard_endpoint)) : null
 }
 
 module "user_label" {
