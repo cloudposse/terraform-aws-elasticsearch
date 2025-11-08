@@ -142,6 +142,12 @@ variable "iam_irsa_service_account" {
   description = "Kubernetes ServiceAccount to allow to access the Elastic Domain via IRSA"
 }
 
+variable "iam_irsa_service_accounts" {
+  type        = list(string)
+  default     = []
+  description = "Kubernetes ServiceAccounts to allow to access the Elastic Domain via IRSA"
+}
+
 variable "zone_awareness_enabled" {
   type        = bool
   default     = true
