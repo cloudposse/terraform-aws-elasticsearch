@@ -144,7 +144,7 @@ data "aws_iam_policy_document" "assume_role" {
       condition {
         test     = "StringLike"
         variable = join(":", [var.iam_irsa_openid_connect_provider_url, "sub"])
-        values   = [var.iam_irsa_service_account]
+        values   = compact(concat([var.iam_irsa_service_account], var.iam_irsa_service_accounts))
       }
     }
   }
