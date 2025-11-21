@@ -60,7 +60,7 @@ variable "dns_zone_id" {
 
 variable "elasticsearch_version" {
   type        = string
-  default     = "7.4"
+  default     = "7.10"
   description = "Version of Elasticsearch to deploy (_e.g._ `7.4`, `7.1`, `6.8`, `6.7`, `6.5`, `6.4`, `6.3`, `6.2`, `6.0`, `5.6`, `5.5`, `5.3`, `5.1`, `2.3`, `1.5`"
 }
 
@@ -215,7 +215,7 @@ variable "domain_endpoint_options_enforce_https" {
 
 variable "domain_endpoint_options_tls_security_policy" {
   type        = string
-  default     = "Policy-Min-TLS-1-0-2019-07"
+  default     = "Policy-Min-TLS-1-2-2019-07"
   description = "The name of the TLS security policy that needs to be applied to the HTTPS endpoint"
 }
 
