@@ -13,7 +13,7 @@ module "opensearch" {
   subnet_ids              = ["subnet-XXXXXXXXX", "subnet-YYYYYYYY"]
   zone_awareness_enabled  = "true"
   aws_service_type        = "opensearch"
-  elasticsearch_version   = "OpenSearch_2.9"
+  elasticsearch_version   = "OpenSearch_3.1"
   instance_type           = "t3.small.search"
   instance_count          = 4
   ebs_volume_size         = 10
