@@ -46,10 +46,10 @@ variable "dns_zone_id" {
   description = "Route53 DNS Zone ID to add hostname records for Elasticsearch domain and Kibana"
 }
 
-variable "elasticsearch_version" {
+variable "engine_version" {
   type        = string
-  default     = "7.4"
-  description = "Version of Elasticsearch to deploy (_e.g._ `7.4`, `7.1`, `6.8`, `6.7`, `6.5`, `6.4`, `6.3`, `6.2`, `6.0`, `5.6`, `5.5`, `5.3`, `5.1`, `2.3`, `1.5`"
+  default     = "OpenSearch_1.3"
+  description = "Version of Elasticsearch to deploy (_e.g._ `ElasticSearch_7.4`, `OpenSearch_1.3`)"
 }
 
 variable "instance_type" {
@@ -139,6 +139,12 @@ variable "ebs_iops" {
   type        = number
   default     = 0
   description = "The baseline input/output (I/O) performance of EBS volumes attached to data nodes. Applicable only for the Provisioned IOPS EBS volume type"
+}
+
+variable "ebs_throughput" {
+  type        = number
+  default     = null
+  description = "Specifies the throughput (in MiB/s) of the EBS volumes attached to data nodes. Applicable only for the gp3 volume type. Valid values are between 125 and 1000."
 }
 
 variable "encrypt_at_rest_enabled" {
@@ -259,7 +265,7 @@ variable "kibana_subdomain_name" {
 variable "create_iam_service_linked_role" {
   type        = bool
   default     = true
-  description = "Whether to create `AWSServiceRoleForAmazonElasticsearchService` service-linked role. Set it to `false` if you already have an ElasticSearch cluster created in the AWS account and AWSServiceRoleForAmazonElasticsearchService already exists. See https://github.com/terraform-providers/terraform-provider-aws/issues/5218 for more info"
+  description = "Whether to create `AWSServiceRoleForAmazonOpenSearchService` service-linked role. Set it to `false` if you already have an ElasticSearch cluster created in the AWS account and AWSServiceRoleForAmazonOpenSearchService already exists. See https://github.com/terraform-providers/terraform-provider-aws/issues/5218 for more info"
 }
 
 variable "node_to_node_encryption_enabled" {
@@ -362,4 +368,46 @@ variable "custom_endpoint_certificate_arn" {
   type        = string
   description = "ACM certificate ARN for custom endpoint."
   default     = ""
+}
+
+variable "auto_tune" {
+  type = object({
+    enabled             = bool
+    rollback_on_disable = string
+    starting_time       = string
+    cron_schedule       = string
+    duration            = number
+  })
+
+  default = {
+    enabled             = false
+    rollback_on_disable = "NO_ROLLBACK"
+    starting_time       = null
+    cron_schedule       = null
+    duration            = null
+  }
+
+  description = <<-EOT
+    This object represents the auto_tune configuration. It contains the following filed:
+    - enabled - Whether to enable autotune.
+    - rollback_on_disable - Whether to roll back to default Auto-Tune settings when disabling Auto-Tune.
+    - starting_time - Date and time at which to start the Auto-Tune maintenance schedule in RFC3339 format. Time should be in the future.
+    - cron_schedule - A cron expression specifying the recurrence pattern for an Auto-Tune maintenance schedule.
+    - duration - Autotune maintanance window duration time in hours.
+  EOT
+
+  validation {
+    condition     = var.auto_tune.enabled == false || var.auto_tune.cron_schedule != null
+    error_message = "Variable auto_tune.cron_schedule should be set if var.auto_tune.enabled == true."
+  }
+
+  validation {
+    condition     = var.auto_tune.enabled == false || var.auto_tune.duration != null
+    error_message = "Variable auto_tune.duration should be set if var.auto_tune.enabled == true."
+  }
+
+  validation {
+    condition     = contains(["DEFAULT_ROLLBACK", "NO_ROLLBACK"], var.auto_tune.rollback_on_disable)
+    error_message = "Variable auto_tune.rollback_on_disable valid values: DEFAULT_ROLLBACK or NO_ROLLBACK."
+  }
 }

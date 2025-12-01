@@ -32,7 +32,7 @@ module "elasticsearch" {
   vpc_id                         = module.vpc.vpc_id
   subnet_ids                     = module.subnets.private_subnet_ids
   zone_awareness_enabled         = var.zone_awareness_enabled
-  elasticsearch_version          = var.elasticsearch_version
+  engine_version          = var.engine_version
   instance_type                  = var.instance_type
   instance_count                 = var.instance_count
   encrypt_at_rest_enabled        = var.encrypt_at_rest_enabled

@@ -11,8 +11,8 @@ module "elasticsearch" {
   security_groups         = ["sg-XXXXXXXXX", "sg-YYYYYYYY"]
   vpc_enabled             = false
   zone_awareness_enabled  = "true"
-  elasticsearch_version   = "6.5"
-  instance_type           = "t2.small.elasticsearch"
+  engine_version          = "OpenSearch_1.3"
+  instance_type           = "t2.small.search"
   instance_count          = 4
   iam_role_arns           = ["arn:aws:iam::XXXXXXXXX:role/ops", "arn:aws:iam::XXXXXXXXX:role/dev"]
   iam_actions             = ["es:ESHttpGet", "es:ESHttpPut", "es:ESHttpPost"]
