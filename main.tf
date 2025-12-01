@@ -241,14 +241,14 @@ data "aws_iam_policy_document" "default" {
 
     actions = distinct(compact(var.iam_actions))
 
-    resources = [
-      join("", aws_opensearch_domain.default.*.arn),
-      "${join("", aws_opensearch_domain.default.*.arn)}/*"
-    ]
+    resources = sort(flatten([
+      aws_opensearch_domain.default.*.arn,
+      [for arn in aws_opensearch_domain.default.*.arn : "${arn}/*"]
+    ]))
 
     principals {
       type        = "AWS"
-      identifiers = distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user.*.arn)))
+      identifiers = sort(distinct(compact(concat(var.iam_role_arns, aws_iam_role.elasticsearch_user.*.arn))))
     }
   }
 
@@ -261,11 +261,11 @@ data "aws_iam_policy_document" "default" {
       effect = "Allow"
 
       actions = distinct(compact(var.iam_actions))
-
-      resources = [
-        join("", aws_opensearch_domain.default.*.arn),
-        "${join("", aws_opensearch_domain.default.*.arn)}/*"
-      ]
+      
+      resources = sort(flatten([
+        aws_opensearch_domain.default.*.arn,
+        [for arn in aws_opensearch_domain.default.*.arn : "${arn}/*"]
+      ]))
 
       principals {
         type        = "AWS"
