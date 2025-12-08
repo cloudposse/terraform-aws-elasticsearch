@@ -500,6 +500,18 @@ variable "advanced_security_options_anonymous_auth_enabled" {
   description = "Whether Anonymous auth is enabled. Enables fine-grained access control on an existing domain"
 }
 
+variable "identity_center_options" {
+  type = object({
+    enabled_api_access           = optional(bool, true)
+    identity_center_instance_arn = string
+    subject_key                  = string
+    roles_key                    = string
+  })
+
+  default     = null
+  description = "Configuration block for authenticating AWS IAM Identity Center principals via OpenSearch identity_center_options. Applicable to aws_opensearch_domain only."
+}
+
 variable "access_policies" {
   description = "JSON string for the IAM policy document specifying the access policies for the domain."
   type        = string

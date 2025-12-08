@@ -25,4 +25,11 @@ module "opensearch" {
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }
+
+  identity_center_options = {
+    identity_center_instance_arn = "arn:aws:sso:::instance/ssoins-xxxxxxxxxxxxxxx"
+    subject_key                  = "sub"
+    roles_key                    = "roles"
+    enabled_api_access           = true
+  }
 }

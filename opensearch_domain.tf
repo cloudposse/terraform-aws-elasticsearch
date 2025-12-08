@@ -26,6 +26,16 @@ resource "aws_opensearch_domain" "default" {
     }
   }
 
+  dynamic "identity_center_options" {
+    for_each = var.identity_center_options != null ? [var.identity_center_options] : []
+    content {
+      enabled_api_access           = identity_center_options.value.enabled_api_access
+      identity_center_instance_arn = identity_center_options.value.identity_center_instance_arn
+      subject_key                  = identity_center_options.value.subject_key
+      roles_key                    = identity_center_options.value.roles_key
+    }
+  }
+
   ebs_options {
     ebs_enabled = var.ebs_volume_size > 0 ? true : false
     volume_size = var.ebs_volume_size
