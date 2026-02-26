@@ -1,5 +1,5 @@
 #
-# Opensearch Domain 
+# Opensearch Domain
 #
 
 resource "aws_opensearch_domain_policy" "default" {
@@ -23,6 +23,12 @@ resource "aws_opensearch_domain" "default" {
       master_user_arn      = var.advanced_security_options_master_user_arn
       master_user_name     = var.advanced_security_options_master_user_name
       master_user_password = var.advanced_security_options_master_user_password
+    }
+    jwt_options {
+      enabled     = var.advanced_security_options_jwt_enabled
+      public_key  = var.advanced_security_options_jwt_public_key
+      subject_key = var.advanced_security_options_jwt_subject_key
+      roles_key   = var.advanced_security_options_jwt_roles_key
     }
   }
 
