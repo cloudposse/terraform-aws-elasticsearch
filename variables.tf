@@ -416,6 +416,30 @@ variable "advanced_security_options_master_user_password" {
   description = "Master user password (applicable if advanced_security_options_internal_user_database_enabled set to true)"
 }
 
+variable "advanced_security_options_jwt_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable JWT authentication and authorization"
+}
+
+variable "advanced_security_options_jwt_public_key" {
+  type        = string
+  default     = ""
+  description = "The public key used when verifying your JWT signed requests. This should use either RSA or ECDSA encryption."
+}
+
+variable "advanced_security_options_jwt_subject_key" {
+  type        = string
+  default     = "sub"
+  description = "Specify the attribute of JWT that contains the subject of the JWT (the default is \"sub\")."
+}
+
+variable "advanced_security_options_jwt_roles_key" {
+  type        = string
+  default     = "roles"
+  description = "Specify the attribute of JWT that contains the backend role(s) of the JWT (the default is \"roles\")."
+}
+
 variable "custom_endpoint_enabled" {
   type        = bool
   description = "Whether to enable custom endpoint for the Elasticsearch domain."
